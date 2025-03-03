@@ -19,7 +19,14 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow(void);
+
+private slots:
+    void on_button_shift_clicked(void);
+    void on_button_turn_clicked(void);
+    void on_button_scale_clicked(void);
+    
+    void open_file(void);
 
 private:
     Ui::MainWindow *ui; // Указатель на сгенерированный интерфейс

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1275</width>
-    <height>820</height>
+    <width>1250</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>800</width>
-      <height>800</height>
+      <width>780</width>
+      <height>780</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -30,15 +30,21 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>820</x>
+      <x>800</x>
       <y>10</y>
       <width>441</width>
-      <height>801</height>
+      <height>781</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QLabel" name="_label1">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>16</pointsize>
@@ -140,13 +146,13 @@
        <property name="minimumSize">
         <size>
          <width>30</width>
-         <height>1</height>
+         <height>100</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>20</height>
+         <height>200</height>
         </size>
        </property>
        <property name="font">
@@ -163,6 +169,12 @@
      </item>
      <item>
       <widget class="QLabel" name="_label_2">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>16</pointsize>
@@ -264,13 +276,13 @@
        <property name="minimumSize">
         <size>
          <width>30</width>
-         <height>20</height>
+         <height>100</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>20</height>
+         <height>200</height>
         </size>
        </property>
        <property name="font">
@@ -287,6 +299,12 @@
      </item>
      <item>
       <widget class="QLabel" name="_label_3">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>20</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>16</pointsize>

@@ -1,0 +1,10 @@
+#ifndef CONSTANTS_H__
+#define CONSTANTS_H__
+
+#define WINDOWS_X 1250
+#define WINDOWS_Y 800
+
+#define RENDER_FRAME_WIDTH 780
+#define RENDER_FRAME_HEIGHT 780
+
+#endif // CONSTANTS_H__
