@@ -45,6 +45,7 @@ void MainWindow::open_file(void)
         if (file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
             request_t request = {.task = REQ_LOAD}; // Сюда дописать
+            request_handler(request);
             qDebug() << "file_open" << filename;
         }
         else

@@ -7,10 +7,10 @@ err_t request_handler(const request_t &request)
     switch (request.task)
     {
         case REQ_LOAD:
-            qDebug() << "Load";
+            qDebug() << "REQ_LOAD";
             break;
         case REQ_SHIFT:
-            qDebug() << "SHIFT";
+            qDebug() << "REQ_SHIFT";
             break;
         case REQ_TURN:
             qDebug() << "REQ_TURN";
