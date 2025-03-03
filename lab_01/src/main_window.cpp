@@ -1,14 +1,15 @@
 #include "main_window.h"
-#include "ui_main_window.h"
 #include "constants.hpp"
 #include "errors.hpp"
+#include "request.hpp"
+#include "ui_main_window.h"
 
+#include <QAction>
 #include <QDebug>
+#include <QFileDialog>
 #include <QInputDialog>
 #include <QMenu>
 #include <QMenuBar>
-#include <QAction>
-#include <QFileDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -34,18 +35,6 @@ MainWindow::MainWindow(QWidget *parent)
 // ui->InputX->setPlaceholderText("Введите координату x");
 // ui->InputY->setPlaceholderText("Введите координату y");
 
-// Биндим кнопки
-// connect(ui->addPoint, &QPushButton::clicked, this, &MainWindow::buttonPushAddPoint);
-// connect(ui->pushButtonDeleteAll, &QPushButton::clicked, this, &MainWindow::buttonPushClearAll);
-
-// // Делеем свое контекстное меню у таблицы
-// connect(ui->PointsTable1, &QTableView::customContextMenuRequested, this, &MainWindow::showTable1ContextMenu);
-// connect(ui->PointsTable2, &QTableView::customContextMenuRequested, this, &MainWindow::showTable2ContextMenu);
-
-// connect(ui->SolveButton, &QPushButton::clicked, this, &MainWindow::buttonPushSolve);
-// connect(ui->NextButton, &QPushButton::clicked, this, &MainWindow::buttonPushNext);
-// connect(ui->ClearSolveButton, &QPushButton::clicked, this, &MainWindow::buttonPushclearSolve);
-
 void MainWindow::open_file(void)
 {
     QString filename = QFileDialog::getOpenFileName(this, tr("Открыть файл"), "", tr("Текстовые файлы (*.txt);;Все файлы (*)"));
@@ -55,6 +44,7 @@ void MainWindow::open_file(void)
         QFile file(filename);
         if (file.open(QIODevice::ReadOnly | QIODevice::Text))
         {
+            request_t request = {.task = REQ_LOAD}; // Сюда дописать
             qDebug() << "file_open" << filename;
         }
         else
@@ -69,6 +59,7 @@ void MainWindow::open_file(void)
         qDebug() << "Exit";
     }
 }
+
 void MainWindow::on_button_shift_clicked(void)
 {
     qDebug() << "1";
@@ -86,5 +77,7 @@ void MainWindow::on_button_scale_clicked(void)
 
 MainWindow::~MainWindow(void)
 {
+    request_t request = { .task = REQ_QUIT };
+    request_handler(request);
     delete ui;
 }
