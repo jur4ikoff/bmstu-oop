@@ -7,6 +7,7 @@ typedef enum
     ERR_FILE,
     ERR_FILE_OPEN,
     ERR_FILE_CONTENT,
+    ERR_FILE_EMPTY,
     ERR_UNKNOWN_COMMAND,
 } err_t;
 

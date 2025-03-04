@@ -25,10 +25,11 @@ private slots:
     void on_button_shift_clicked(void);
     void on_button_turn_clicked(void);
     void on_button_scale_clicked(void);
-    
+
     void open_file(void);
 
 private:
+    void set_placeholders(void);
     Ui::MainWindow *ui; // Указатель на сгенерированный интерфейс
 };
 

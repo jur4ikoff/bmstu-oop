@@ -3,6 +3,7 @@
 #include "errors.hpp"
 #include "request.hpp"
 #include "ui_main_window.h"
+#include "utils.hpp"
 
 #include <QAction>
 #include <QDebug>
@@ -25,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Подключаем сигнал к слоту
     connect(open_action, &QAction::triggered, this, &MainWindow::open_file);
+
+    // Ставим все плейсхолдеры
+    set_placeholders();
 }
 
 // инициализируем систему координат
@@ -32,32 +36,41 @@ MainWindow::MainWindow(QWidget *parent)
 // coordinate_system->setGeometry(ui->ChartWidget->geometry());
 
 // Ставим плейсхолдеры в текст
-// ui->InputX->setPlaceholderText("Введите координату x");
-// ui->InputY->setPlaceholderText("Введите координату y");
+
+void MainWindow::set_placeholders(void)
+{
+    ui->shift_x->setPlaceholderText("Введите координату x");
+    ui->shift_y->setPlaceholderText("Введите координату y");
+    ui->shift_z->setPlaceholderText("Введите координату z");
+
+    ui->turn_x->setPlaceholderText("Введите координату x");
+    ui->turn_y->setPlaceholderText("Введите координату y");
+    ui->turn_z->setPlaceholderText("Введите координату z");
+
+    ui->scale_x->setPlaceholderText("Введите координату x");
+    ui->scale_y->setPlaceholderText("Введите координату y");
+    ui->scale_z->setPlaceholderText("Введите координату z");
+}
 
 void MainWindow::open_file(void)
 {
     QString filename = QFileDialog::getOpenFileName(this, tr("Открыть файл"), "./../data/", tr("Текстовые файлы (*.txt);;Все файлы (*)"));
-
     if (!filename.isEmpty())
     {
-        QFile file(filename);
-        if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            request_t request = {.task = REQ_LOAD}; // Сюда дописать
-            request_handler(request);
-            qDebug() << "file_open" << filename;
-        }
-        else
+        // Сделаем структуру, для запроса загрузки
+        const char *str_filename = convert_QString_to_char(filename);
+        request_t request = {.task = REQ_LOAD, .filename = str_filename};
+        err_t rc = request_handler(request);
+        if (rc != ERR_OK)
         {
             // Ошибка, не удалось открыть файл
-            err_t err_code = ERR_FILE_OPEN;
-            error_handler(err_code);
+            error_handler(rc);
         }
     }
     else
     {
-        qDebug() << "Exit";
+        // Пользователь не выбрал файл
+        qDebug() << "No file";
     }
 }
 
@@ -78,7 +91,7 @@ void MainWindow::on_button_scale_clicked(void)
 
 MainWindow::~MainWindow(void)
 {
-    request_t request = { .task = REQ_QUIT };
+    request_t request = {.task = REQ_QUIT};
     request_handler(request);
     delete ui;
 }

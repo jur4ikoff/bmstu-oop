@@ -2,6 +2,7 @@
 #define REQUEST_H__
 
 #include "errors.hpp"
+#include "model.hpp"
 
 typedef enum
 {
@@ -20,6 +21,7 @@ typedef struct _request_type_
     req_type task;
     union 
     {
+        filename_t filename;
         /* data */
     };
     

@@ -13,6 +13,8 @@ void error_handler(const err_t error_code)
         QMessageBox::critical(NULL, "Ошибка", "Не удалось открыть файл");
     case ERR_FILE_CONTENT:
         QMessageBox::warning(NULL, "Ошибка", "Неверное содержимое файла");
+    case ERR_FILE_EMPTY:
+        QMessageBox::warning(NULL, "Ошибка", "Файл пустой");
     default:
         break;
     }
