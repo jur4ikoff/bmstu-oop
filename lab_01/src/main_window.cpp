@@ -1,6 +1,7 @@
 #include "main_window.h"
 #include "constants.hpp"
 #include "errors.hpp"
+#include "render.hpp"
 #include "request.hpp"
 #include "ui_main_window.h"
 #include "utils.hpp"
@@ -29,13 +30,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Ставим все плейсхолдеры
     set_placeholders();
+
+    // QFrame *frame = ui->render_widget;
+    // render_field.scene = ui->render_widget;
+    // render_field.width =  ui->render_widget.width();
+    //  render_field.height = ui->render_widget.height();
+    // draw_on_frame(ui->render_widget);
+    // draw_on_frame(render_field.scene);
 }
-
-// инициализируем систему координат
-// CoordSystem *coordinate_system = new CoordSystem(points_1, points_2, solve, solve_cur, ui->ChartWidget);
-// coordinate_system->setGeometry(ui->ChartWidget->geometry());
-
-// Ставим плейсхолдеры в текст
 
 void MainWindow::set_placeholders(void)
 {
@@ -59,9 +61,15 @@ void MainWindow::open_file(void)
     {
         // Сделаем структуру, для запроса загрузки
         const char *str_filename = convert_QString_to_char(filename);
-        request_t request = {.task = REQ_LOAD, .filename = str_filename};
+        request_t request = { .task = REQ_LOAD, .filename = str_filename };
         err_t rc = request_handler(request);
-        if (rc != ERR_OK)
+        if (rc == ERR_OK)
+        {
+            rc = draw_event();
+            if (rc != ERR_OK)
+                error_handler(rc);
+        }
+        else
         {
             // Ошибка, не удалось открыть файл
             error_handler(rc);
@@ -89,9 +97,14 @@ void MainWindow::on_button_scale_clicked(void)
     qDebug() << "scale";
 }
 
+err_t MainWindow::draw_event(void)
+{
+    return ERR_OK;
+}
+
 MainWindow::~MainWindow(void)
 {
-    request_t request = {.task = REQ_QUIT};
+    request_t request = { .task = REQ_QUIT };
     request_handler(request);
     delete ui;
 }

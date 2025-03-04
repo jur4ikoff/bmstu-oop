@@ -121,6 +121,7 @@ static err_t _load_model(FILE *file, model_t &temp_model)
     }
     temp_model.points = points;
     temp_model.points_count = points_count;
+
     edge_t *edges = NULL;
     size_t edges_count = 0;
     if ((rc = _load_edges(file, &edges, &edges_count)) != ERR_OK)
@@ -129,20 +130,9 @@ static err_t _load_model(FILE *file, model_t &temp_model)
         free(edges);
         return rc;
     }
-
     temp_model.edges = edges;
     temp_model.edges_count = edges_count;
-
-     for (size_t i = 0; i < points_count; i++)
-    {
-        printf("%.2f %.2f %.2f\n", points[i].x, points[i].y, points[i].z);
-    }
-
-    for (size_t i = 0; i < edges_count; i++)
-    {
-        printf("%zu %zu\n", edges[i].first, edges[i].second);
-    }
-
+    
     return rc;
 }
 

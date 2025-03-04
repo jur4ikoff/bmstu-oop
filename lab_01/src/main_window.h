@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H__
 #define MAINWINDOW_H__
 
+#include "errors.hpp"
+#include "render.hpp"
+
 #include <QMainWindow>
 
 // Включаем сгенерированный заголовочный файл
@@ -8,7 +11,7 @@ QT_BEGIN_NAMESPACE
 
 namespace Ui
 {
-    class MainWindow;
+class MainWindow;
 }
 
 QT_END_NAMESPACE
@@ -21,6 +24,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow(void);
 
+protected:
+    void draw_on_frame(QPainter &painter);
+    void paintEvent(QPaintEvent *event) override;
+
 private slots:
     void on_button_shift_clicked(void);
     void on_button_turn_clicked(void);
@@ -29,7 +36,8 @@ private slots:
     void open_file(void);
 
 private:
-    void set_placeholders(void);
+    render_t render_field = { 0 };
+    
     Ui::MainWindow *ui; // Указатель на сгенерированный интерфейс
 };
 
