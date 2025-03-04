@@ -23,18 +23,22 @@ const char *convert_QString_to_char(const QString &to_convert)
  * @param[out] file ИЗМЕНЯЕМЫЙ. Указатель на файловый дескриптор
  * @param[out] number Прочитанное число
  */
-err_t read_int_number(FILE *file, int &number)
+err_t read_int_number(FILE *file, size_t &number)
 {
-    rc = ERR_OK;
-    int read = fscanf(file, "%d", &number);
+    err_t rc = ERR_OK;
+    int temp;
+    int read = fscanf(file, "%d", &temp);
 
     if (read != 1)
-        rc = ERR_FILE;
+        rc = ERR_FILE_CONTENT;
     else
     {
-        if (number < 1)
-            rc = ERR_FILE_EMPTY;
+        if (temp < 0)
+            rc = ERR_FILE_CONTENT;
+        else
+            number = (size_t)temp;
     }
 
+    
     return rc;
 }

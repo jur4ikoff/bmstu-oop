@@ -13,7 +13,7 @@ typedef struct _point_type_
 // Структура для описания ребра (точка начала и конец)
 typedef struct _edge_type
 {
-    point_t first, second;
+    size_t first, second;
 } edge_t;
 
 typedef struct _model_type_
