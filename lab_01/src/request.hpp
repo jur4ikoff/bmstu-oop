@@ -11,6 +11,7 @@ typedef enum
     REQ_SCALE,
     REQ_DRAW,
     REQ_QUIT,
+    REQ_DEBUG, // Только в дебаг версии
 } req_type;
 
 

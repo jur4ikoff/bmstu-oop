@@ -37,7 +37,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::open_file(void)
 {
-    QString filename = QFileDialog::getOpenFileName(this, tr("Открыть файл"), "", tr("Текстовые файлы (*.txt);;Все файлы (*)"));
+    QString filename = QFileDialog::getOpenFileName(this, tr("Открыть файл"), "./../data/", tr("Текстовые файлы (*.txt);;Все файлы (*)"));
 
     if (!filename.isEmpty())
     {
