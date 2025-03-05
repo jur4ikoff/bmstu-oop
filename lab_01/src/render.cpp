@@ -99,36 +99,15 @@ static err_t get_scale(double &scale, const model_t &model, const int window_siz
 void drawPointsOnPixmap(QPainter &painter, const point_t *points, size_t pointsCount, double scale, const int &windowSize)
 {
     painter.setRenderHint(QPainter::Antialiasing, true);
-
     painter.setPen(Qt::blue);
-    painter.setBrush(Qt::blue);
-
-    // Находим минимальные и максимальные координаты
-    double minX = points[0].x, maxX = points[0].x;
-    double minY = points[0].y, maxY = points[0].y;
-    for (size_t i = 1; i < pointsCount; ++i)
-    {
-        if (points[i].x < minX)
-            minX = points[i].x;
-        if (points[i].x > maxX)
-            maxX = points[i].x;
-        if (points[i].y < minY)
-            minY = points[i].y;
-        if (points[i].y > maxY)
-            maxY = points[i].y;
-    }
-
-    // Центрируем точки
-    double offsetX = (maxX + minX) / 2.0;
-    double offsetY = (maxY + minY) / 2.0;
 
     // Рисуем точки
     for (size_t i = 0; i < pointsCount; ++i)
     {
         QPointF scaledPoint(
-            windowSize / 2.0 + (points[i].x - offsetX) * scale,
-            windowSize / 2.0 - (points[i].y - offsetY) * scale);
-        painter.drawEllipse(scaledPoint, 1, 1);
+            windowSize / 2.0 + (points[i].x) * scale,
+            windowSize / 2.0 - (points[i].y) * scale);
+        painter.drawEllipse(scaledPoint, 2, 2);
     }
 }
 
@@ -139,28 +118,8 @@ void drawEdgesOnPixmap(QPainter &painter, const point_t *points, size_t pointsCo
 
     // Устанавливаем цвет и толщину линии
     painter.setPen(QPen(Qt::white, 1)); // Черные линии толщиной 2 пикселя
-
     // Центр окна
     QPointF center(windowSize / 2.0, windowSize / 2.0);
-
-    // Находим минимальные и максимальные координаты
-    double minX = points[0].x, maxX = points[0].x;
-    double minY = points[0].y, maxY = points[0].y;
-    for (size_t i = 1; i < pointsCount; ++i)
-    {
-        if (points[i].x < minX)
-            minX = points[i].x;
-        if (points[i].x > maxX)
-            maxX = points[i].x;
-        if (points[i].y < minY)
-            minY = points[i].y;
-        if (points[i].y > maxY)
-            maxY = points[i].y;
-    }
-
-    // Центрируем точки
-    double offsetX = (maxX + minX) / 2.0;
-    double offsetY = (maxY + minY) / 2.0;
 
     // Рисуем линии между точками
     for (size_t i = 0; i < edgesCount; ++i)
@@ -178,13 +137,13 @@ void drawEdgesOnPixmap(QPainter &painter, const point_t *points, size_t pointsCo
 
         // Масштабируем координаты и смещаем их относительно центра
         QPointF startPoint(
-            windowSize / 2.0 + (points[startIndex].x - offsetX) * scale,
-            windowSize / 2.0 - (points[startIndex].y - offsetY) * scale);
+            windowSize / 2.0 + (points[startIndex].x) * scale,
+            windowSize / 2.0 - (points[startIndex].y) * scale);
         // center.y() - points[startIndex].y * scale // Ось Y инвертирована
 
         QPointF endPoint(
-            windowSize / 2.0 + (points[endIndex].x - offsetX) * scale,
-            windowSize / 2.0 - (points[endIndex].y - offsetY) * scale);
+            windowSize / 2.0 + (points[endIndex].x) * scale,
+            windowSize / 2.0 - (points[endIndex].y) * scale);
 
         // Рисуем линию между точками
         painter.drawLine(startPoint, endPoint);
@@ -204,26 +163,10 @@ err_t render_model(const render_t &render, const model_t &model)
     int window_size = MAX(render.width, render.height);
 
     err_t rc = ERR_OK;
-    double scale = 0;
+    double scale = (window_size) / 6;
 
-    if ((rc = get_scale(scale, model, window_size)) == ERR_OK)
-    {
-        /*qDebug() << "scale " << scale;
-        for (size_t i = 0; i < model.points_count; i++)
-        {
-            printf("%.2f %.2f %.2f\n", model.points[i].x, model.points[i].y, model.points[i].z);
-        }
-
-        for (size_t i = 0; i < model.edges_count; i++)
-        {
-            printf("%zu %zu\n", model.edges[i].first, model.edges[i].second);
-        }*/
-        // painter.setPen(QPen(Qt::red, 2, Qt::SolidLine));
-        // painter.drawLine(0, 0, 250, 500);
-        drawPointsOnPixmap(painter, model.points, model.points_count, scale, window_size);
-        drawEdgesOnPixmap(painter, model.points, model.points_count, model.edges, model.edges_count, scale, window_size);
-    }
-
+    drawPointsOnPixmap(painter, model.points, model.points_count, scale, window_size);
+    drawEdgesOnPixmap(painter, model.points, model.points_count, model.edges, model.edges_count, scale, window_size);
     painter.end();
     return rc;
 }

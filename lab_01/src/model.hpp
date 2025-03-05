@@ -17,7 +17,7 @@ typedef struct _edge_type
 } edge_t;
 
 typedef struct _model_type_
-{   
+{
     size_t points_count;
     size_t edges_count;
 
@@ -25,6 +25,10 @@ typedef struct _model_type_
     edge_t *edges;
 } model_t;
 
+typedef struct _model_shift_type
+{
+    double x, y, z;
+} shift_t;
 
 using filename_t = const char *;
 

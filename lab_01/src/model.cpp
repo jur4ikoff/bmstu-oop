@@ -18,3 +18,4 @@ void free_model(model_t &model)
     if (model.points)
         free(model.points);
 }
+
