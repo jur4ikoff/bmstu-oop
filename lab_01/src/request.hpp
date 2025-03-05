@@ -2,8 +2,8 @@
 #define REQUEST_H__
 
 #include "errors.hpp"
-#include "render.hpp"
 #include "model.hpp"
+#include "render.hpp"
 
 typedef enum
 {
@@ -16,18 +16,20 @@ typedef enum
     REQ_DEBUG, // Только в дебаг версии
 } req_type;
 
-
-typedef struct _request_type_
+typedef struct
 {
     req_type task;
-    union 
+
+    union
     {
         filename_t filename;
         render_t render;
+        shift_t shift;
+        scale_t scale;
         /* data */
     };
-    
-}request_t;
+
+} request_t;
 
 err_t request_handler(const request_t &);
 

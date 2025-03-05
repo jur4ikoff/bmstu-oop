@@ -1,11 +1,11 @@
 #include "render.hpp"
-#include "model.hpp"
-#include "errors.hpp"
 #include "constants.hpp"
+#include "errors.hpp"
+#include "model.hpp"
 
+#include <QColor>
 #include <QPainter>
 #include <QPixmap>
-#include <QColor>
 #include <cstdio>
 
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
@@ -118,8 +118,6 @@ void drawEdgesOnPixmap(QPainter &painter, const point_t *points, size_t pointsCo
 
     // Устанавливаем цвет и толщину линии
     painter.setPen(QPen(Qt::white, 1)); // Черные линии толщиной 2 пикселя
-    // Центр окна
-    QPointF center(windowSize / 2.0, windowSize / 2.0);
 
     // Рисуем линии между точками
     for (size_t i = 0; i < edgesCount; ++i)
@@ -139,7 +137,6 @@ void drawEdgesOnPixmap(QPainter &painter, const point_t *points, size_t pointsCo
         QPointF startPoint(
             windowSize / 2.0 + (points[startIndex].x) * scale,
             windowSize / 2.0 - (points[startIndex].y) * scale);
-        // center.y() - points[startIndex].y * scale // Ось Y инвертирована
 
         QPointF endPoint(
             windowSize / 2.0 + (points[endIndex].x) * scale,
@@ -157,16 +154,22 @@ void drawEdgesOnPixmap(QPainter &painter, const point_t *points, size_t pointsCo
  */
 err_t render_model(const render_t &render, const model_t &model)
 {
-    // Обновляем QPixmap
-    render.plane.fill("#252525");
-    QPainter painter(&render.plane);
-    int window_size = MAX(render.width, render.height);
-
     err_t rc = ERR_OK;
-    double scale = (window_size) / 6;
+    // Обновляем QPixmap
+    if (render.plane)
+    {
+        // НАПИСАТЬ ПРОВЕРКУ НА МОДЕЛЬ
+        render.plane->fill("#252525");
+        QPainter painter(render.plane);
+        int window_size = MAX(render.width, render.height);
 
-    drawPointsOnPixmap(painter, model.points, model.points_count, scale, window_size);
-    drawEdgesOnPixmap(painter, model.points, model.points_count, model.edges, model.edges_count, scale, window_size);
-    painter.end();
+        double scale = (window_size) / 6;
+
+        drawPointsOnPixmap(painter, model.points, model.points_count, scale, window_size);
+        drawEdgesOnPixmap(painter, model.points, model.points_count, model.edges, model.edges_count, scale, window_size);
+        painter.end();
+    }
+    else
+        rc = ERR_ARGS;
     return rc;
 }

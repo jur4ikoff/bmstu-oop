@@ -9,6 +9,8 @@ typedef enum
     ERR_FILE_CONTENT,
     ERR_ARRAY_EMPTY,
     ERR_UNKNOWN_COMMAND,
+    ERR_WRONG_INPUT_LABEL,
+    ERR_EMPTY_MODEL,
     ERR_ARGS,
 } err_t;
 

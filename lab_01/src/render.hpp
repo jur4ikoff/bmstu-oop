@@ -5,9 +5,9 @@
 #include "model.hpp"
 #include <QPixmap>
 
-typedef struct _render_type
+typedef struct
 {
-    QPixmap &plane;
+    QPixmap *plane;
     int width, height;
 }render_t;
 

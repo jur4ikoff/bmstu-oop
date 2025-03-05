@@ -13,6 +13,7 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QPixmap>
+#include <QString>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -64,7 +65,7 @@ void MainWindow::open_file(void)
     {
         // Сделаем структуру, для запроса загрузки
         const char *str_filename = convert_QString_to_char(filename);
-        request_t request = {.task = REQ_LOAD, .filename = str_filename};
+        request_t request = { .task = REQ_LOAD, .filename = str_filename };
         err_t rc = request_handler(request);
         if (rc == ERR_OK)
         {
@@ -87,8 +88,8 @@ void MainWindow::open_file(void)
 
 err_t MainWindow::draw_update(void)
 {
-    render_t to_render = {.plane = pixmap, .width = pixmap.width(), .height = pixmap.height()};
-    request_t request = {.task = REQ_RENDER, .render = to_render};
+    render_t to_render = { .plane = &pixmap, .width = pixmap.width(), .height = pixmap.height() };
+    request_t request = { .task = REQ_RENDER, .render = to_render };
     err_t rc = request_handler(request);
     if (rc != ERR_OK)
     {
@@ -104,7 +105,54 @@ err_t MainWindow::draw_update(void)
 
 void MainWindow::on_button_shift_clicked(void)
 {
-    qDebug() << "1";
+    err_t rc = ERR_OK;
+
+    QString x_str = ui->shift_x->text();
+    QString y_str = ui->shift_y->text();
+    QString z_str = ui->shift_z->text();
+
+    // Проверяем, можно ли преобразовать текст в double
+    bool ok_x, ok_y, ok_z;
+    double x = x_str.toDouble(&ok_x);
+    double y = y_str.toDouble(&ok_y);
+    double z = z_str.toDouble(&ok_z);
+
+    shift_t shift = {.x = 0, .y = 0, .z = 0};
+    bool is_record = false;
+    if (ok_x)
+    {
+        shift.x = x;
+        is_record = true;
+    }
+    if (ok_y)
+    {
+        shift.y = y;
+        is_record = true;
+    }
+    if (ok_z)
+    {
+        shift.z = z;
+        is_record = true;
+    }
+
+    
+
+    if (is_record)
+    {
+        request_t request = { .task = REQ_SHIFT, .shift = shift };
+        rc = request_handler(request);
+        if (rc == ERR_OK)
+        {
+            draw_update();
+        }
+        else
+            error_handler(rc);
+    }
+    else
+    {
+        rc = ERR_WRONG_INPUT_LABEL;
+        error_handler(rc);
+    }
 }
 
 void MainWindow::on_button_turn_clicked(void)
@@ -114,12 +162,58 @@ void MainWindow::on_button_turn_clicked(void)
 
 void MainWindow::on_button_scale_clicked(void)
 {
-    qDebug() << "scale";
+    err_t rc = ERR_OK;
+
+    QString x_str = ui->scale_x->text();
+    QString y_str = ui->scale_y->text();
+    QString z_str = ui->scale_z->text();
+
+    // Проверяем, можно ли преобразовать текст в double
+    bool ok_x, ok_y, ok_z;
+    double x = x_str.toDouble(&ok_x);
+    double y = y_str.toDouble(&ok_y);
+    double z = z_str.toDouble(&ok_z);
+
+    scale_t scale = {.x = 1, .y = 1, .z = 1};
+    bool is_record = false;
+    if (ok_x)
+    {
+        scale.x = x;
+        is_record = true;
+    }
+    if (ok_y)
+    {
+        scale.y = y;
+        is_record = true;
+    }
+    if (ok_z)
+    {
+        scale.z = z;
+        is_record = true;
+    }
+
+    if (is_record)
+    {
+        request_t request = { .task = REQ_SCALE, .scale = scale };
+        rc = request_handler(request);
+        if (rc == ERR_OK)
+        {
+            draw_update();
+        }
+        else
+            error_handler(rc);
+    }
+    else
+    {
+        rc = ERR_WRONG_INPUT_LABEL;
+        error_handler(rc);
+    }
 }
 
 MainWindow::~MainWindow(void)
 {
-    request_t request = {.task = REQ_QUIT};
+    request_t request = { .task = REQ_QUIT };
+
     request_handler(request);
     delete ui;
 }
