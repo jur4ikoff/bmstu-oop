@@ -1,5 +1,6 @@
 #include "request.hpp"
 #include "model.hpp"
+#include "render.hpp"
 
 #include <QDebug>
 
@@ -23,7 +24,8 @@ err_t request_handler(const request_t &request)
     case REQ_SCALE:
         qDebug() << "REQ_SCALE";
         break;
-    case REQ_DRAW:
+    case REQ_RENDER:
+        rc = render_model(request.render, model);
         qDebug() << "REQ_DRAW";
         break;
     case REQ_QUIT:

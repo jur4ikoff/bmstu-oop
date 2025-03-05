@@ -28,13 +28,10 @@ MainWindow::MainWindow(QWidget *parent)
     // Подключаем сигнал к слоту
     connect(open_action, &QAction::triggered, this, &MainWindow::open_file);
 
-    QPixmap pixmap = QPixmap(ui->render_widget->width(), ui->render_widget->height());
+    pixmap = QPixmap(ui->render_widget->width(), ui->render_widget->height());
     ui->render_widget->setPixmap(pixmap);
 
-    QPainter painter(&pixmap);
-    painter.setPen(QPen(Qt::black, 2, Qt::SolidLine)); 
-    painter.drawLine(0, 0, 250, 500);
-    ui->render_widget->setPixmap(pixmap);
+    draw_update();
     // Ставим все плейсхолдеры
     set_placeholders();
 
@@ -68,11 +65,11 @@ void MainWindow::open_file(void)
     {
         // Сделаем структуру, для запроса загрузки
         const char *str_filename = convert_QString_to_char(filename);
-        request_t request = { .task = REQ_LOAD, .filename = str_filename };
+        request_t request = {.task = REQ_LOAD, .filename = str_filename};
         err_t rc = request_handler(request);
         if (rc == ERR_OK)
         {
-            rc = draw_event();
+            rc = draw_update();
             if (rc != ERR_OK)
                 error_handler(rc);
         }
@@ -87,6 +84,24 @@ void MainWindow::open_file(void)
         // Пользователь не выбрал файл
         qDebug() << "No file";
     }
+}
+
+err_t MainWindow::draw_update(void)
+{
+    qDebug() << "1";
+    render_t to_render = {.plane = pixmap, .width = pixmap.width(), .height = pixmap.height()};
+    request_t request = {.task = REQ_RENDER, .render = to_render};
+    err_t rc = request_handler(request);
+    if (rc != ERR_OK)
+    {
+        error_handler(rc);
+    }
+    else
+    {
+        ui->render_widget->setPixmap(pixmap);
+    }
+
+    return rc;
 }
 
 void MainWindow::on_button_shift_clicked(void)
@@ -104,14 +119,9 @@ void MainWindow::on_button_scale_clicked(void)
     qDebug() << "scale";
 }
 
-err_t MainWindow::draw_event(void)
-{
-    return ERR_OK;
-}
-
 MainWindow::~MainWindow(void)
 {
-    request_t request = { .task = REQ_QUIT };
+    request_t request = {.task = REQ_QUIT};
     request_handler(request);
     delete ui;
 }

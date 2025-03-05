@@ -2,6 +2,7 @@
 #define REQUEST_H__
 
 #include "errors.hpp"
+#include "render.hpp"
 #include "model.hpp"
 
 typedef enum
@@ -10,7 +11,7 @@ typedef enum
     REQ_SHIFT,
     REQ_TURN,
     REQ_SCALE,
-    REQ_DRAW,
+    REQ_RENDER,
     REQ_QUIT,
     REQ_DEBUG, // Только в дебаг версии
 } req_type;
@@ -22,6 +23,7 @@ typedef struct _request_type_
     union 
     {
         filename_t filename;
+        render_t render;
         /* data */
     };
     

@@ -32,9 +32,8 @@ private slots:
     void open_file(void);
 
 private:
-    render_t render_field = { 0 };
-    
-    err_t draw_event(void);
+    QPixmap pixmap;
+    err_t draw_update(void);
     void set_placeholders(void);
     Ui::MainWindow *ui; // Указатель на сгенерированный интерфейс
 };
