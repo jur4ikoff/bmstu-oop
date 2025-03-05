@@ -31,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
     pixmap = QPixmap(ui->render_widget->width(), ui->render_widget->height());
     ui->render_widget->setPixmap(pixmap);
 
-    draw_update();
     // Ставим все плейсхолдеры
     set_placeholders();
 
@@ -88,7 +87,6 @@ void MainWindow::open_file(void)
 
 err_t MainWindow::draw_update(void)
 {
-    qDebug() << "1";
     render_t to_render = {.plane = pixmap, .width = pixmap.width(), .height = pixmap.height()};
     request_t request = {.task = REQ_RENDER, .render = to_render};
     err_t rc = request_handler(request);

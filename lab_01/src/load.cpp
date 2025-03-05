@@ -56,14 +56,14 @@ static err_t _load_points(FILE *file, point_t **points, size_t *points_count)
     err_t rc = ERR_OK;
     if ((rc = read_int_number(file, *points_count)) != ERR_OK)
         return rc;
-    
+
     if (*points_count < 1)
         return ERR_ARRAY_EMPTY;
 
     *points = (point_t *)malloc(*points_count * sizeof(point_t));
     for (size_t i = 0; i < *points_count; i++)
     {
-        point_t new_point = { 0 };
+        point_t new_point = {0};
         if ((rc = _read_point(file, new_point)) != ERR_OK)
             return rc;
 
@@ -94,7 +94,7 @@ static err_t _load_edges(FILE *file, edge_t **edges, size_t *edge_count)
     *edges = (edge_t *)malloc(*edge_count * sizeof(edge_t));
     for (size_t i = 0; i < *edge_count; i++)
     {
-        edge_t new_edge = { 0 };
+        edge_t new_edge = {0};
         if ((rc = _read_edge(file, new_edge)) != ERR_OK)
             return rc;
 
@@ -117,22 +117,26 @@ static err_t _load_model(FILE *file, model_t &temp_model)
     if ((rc = _load_points(file, &points, &points_count)) != ERR_OK)
     {
         free(points);
-        return rc;
     }
-    temp_model.points = points;
-    temp_model.points_count = points_count;
-
-    edge_t *edges = NULL;
-    size_t edges_count = 0;
-    if ((rc = _load_edges(file, &edges, &edges_count)) != ERR_OK)
+    else
     {
-        free(points);
-        free(edges);
-        return rc;
+        temp_model.points = points;
+        temp_model.points_count = points_count;
+
+        edge_t *edges = NULL;
+        size_t edges_count = 0;
+        if ((rc = _load_edges(file, &edges, &edges_count)) != ERR_OK)
+        {
+            free(points);
+            free(edges);
+        }
+        else
+        {
+            temp_model.edges = edges;
+            temp_model.edges_count = edges_count;
+        }
     }
-    temp_model.edges = edges;
-    temp_model.edges_count = edges_count;
-    
+
     return rc;
 }
 

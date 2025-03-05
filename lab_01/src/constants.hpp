@@ -7,4 +7,9 @@
 #define RENDER_FRAME_WIDTH 700
 #define RENDER_FRAME_HEIGHT 700
 
+#define NINF -10e-7
+#define INF 10e7
+
+#define EPS 10e-7
+
 #endif // CONSTANTS_H__
