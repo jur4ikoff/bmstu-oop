@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1250</width>
-    <height>715</height>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <rect>
       <x>760</x>
       <y>10</y>
-      <width>481</width>
+      <width>513</width>
       <height>691</height>
      </rect>
     </property>
@@ -35,7 +35,6 @@
        <property name="font">
         <font>
          <pointsize>16</pointsize>
-         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -145,7 +144,6 @@
        <property name="font">
         <font>
          <pointsize>5</pointsize>
-         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -165,7 +163,6 @@
        <property name="font">
         <font>
          <pointsize>16</pointsize>
-         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -275,7 +272,6 @@
        <property name="font">
         <font>
          <pointsize>5</pointsize>
-         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -295,7 +291,6 @@
        <property name="font">
         <font>
          <pointsize>16</pointsize>
-         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>

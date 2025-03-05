@@ -21,6 +21,7 @@ err_t request_handler(const request_t &request)
             break;
         case REQ_TURN:
             qDebug() << "REQ_TURN";
+            rc = turn_model(model, request.turn);
             break;
         case REQ_SCALE:
             qDebug() << "REQ_SCALE";

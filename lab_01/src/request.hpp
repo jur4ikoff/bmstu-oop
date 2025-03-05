@@ -26,6 +26,7 @@ typedef struct
         render_t render;
         shift_t shift;
         scale_t scale;
+        turn_t turn;
         /* data */
     };
 

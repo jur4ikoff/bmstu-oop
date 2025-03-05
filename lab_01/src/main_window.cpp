@@ -157,7 +157,52 @@ void MainWindow::on_button_shift_clicked(void)
 
 void MainWindow::on_button_turn_clicked(void)
 {
-    qDebug() << "turn";
+    err_t rc = ERR_OK;
+
+    QString x_str = ui->turn_x->text();
+    QString y_str = ui->turn_y->text();
+    QString z_str = ui->turn_z->text();
+
+    // Проверяем, можно ли преобразовать текст в double
+    bool ok_x, ok_y, ok_z;
+    double x = x_str.toDouble(&ok_x);
+    double y = y_str.toDouble(&ok_y);
+    double z = z_str.toDouble(&ok_z);
+
+    turn_t turn = {.x_angle = 0, .y_angle = 0, .z_angle = 0};
+    bool is_record = false;
+    if (ok_x)
+    {
+        turn.x_angle = x;
+        is_record = true;
+    }
+    if (ok_y)
+    {
+        turn.y_angle = y;
+        is_record = true;
+    }
+    if (ok_z)
+    {
+        turn.z_angle = z;
+        is_record = true;
+    }
+
+    if (is_record)
+    {
+        request_t request = { .task = REQ_TURN, .turn = turn};
+        rc = request_handler(request);
+        if (rc == ERR_OK)
+        {
+            draw_update();
+        }
+        else
+            error_handler(rc);
+    }
+    else
+    {
+        rc = ERR_WRONG_INPUT_LABEL;
+        error_handler(rc);
+    }
 }
 
 void MainWindow::on_button_scale_clicked(void)
