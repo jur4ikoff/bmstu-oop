@@ -12,6 +12,7 @@
 #include <QInputDialog>
 #include <QMenu>
 #include <QMenuBar>
+#include <QPixmap>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -24,10 +25,16 @@ MainWindow::MainWindow(QWidget *parent)
     QMenu *file_menu = menuBar()->addMenu(tr("Файл"));
     QAction *open_action = new QAction(tr("Загрузить из файла"), this);
     file_menu->addAction(open_action);
-
     // Подключаем сигнал к слоту
     connect(open_action, &QAction::triggered, this, &MainWindow::open_file);
 
+    QPixmap pixmap = QPixmap(ui->render_widget->width(), ui->render_widget->height());
+    ui->render_widget->setPixmap(pixmap);
+
+    QPainter painter(&pixmap);
+    painter.setPen(QPen(Qt::black, 2, Qt::SolidLine)); 
+    painter.drawLine(0, 0, 250, 500);
+    ui->render_widget->setPixmap(pixmap);
     // Ставим все плейсхолдеры
     set_placeholders();
 

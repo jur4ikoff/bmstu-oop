@@ -1,11 +1,11 @@
 #ifndef RENDER_HPP__
 #define RENDER_HPP__
 
-#include <QFrame>
+#include <QPixmap>
 
 typedef struct _render_type
 {
-    // QFrame *scene;
+    QPixmap *scene;
     int width, height;
 }render_t;
 
