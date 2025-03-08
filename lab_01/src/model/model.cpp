@@ -16,8 +16,8 @@ void free_model(model_t &model)
     if (model.edges)
         free(model.edges);
 
-    if (model.points)
-        free(model.points);
+    if (model.points.array)
+        free(model.points.array);
 }
 
 /**
@@ -28,13 +28,13 @@ void free_model(model_t &model)
 err_t shift_model(model_t &model, const shift_t &shift)
 {
     err_t rc = ERR_OK;
-    if (model.points && model.edges)
+    if (model.points.array && model.edges)
     {
-        for (size_t i = 0; i < model.points_count; i++)
+        for (size_t i = 0; i < model.points.size; i++)
         {
-            model.points[i].x += shift.x;
-            model.points[i].y += shift.y;
-            model.points[i].z += shift.z;
+            model.points.array[i].x += shift.x;
+            model.points.array[i].y += shift.y;
+            model.points.array[i].z += shift.z;
         }
     }
     else
@@ -51,13 +51,13 @@ err_t shift_model(model_t &model, const shift_t &shift)
 err_t scale_model(model_t &model, const scale_t &scale)
 {
     err_t rc = ERR_OK;
-    if (model.points && model.edges)
+    if (model.points.array && model.edges)
     {
-        for (size_t i = 0; i < model.points_count; i++)
+        for (size_t i = 0; i < model.points.size; i++)
         {
-            model.points[i].x *= scale.x;
-            model.points[i].y *= scale.y;
-            model.points[i].z *= scale.z;
+            model.points.array[i].x *= scale.x;
+            model.points.array[i].y *= scale.y;
+            model.points.array[i].z *= scale.z;
         }
     }
     else
@@ -70,21 +70,21 @@ err_t scale_model(model_t &model, const scale_t &scale)
 point_t calculate_center(const model_t &model)
 {
     point_t center = {0, 0, 0};
-    if (model.points_count == 0)
+    if (model.points.size == 0)
     {
         return center;
     }
 
-    for (size_t i = 0; i < model.points_count; ++i)
+    for (size_t i = 0; i < model.points.size; ++i)
     {
-        center.x += model.points[i].x;
-        center.y += model.points[i].y;
-        center.z += model.points[i].z;
+        center.x += model.points.array[i].x;
+        center.y += model.points.array[i].y;
+        center.z += model.points.array[i].z;
     }
 
-    center.x /= model.points_count;
-    center.y /= model.points_count;
-    center.z /= model.points_count;
+    center.x /= model.points.size;
+    center.y /= model.points.size;
+    center.z /= model.points.size;
 
     return center;
 }
@@ -119,7 +119,7 @@ void rotate_z(point_t &point, double angle, const point_t &center)
 // Основная функция для поворота модели
 err_t turn_model(model_t &model, const turn_t &turn)
 {
-    if (model.points == nullptr || model.edges == nullptr || model.points_count == 0)
+    if (model.points.array == nullptr || model.edges == nullptr || model.points.size == 0)
     {
         return ERR_ARGS;
     }
@@ -137,11 +137,11 @@ err_t turn_model(model_t &model, const turn_t &turn)
     double z_angle = turn.z_angle * M_PI / 180.0;
 
     // Применяем поворот к каждой точке
-    for (size_t i = 0; i < model.points_count; ++i)
+    for (size_t i = 0; i < model.points.size; ++i)
     {
-        rotate_x(model.points[i], x_angle, center);
-        rotate_y(model.points[i], y_angle, center);
-        rotate_z(model.points[i], z_angle, center);
+        rotate_x(model.points.array[i], x_angle, center);
+        rotate_y(model.points.array[i], y_angle, center);
+        rotate_z(model.points.array[i], z_angle, center);
     }
 
     return ERR_OK;

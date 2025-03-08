@@ -120,8 +120,8 @@ static err_t _load_model(FILE *file, model_t &temp_model)
     }
     else
     {
-        temp_model.points = points;
-        temp_model.points_count = points_count;
+        temp_model.points.array = points;
+        temp_model.points.size = points_count;
 
         edge_t *edges = NULL;
         size_t edges_count = 0;

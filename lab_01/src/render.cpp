@@ -1,4 +1,5 @@
 #include "render.hpp"
+#include "points.hpp"
 #include "constants.hpp"
 #include "errors.hpp"
 #include "model.hpp"
@@ -74,10 +75,10 @@ static err_t get_scale(double &scale, const model_t &model, const int window_siz
 {
     err_t rc = ERR_OK;
     double min_coord, max_coord;
-    rc = get_min_point_coord(min_coord, model.points, model.points_count);
+    rc = get_min_point_coord(min_coord, model.points.array, model.points.size);
     if (!rc)
     {
-        rc = get_max_point_coord(max_coord, model.points, model.points_count);
+        rc = get_max_point_coord(max_coord, model.points.array, model.points.size);
         if (!rc)
         {
             // Задаем масштаб
@@ -166,9 +167,9 @@ err_t render_model(const render_t &render, const model_t &model)
 
         double scale = (window_size) / 6;
 
-        drawPointsOnPixmap(painter, model.points, model.points_count, scale, window_size);
+        drawPointsOnPixmap(painter, model.points.array, model.points.size, scale, window_size);
         // Сделать функцию скейла СПРОСИТЬ У ВАНИ
-        drawEdgesOnPixmap(painter, model.points, model.points_count, model.edges, model.edges_count, scale, window_size);
+        drawEdgesOnPixmap(painter, model.points.array, model.points.size, model.edges, model.edges_count, scale, window_size);
         painter.end();
     }
     else

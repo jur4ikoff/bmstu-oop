@@ -2,13 +2,9 @@
 #define MODEL_HPP__
 
 #include "errors.hpp"
+#include "point.hpp"
+#include "points.hpp"
 #include <cstdio>
-
-// структура для описания точки
-typedef struct _point_type_
-{
-    double x, y, z;
-} point_t;
 
 // Структура для описания ребра (точка начала и конец)
 typedef struct _edge_type
@@ -18,11 +14,11 @@ typedef struct _edge_type
 
 typedef struct _model_type_
 {
-    size_t points_count;
     size_t edges_count;
-
-    point_t *points;
     edge_t *edges;
+
+    point_t center;
+    points_t points;
 } model_t;
 
 typedef struct
