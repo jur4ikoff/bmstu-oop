@@ -1,6 +1,7 @@
 #include "model.hpp"
 #include "points.hpp"
 #include "point.hpp"
+#include "edges.hpp"
 #include "constants.hpp"
 #include "errors.hpp"
 
@@ -14,8 +15,9 @@ model_t init(void)
 {
     model_t model = { 0 };
     model.points = points_init();
+    model.edges = edges_init();
     default_point(model.center);
-    
+
     return model;
 }
 

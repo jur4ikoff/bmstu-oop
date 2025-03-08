@@ -6,19 +6,11 @@
 #include "points.hpp"
 #include <cstdio>
 
-// Структура для описания ребра (точка начала и конец)
-typedef struct _edge_type
-{
-    size_t first, second;
-} edge_t;
-
 typedef struct _model_type_
 {
-    size_t edges_count;
-    edge_t *edges;
-
-    point_t center;
     points_t points;
+    edges_t edges;
+    point_t center;
 } model_t;
 
 typedef struct
