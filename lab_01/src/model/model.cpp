@@ -1,13 +1,21 @@
 #include "model.hpp"
+#include "points.hpp"
+#include "point.hpp"
 #include "constants.hpp"
 #include "errors.hpp"
 
 #include "QDebug"
 #include <cstdio>
 
+/**
+ * @brief Функция инициализирует модель
+ */
 model_t init(void)
 {
-    model_t model = {0};
+    model_t model = { 0 };
+    model.points = points_init();
+    default_point(model.center);
+    
     return model;
 }
 
@@ -16,8 +24,7 @@ void free_model(model_t &model)
     if (model.edges)
         free(model.edges);
 
-    if (model.points.array)
-        free(model.points.array);
+    free_points(model.points);
 }
 
 /**
@@ -69,7 +76,7 @@ err_t scale_model(model_t &model, const scale_t &scale)
 // Функция для вычисления центра масс модели
 point_t calculate_center(const model_t &model)
 {
-    point_t center = {0, 0, 0};
+    point_t center = { 0, 0, 0 };
     if (model.points.size == 0)
     {
         return center;

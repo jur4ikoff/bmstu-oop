@@ -18,7 +18,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
     this->setFixedSize(WINDOWS_X, WINDOWS_Y);
 
@@ -34,13 +33,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     // Ставим все плейсхолдеры
     set_placeholders();
-
-    // QFrame *frame = ui->render_widget;
-    // render_field.scene = ui->render_widget;
-    // render_field.width =  ui->render_widget.width();
-    //  render_field.height = ui->render_widget.height();
-    // draw_on_frame(ui->render_widget);
-    // draw_on_frame(render_field.scene);
 }
 
 void MainWindow::set_placeholders(void)
@@ -117,7 +109,7 @@ void MainWindow::on_button_shift_clicked(void)
     double y = y_str.toDouble(&ok_y);
     double z = z_str.toDouble(&ok_z);
 
-    shift_t shift = {.x = 0, .y = 0, .z = 0};
+    shift_t shift = { .x = 0, .y = 0, .z = 0 };
     bool is_record = false;
     if (ok_x)
     {
@@ -134,8 +126,6 @@ void MainWindow::on_button_shift_clicked(void)
         shift.z = z;
         is_record = true;
     }
-
-    
 
     if (is_record)
     {
@@ -169,7 +159,7 @@ void MainWindow::on_button_turn_clicked(void)
     double y = y_str.toDouble(&ok_y);
     double z = z_str.toDouble(&ok_z);
 
-    turn_t turn = {.x_angle = 0, .y_angle = 0, .z_angle = 0};
+    turn_t turn = { .x_angle = 0, .y_angle = 0, .z_angle = 0 };
     bool is_record = false;
     if (ok_x)
     {
@@ -189,7 +179,7 @@ void MainWindow::on_button_turn_clicked(void)
 
     if (is_record)
     {
-        request_t request = { .task = REQ_TURN, .turn = turn};
+        request_t request = { .task = REQ_TURN, .turn = turn };
         rc = request_handler(request);
         if (rc == ERR_OK)
         {
@@ -219,7 +209,7 @@ void MainWindow::on_button_scale_clicked(void)
     double y = y_str.toDouble(&ok_y);
     double z = z_str.toDouble(&ok_z);
 
-    scale_t scale = {.x = 1, .y = 1, .z = 1};
+    scale_t scale = { .x = 1, .y = 1, .z = 1 };
     bool is_record = false;
     if (ok_x)
     {

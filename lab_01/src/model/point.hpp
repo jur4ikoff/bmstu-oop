@@ -9,4 +9,6 @@ struct _point_struct
 
 using point_t = _point_struct;
 
+void default_point(point_t &point);
+
 #endif // POINTS_HPP__

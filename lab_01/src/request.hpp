@@ -27,7 +27,6 @@ typedef struct
         shift_t shift;
         scale_t scale;
         turn_t turn;
-        /* data */
     };
 
 } request_t;
