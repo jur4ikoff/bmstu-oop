@@ -11,6 +11,7 @@ typedef enum
     ERR_UNKNOWN_COMMAND,
     ERR_WRONG_INPUT_LABEL,
     ERR_EMPTY_MODEL,
+    ERR_MEMORY_ALLOCATION,
     ERR_ARGS,
 } err_t;
 

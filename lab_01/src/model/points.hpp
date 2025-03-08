@@ -2,6 +2,7 @@
 #define POINTS_HPP__
 
 #include "point.hpp"
+#include "errors.hpp"
 
 #include <cstdio>
 
@@ -15,5 +16,7 @@ using points_t = _points_struct;
 
 points_t points_init(void);
 void points_free(points_t &points);
+
+err_t load_points(FILE *file, points_t &points);
 
 #endif // POINTS_HPP__

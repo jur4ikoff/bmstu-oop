@@ -1,9 +1,9 @@
 #include "utils.hpp"
 #include "errors.hpp"
 
-#include <cstdio>
-#include <QString>
 #include <QByteArray>
+#include <QString>
+#include <cstdio>
 
 /**
  * @brief Функция конвертирует объект типа QString в const char
@@ -19,16 +19,19 @@ const char *convert_QString_to_char(const QString &to_convert)
 }
 
 /**
- * @brief Функция читает из файла целое число
+ * @brief Функция читает из файла целое положительное число
  * @param[out] file ИЗМЕНЯЕМЫЙ. Указатель на файловый дескриптор
  * @param[out] number Прочитанное число
  */
 err_t read_int_number(FILE *file, size_t &number)
 {
+    if (file == NULL)
+        return ERR_ARGS;
+
     err_t rc = ERR_OK;
+
     int temp;
     int read = fscanf(file, "%d", &temp);
-
     if (read != 1)
         rc = ERR_FILE_CONTENT;
     else
@@ -39,6 +42,5 @@ err_t read_int_number(FILE *file, size_t &number)
             number = (size_t)temp;
     }
 
-    
     return rc;
 }

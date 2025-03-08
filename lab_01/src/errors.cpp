@@ -27,6 +27,9 @@ void error_handler(const err_t error_code)
         case ERR_EMPTY_MODEL:
             QMessageBox::warning(NULL, "Ошибка", "Ошибка, действие невозможно. Модель пустая");
             break;
+        case ERR_MEMORY_ALLOCATION:
+            QMessageBox::warning(NULL, "Ошибка", "Ошибка при выделении памяти");
+            break;
         default:
             break;
     }
