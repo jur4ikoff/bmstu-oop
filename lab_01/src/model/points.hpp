@@ -14,6 +14,6 @@ struct _points_struct
 using points_t = _points_struct;
 
 points_t points_init(void);
-void free_points(points_t &points);
+void points_free(points_t &points);
 
 #endif // POINTS_HPP__

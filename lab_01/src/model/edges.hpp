@@ -4,7 +4,7 @@
 #include <cstdio>
 
 // Структура для описания ребра (точка начала и конец)
-typedef struct _edge_type
+struct _edge_type
 {
     size_t first, second;
 };
@@ -21,5 +21,6 @@ struct _edges_struct
 using edges_t = _edges_struct;
 
 edges_t edges_init(void);
+void edges_free(edges_t &edges);
 
 #endif // EDGES_HPP__

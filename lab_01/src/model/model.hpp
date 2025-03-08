@@ -3,15 +3,16 @@
 
 #include "errors.hpp"
 #include "point.hpp"
+#include "edges.hpp"
 #include "points.hpp"
 #include <cstdio>
 
-typedef struct _model_type_
+struct _model_struct
 {
     points_t points;
     edges_t edges;
     point_t center;
-} model_t;
+};
 
 typedef struct
 {
@@ -28,6 +29,7 @@ typedef struct
     double x_angle, y_angle, z_angle;
 } turn_t;
 
+using model_t = _model_struct;
 using filename_t = const char *;
 
 model_t init(void);

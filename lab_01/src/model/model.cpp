@@ -21,12 +21,11 @@ model_t init(void)
     return model;
 }
 
+// Освобождение модели 
 void free_model(model_t &model)
 {
-    if (model.edges)
-        free(model.edges);
-
-    free_points(model.points);
+    points_free(model.points);
+    edges_free(model.edges);
 }
 
 /**
@@ -37,7 +36,7 @@ void free_model(model_t &model)
 err_t shift_model(model_t &model, const shift_t &shift)
 {
     err_t rc = ERR_OK;
-    if (model.points.array && model.edges)
+    if (model.points.array && model.edges.array)
     {
         for (size_t i = 0; i < model.points.size; i++)
         {
@@ -60,7 +59,7 @@ err_t shift_model(model_t &model, const shift_t &shift)
 err_t scale_model(model_t &model, const scale_t &scale)
 {
     err_t rc = ERR_OK;
-    if (model.points.array && model.edges)
+    if (model.points.array && model.edges.array)
     {
         for (size_t i = 0; i < model.points.size; i++)
         {
@@ -128,7 +127,7 @@ void rotate_z(point_t &point, double angle, const point_t &center)
 // Основная функция для поворота модели
 err_t turn_model(model_t &model, const turn_t &turn)
 {
-    if (model.points.array == nullptr || model.edges == nullptr || model.points.size == 0)
+    if (model.points.array == NULL || model.edges.array == NULL || model.points.size == 0)
     {
         return ERR_ARGS;
     }

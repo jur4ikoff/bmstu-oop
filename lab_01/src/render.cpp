@@ -169,7 +169,7 @@ err_t render_model(const render_t &render, const model_t &model)
 
         drawPointsOnPixmap(painter, model.points.array, model.points.size, scale, window_size);
         // Сделать функцию скейла СПРОСИТЬ У ВАНИ
-        drawEdgesOnPixmap(painter, model.points.array, model.points.size, model.edges, model.edges_count, scale, window_size);
+        drawEdgesOnPixmap(painter, model.points.array, model.points.size, model.edges.array, model.edges.size, scale, window_size);
         painter.end();
     }
     else

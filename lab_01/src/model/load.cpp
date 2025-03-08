@@ -132,8 +132,8 @@ static err_t _load_model(FILE *file, model_t &temp_model)
         }
         else
         {
-            temp_model.edges = edges;
-            temp_model.edges_count = edges_count;
+            temp_model.edges.array = edges;
+            temp_model.edges.size = edges_count;
         }
     }
 

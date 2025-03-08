@@ -11,7 +11,7 @@ points_t points_init(void)
     return new_points;
 }
 
-void free_points(points_t &points)
+void points_free(points_t &points)
 {
     if (points.array)
         free(points.array);
