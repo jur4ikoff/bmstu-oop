@@ -134,6 +134,7 @@ void drawEdgesOnPixmap(QPainter &painter, const point_t *points, size_t pointsCo
         }
 
         // Масштабируем координаты и смещаем их относительно центра
+        // Фикс
         QPointF startPoint(
             windowSize / 2.0 + (points[startIndex].x) * scale,
             windowSize / 2.0 - (points[startIndex].y) * scale);
@@ -166,6 +167,7 @@ err_t render_model(const render_t &render, const model_t &model)
         double scale = (window_size) / 6;
 
         drawPointsOnPixmap(painter, model.points, model.points_count, scale, window_size);
+        // Сделать функцию скейла СПРОСИТЬ У ВАНИ
         drawEdgesOnPixmap(painter, model.points, model.points_count, model.edges, model.edges_count, scale, window_size);
         painter.end();
     }
