@@ -28,6 +28,15 @@ void free_model(model_t &model)
     edges_free(model.edges);
 }
 
+// Определяет пустая ли модель или нет. 1 если пустая, иначе 0
+bool model_is_empty(const model_t &model)
+{
+    if (points_is_empty(model.points) && edges_is_empty(model.edges))
+        return true;
+
+    return false;
+}
+
 /**
  * @brief Функция считывает данные из файла и записывает их в temp_model
  * @param[out] temp_model ссылка на структуру для записи
@@ -35,7 +44,7 @@ void free_model(model_t &model)
  */
 static err_t _load_model(model_t &temp_model, FILE *file)
 {
-    if (file == NULL)
+    if (file == NULL || !model_is_empty(temp_model))
         return ERR_ARGS;
 
     err_t rc = ERR_OK;

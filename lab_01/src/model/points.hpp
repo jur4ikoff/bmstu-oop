@@ -1,8 +1,8 @@
 #ifndef POINTS_HPP__
 #define POINTS_HPP__
 
-#include "point.hpp"
 #include "errors.hpp"
+#include "point.hpp"
 
 #include <cstdio>
 
@@ -16,6 +16,7 @@ using points_t = _points_struct;
 
 points_t points_init(void);
 void points_free(points_t &points);
+bool points_is_empty(const points_t &points);
 
 err_t load_points(points_t &points, FILE *file);
 

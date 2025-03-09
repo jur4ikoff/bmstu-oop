@@ -23,6 +23,13 @@ void edges_free(edges_t &edges)
     edges.size = 0;
 }
 
+bool edges_is_empty(const edges_t &edges)
+{ 
+    if (edges.size == 0 && edges.array == NULL)
+        return true;
+    return false;
+}
+
 /**
  * @brief Функция читает из файла одну точку
  * @param[out] edge - одна грань

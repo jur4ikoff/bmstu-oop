@@ -23,6 +23,13 @@ void points_free(points_t &points)
     points.size = 0;
 }
 
+bool points_is_empty(const points_t &points)
+{ 
+    if (points.size == 0 && points.array == NULL)
+        return true;
+    return false;
+}
+
 /**
  * @brief Функция читает массив точек из файла
  * @param [out] points Файлвый дескриптор
