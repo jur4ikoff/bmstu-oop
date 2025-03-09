@@ -30,7 +30,7 @@ void free_model(model_t &model)
 
 /**
  * @brief Функция реализует сдвиг модели
- * @param[out] model Структура модели
+ * @param[in, out] model Структура модели
  * @param[in] shift Данные для сдвига
  */
 err_t shift_model(model_t &model, const shift_t &shift)

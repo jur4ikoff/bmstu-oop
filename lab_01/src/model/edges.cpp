@@ -1,4 +1,6 @@
 #include "edges.hpp"
+#include "errors.hpp"
+#include "utils.hpp"
 
 #include <cstdio>
 #include <cstdlib>
@@ -19,4 +21,73 @@ void edges_free(edges_t &edges)
 
     edges.array = NULL;
     edges.size = 0;
+}
+
+/**
+ * @brief Функция читает из файла одну точку
+ * @param[out] edge - одна грань
+ * @param[in, out] file - файловый дескриптор
+ */
+static err_t read_edge(edge_t &edge, FILE *file)
+{
+    err_t rc = ERR_OK;
+    size_t first, second;
+    if ((rc = read_int_number(file, first)) != ERR_OK)
+        return rc;
+    if ((rc = read_int_number(file, second)) != ERR_OK)
+        return rc;
+
+    edge.first = first;
+    edge.second = second;
+    return rc;
+}
+
+/**
+ * @brief Функция читает все грани из файла
+ * @param[out] edges Массив граней
+ * @param[in, out] file Файловый дескриптор
+ * @param[out] size Размер массива
+ */
+static err_t read_edges(edge_t *edges, FILE *file, const size_t size)
+{
+    if (edges == NULL)
+        return ERR_ARGS;
+
+    err_t rc = ERR_OK;
+    for (size_t i = 0; i < size; i++)
+    {
+        edge_t new_edge = { 0 };
+        if ((rc = read_edge(new_edge, file)) == ERR_OK)
+            edges[i] = new_edge;
+        else
+            break;
+    }
+
+    return rc;
+}
+
+/**
+ * @brief Функция читает из файла все границы
+ * @param[out] edges - Структура для записей информации о гранях
+ * @param[in, out] file  - файловый дескриптор
+ */
+err_t load_edges(edges_t &edges, FILE *file)
+{
+    if (file == NULL)
+        return ERR_ARGS;
+
+    err_t rc = ERR_OK;
+    if ((rc = read_elements_count(edges.size, file)) == ERR_OK)
+    {
+        edges.array = (edge_t *)malloc(edges.size * sizeof(edge_t));
+        if (edges.array != NULL)
+        {
+            if ((rc = read_edges(edges.array, file, edges.size)) != ERR_OK)
+                edges_free(edges);
+        }
+        else
+            rc = ERR_MEMORY_ALLOCATION;
+    }
+
+    return rc;
 }

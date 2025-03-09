@@ -1,6 +1,8 @@
 #ifndef EDGES_HPP__
 #define EDGES_HPP__
 
+#include "errors.hpp"
+
 #include <cstdio>
 
 // Структура для описания ребра (точка начала и конец)
@@ -22,5 +24,6 @@ using edges_t = _edges_struct;
 
 edges_t edges_init(void);
 void edges_free(edges_t &edges);
+err_t load_edges(edges_t &edges, FILE *file);
 
 #endif // EDGES_HPP__

@@ -44,3 +44,24 @@ err_t read_int_number(FILE *file, size_t &number)
 
     return rc;
 }
+
+
+/**
+ * @brief Функция читает количество элементов в файле, если их меньше 1, то возвращается ошибка
+ * @param[out] count Количество граней в моделе
+ * @param[in, out] file файловый дескриптор
+ */
+err_t read_elements_count(size_t &count, FILE *file)
+{
+    if (file == NULL)
+        return ERR_ARGS;
+
+    err_t rc = ERR_OK;
+    if ((rc = read_int_number(file, count)) == ERR_OK)
+    {
+        if (count < 1)
+            rc = ERR_ARRAY_EMPTY;
+    }
+
+    return rc;
+}

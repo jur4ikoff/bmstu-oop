@@ -13,7 +13,7 @@ void error_handler(const err_t error_code)
             QMessageBox::critical(NULL, "Ошибка", "Не удалось открыть файл");
             break;
         case ERR_FILE_CONTENT:
-            QMessageBox::warning(NULL, "Ошибка", "Неверное содержимое файла");
+            QMessageBox::warning(NULL, "Ошибка", "Ошибка, неверно определена модель. Проверьте корректность точек и граней");
             break;
         case ERR_ARRAY_EMPTY:
             QMessageBox::warning(NULL, "Ошибка", "Массив точек или ребер - пустой");

@@ -11,13 +11,12 @@ void default_point(point_t &point)
     point.z = 0;
 }
 
-
 /**
  * @brief Функция читает из файла одну точку
- * @param[out] file ИЗМЕНЯЕМЫЙ - файловый дескриптер
- * @param[out] point ИЗМЕНЯЕМЫЙ - одна точка
+ * @param[out] point - одна точка
+ * @param[in, out] file  - файловый дескриптер
  */
-err_t read_point(FILE *file, point_t &point)
+err_t read_point(point_t &point, FILE *file)
 {
     double x, y, z;
     if ((fscanf(file, "%lf %lf %lf", &x, &y, &z)) != 3)

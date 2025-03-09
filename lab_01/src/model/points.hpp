@@ -17,6 +17,6 @@ using points_t = _points_struct;
 points_t points_init(void);
 void points_free(points_t &points);
 
-err_t load_points(FILE *file, points_t &points);
+err_t load_points(points_t &points, FILE *file);
 
 #endif // POINTS_HPP__
