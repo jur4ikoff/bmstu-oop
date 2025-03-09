@@ -6,7 +6,6 @@
 #include "point.hpp"
 #include "points.hpp"
 
-#include "QDebug"
 #include <cstdio>
 
 /**
@@ -142,57 +141,22 @@ err_t model_scale(model_t &model, const scale_t &scale)
     return rc;
 }
 
-// Функция для поворота точки вокруг оси X
-void rotate_x(point_t &point, double angle, const point_t &center)
-{
-    double y = point.y - center.y;
-    double z = point.z - center.z;
-    point.y = center.y + y * cos(angle) - z * sin(angle);
-    point.z = center.z + y * sin(angle) + z * cos(angle);
-}
-
-// Функция для поворота точки вокруг оси Y
-void rotate_y(point_t &point, double angle, const point_t &center)
-{
-    double x = point.x - center.x;
-    double z = point.z - center.z;
-    point.x = center.x + x * cos(angle) + z * sin(angle);
-    point.z = center.z - x * sin(angle) + z * cos(angle);
-}
-
-// Функция для поворота точки вокруг оси Z
-void rotate_z(point_t &point, double angle, const point_t &center)
-{
-    double x = point.x - center.x;
-    double y = point.y - center.y;
-    point.x = center.x + x * cos(angle) - y * sin(angle);
-    point.y = center.y + x * sin(angle) + y * cos(angle);
-}
-
 /**
  * @brief Функция реализует поворот модели
+ * @param[in, out] model Ссылка на модель
+ * @param[in] turn Структура с данными о повороте
  */
 err_t model_turn(model_t &model, const turn_t &turn)
 {
-    // if (std::isnan(turn.x_angle) || std::isnan(turn.y_angle) || std::isnan(turn.z_angle)) {
-    //     return ERR_ARGS;
-    // }
-
-    // Вычисляем центр масс модели
-    point_t center = model.center;
-
-    // Преобразуем углы из градусов в радианы
-    double x_angle = turn.x_angle * M_PI / 180.0;
-    double y_angle = turn.y_angle * M_PI / 180.0;
-    double z_angle = turn.z_angle * M_PI / 180.0;
-
-    // Применяем поворот к каждой точке
-    for (size_t i = 0; i < model.points.size; ++i)
+    err_t rc = ERR_OK;
+    if (!model_is_empty(model))
     {
-        rotate_x(model.points.array[i], x_angle, center);
-        rotate_y(model.points.array[i], y_angle, center);
-        rotate_z(model.points.array[i], z_angle, center);
+        rc = points_turn(model.points, turn, model.center);
+    }
+    else
+    {
+        rc = ERR_EMPTY_MODEL;
     }
 
-    return ERR_OK;
+    return rc;
 }

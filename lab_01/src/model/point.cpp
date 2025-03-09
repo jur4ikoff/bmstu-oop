@@ -1,8 +1,14 @@
 #include "point.hpp"
+#include "constants.hpp"
 #include "errors.hpp"
 #include "model_actions.hpp"
 
 #include <cstdio>
+
+static double to_radians(const double &angle)
+{
+    return angle * (PI / 180);
+}
 
 // Функция записывает в точку значение в точке (0, 0, 0)
 point_t point_init(void)
@@ -73,4 +79,50 @@ point_t point_add(const point_t &first, const point_t second)
     res.z = first.z + second.z;
 
     return res;
+}
+
+static void rotate_x(point_t &point, const point_t &center, const double angle)
+{
+    double rad_angle = to_radians(angle);
+    double y = point.y - center.y;
+    double z = point.z - center.z;
+
+    point.y = center.y + y * cos(rad_angle) - z * sin(rad_angle);
+    point.z = center.z + y * sin(rad_angle) + z * cos(rad_angle);
+}
+
+// Функция для поворота точки вокруг оси Y
+static void rotate_y(point_t &point, const point_t &center, const double angle)
+{
+    double rad_angle = to_radians(angle);
+
+    double x = point.x - center.x;
+    double z = point.z - center.z;
+    point.x = center.x + x * cos(rad_angle) + z * sin(rad_angle);
+    point.z = center.z - x * sin(rad_angle) + z * cos(rad_angle);
+}
+
+// Функция для поворота точки вокруг оси Z
+static void rotate_z(point_t &point, const point_t &center, const double angle)
+{
+    double rad_angle = to_radians(angle);
+
+    double x = point.x - center.x;
+    double y = point.y - center.y;
+    point.x = center.x + x * cos(rad_angle) - y * sin(rad_angle);
+    point.y = center.y + x * sin(rad_angle) + y * cos(rad_angle);
+}
+
+
+/**
+ * @brief Функция поворачивает точку на определенный угол
+ * @param[in, out] point Точка
+ * @param[in] turn Структура с данными о повороте
+ * @param[in] center центр
+ */
+void point_turn(point_t &point, const turn_t &turn, const point_t &center)
+{
+    rotate_x(point, center, turn.x_angle);
+    rotate_y(point, center, turn.y_angle);
+    rotate_z(point, center, turn.z_angle);
 }

@@ -140,3 +140,23 @@ err_t points_calculate_center(point_t &center, const points_t &points)
     center.z /= points.size;
     return ERR_OK;
 }
+
+
+/**
+ * @brief Функция поворачивает массив точек на определенный угол
+ * @param[in, out] points Массив точек
+ * @param[in] turn Структура с данными о повороте
+ * @param[in] center точка с центром
+ */
+err_t points_turn(points_t &points, const turn_t &turn, const point_t &center)
+{
+    if (points.array == NULL || points.size == 0)
+        return ERR_ARGS;
+
+    for (size_t i = 0; i < points.size; i++)
+    {
+        point_turn(points.array[i], turn, center);
+    }
+
+    return ERR_OK;
+}   
