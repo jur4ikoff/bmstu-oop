@@ -174,11 +174,6 @@ void rotate_z(point_t &point, double angle, const point_t &center)
  */
 err_t model_turn(model_t &model, const turn_t &turn)
 {
-    if (model.points.array == NULL || model.edges.array == NULL || model.points.size == 0)
-    {
-        return ERR_ARGS;
-    }
-
     // if (std::isnan(turn.x_angle) || std::isnan(turn.y_angle) || std::isnan(turn.z_angle)) {
     //     return ERR_ARGS;
     // }
