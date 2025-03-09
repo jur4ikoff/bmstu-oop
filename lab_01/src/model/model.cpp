@@ -17,7 +17,7 @@ model_t model_init(void)
     model_t model = { 0 };
     model.points = points_init();
     model.edges = edges_init();
-    point_default(model.center);
+    model.center = point_init();
 
     return model;
 }
@@ -90,6 +90,7 @@ err_t model_load(model_t &model, const filename_t &filename)
         {
             model_free(model);
             model = temp_model;
+            rc = points_calculate_center(model.center, model.points);
         }
     }
     else
@@ -109,6 +110,7 @@ err_t model_shift(model_t &model, const shift_t &shift)
     err_t rc = ERR_OK;
     if (!points_is_empty(model.points))
     {
+        point_shift(model.center, shift);
         rc = points_shift(model.points, shift);
     }
     else
@@ -119,48 +121,25 @@ err_t model_shift(model_t &model, const shift_t &shift)
 
 /**
  * @brief Функция реализует скейл
- * @param[out] model Структура модели
+ * @param[in, out] model Структура модели
  * @param[in] scale Данные для скейла
  */
-err_t scale_model(model_t &model, const scale_t &scale)
+err_t model_scale(model_t &model, const scale_t &scale)
 {
     err_t rc = ERR_OK;
-    if (model.points.array && model.edges.array)
+
+    if (!points_is_empty(model.points))
     {
-        for (size_t i = 0; i < model.points.size; i++)
+        if ((rc = points_scale(model.points, scale, model.center)) == ERR_OK)
         {
-            model.points.array[i].x *= scale.x;
-            model.points.array[i].y *= scale.y;
-            model.points.array[i].z *= scale.z;
+            // Если скейл, тогда обновляем центр, потому что онг может немного сдвинуться
+            rc = points_calculate_center(model.center, model.points);
         }
     }
     else
         rc = ERR_EMPTY_MODEL;
 
     return rc;
-}
-
-// Функция для вычисления центра масс модели
-point_t calculate_center(const model_t &model)
-{
-    point_t center = { 0, 0, 0 };
-    if (model.points.size == 0)
-    {
-        return center;
-    }
-
-    for (size_t i = 0; i < model.points.size; ++i)
-    {
-        center.x += model.points.array[i].x;
-        center.y += model.points.array[i].y;
-        center.z += model.points.array[i].z;
-    }
-
-    center.x /= model.points.size;
-    center.y /= model.points.size;
-    center.z /= model.points.size;
-
-    return center;
 }
 
 // Функция для поворота точки вокруг оси X
@@ -190,8 +169,10 @@ void rotate_z(point_t &point, double angle, const point_t &center)
     point.y = center.y + x * sin(angle) + y * cos(angle);
 }
 
-// Основная функция для поворота модели
-err_t turn_model(model_t &model, const turn_t &turn)
+/**
+ * @brief Функция реализует поворот модели
+ */
+err_t model_turn(model_t &model, const turn_t &turn)
 {
     if (model.points.array == NULL || model.edges.array == NULL || model.points.size == 0)
     {
@@ -203,7 +184,7 @@ err_t turn_model(model_t &model, const turn_t &turn)
     // }
 
     // Вычисляем центр масс модели
-    point_t center = calculate_center(model);
+    point_t center = model.center;
 
     // Преобразуем углы из градусов в радианы
     double x_angle = turn.x_angle * M_PI / 180.0;

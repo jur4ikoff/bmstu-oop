@@ -98,3 +98,45 @@ err_t points_shift(points_t &points, const shift_t &shift)
 
     return ERR_OK;
 }
+
+/**
+ * @brief Функия реализует скейл всех точек
+ * @param[in, out] points структура точек
+ * @param[in] shift Структура со смещением
+ * @param[in] center Центр
+ */
+err_t points_scale(points_t &points, const scale_t &scale, const point_t &center)
+{
+    if (points.array == NULL)
+        return ERR_ARGS;
+
+    for (size_t i = 0; i < points.size; i++)
+    {
+        point_scale(points.array[i], scale, center);
+    }
+
+    return ERR_OK;
+}
+
+/**
+ * @brief Функция определяет центр фигуры
+ * @param[out] center Точка - центр
+ * @param[in] points Структура типа points_t
+ */
+err_t points_calculate_center(point_t &center, const points_t &points)
+{
+    if (points.size == 0 || points.array == NULL)
+    {
+        return ERR_EMPTY_MODEL;
+    }
+
+    for (size_t i = 0; i < points.size; ++i)
+    {
+        center = point_add(center, points.array[i]);
+    }
+
+    center.x /= points.size;
+    center.y /= points.size;
+    center.z /= points.size;
+    return ERR_OK;
+}

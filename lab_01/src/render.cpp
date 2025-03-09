@@ -165,7 +165,7 @@ err_t render_model(const render_t &render, const model_t &model)
         QPainter painter(render.plane);
         int window_size = MAX(render.width, render.height);
 
-        double scale = (window_size) / 6;
+        double scale = (window_size) / 10;
 
         drawPointsOnPixmap(painter, model.points.array, model.points.size, scale, window_size);
         // Сделать функцию скейла СПРОСИТЬ У ВАНИ

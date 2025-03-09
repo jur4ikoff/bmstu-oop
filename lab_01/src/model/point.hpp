@@ -12,8 +12,12 @@ struct _point_struct
 
 using point_t = _point_struct;
 
-void point_default(point_t &);
+point_t point_init(void);
+point_t point_add(const point_t &, const point_t);
+
 err_t point_read(point_t &, FILE *);
+
 void point_shift(point_t &, const shift_t &);
+void point_scale(point_t &point, const scale_t &scale, const point_t &center);
 
 #endif // POINTS_HPP__

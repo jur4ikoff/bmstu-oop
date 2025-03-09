@@ -18,10 +18,10 @@ err_t request_handler(const request_t &request)
             rc = model_shift(model, request.shift);
             break;
         case REQ_TURN:
-            rc = turn_model(model, request.turn);
+            rc = model_turn(model, request.turn);
             break;
         case REQ_SCALE:
-            rc = scale_model(model, request.scale);
+            rc = model_scale(model, request.scale);
             break;
         case REQ_RENDER:
             rc = render_model(request.render, model);
