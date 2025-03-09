@@ -2,6 +2,7 @@
 #define POINTS_HPP__
 
 #include "errors.hpp"
+#include "model_actions.hpp"
 #include "point.hpp"
 
 #include <cstdio>
@@ -15,9 +16,10 @@ struct _points_struct
 using points_t = _points_struct;
 
 points_t points_init(void);
-void points_free(points_t &points);
-bool points_is_empty(const points_t &points);
+void points_free(points_t &);
+bool points_is_empty(const points_t &);
 
-err_t load_points(points_t &points, FILE *file);
+err_t points_load(points_t &, FILE *);
+err_t points_shift(points_t &, const shift_t &);
 
 #endif // POINTS_HPP__

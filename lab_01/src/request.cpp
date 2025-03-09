@@ -7,15 +7,15 @@
 err_t request_handler(const request_t &request)
 {
     err_t rc = ERR_OK;
-    static model_t model = init();
+    static model_t model = model_init();
 
     switch (request.task)
     {
         case REQ_LOAD:
-            rc = load_model(model, request.filename);
+            rc = model_load(model, request.filename);
             break;
         case REQ_SHIFT:
-            rc = shift_model(model, request.shift);
+            rc = model_shift(model, request.shift);
             break;
         case REQ_TURN:
             rc = turn_model(model, request.turn);
@@ -27,7 +27,7 @@ err_t request_handler(const request_t &request)
             rc = render_model(request.render, model);
             break;
         case REQ_QUIT:
-            free_model(model);
+            model_free(model);
             break;
         default:
             rc = ERR_UNKNOWN_COMMAND;

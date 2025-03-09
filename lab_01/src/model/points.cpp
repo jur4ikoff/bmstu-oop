@@ -1,5 +1,6 @@
 #include "points.hpp"
 #include "errors.hpp"
+#include "model_actions.hpp"
 #include "point.hpp"
 #include "utils.hpp"
 
@@ -24,7 +25,7 @@ void points_free(points_t &points)
 }
 
 bool points_is_empty(const points_t &points)
-{ 
+{
     if (points.size == 0 && points.array == NULL)
         return true;
     return false;
@@ -36,7 +37,7 @@ bool points_is_empty(const points_t &points)
  * @param [in, out] file Файлвый дескриптор
  * @param [in] size Количество элементов массива
  */
-static err_t read_points(point_t *points, FILE *file, const size_t size)
+static err_t points_read(point_t *points, FILE *file, const size_t size)
 {
     if (points == NULL)
         return ERR_ARGS;
@@ -59,7 +60,7 @@ static err_t read_points(point_t *points, FILE *file, const size_t size)
  * @param[out] points - массив точек
  * @param[in, out] file - файловый дескриптер
  */
-err_t load_points(points_t &points, FILE *file)
+err_t points_load(points_t &points, FILE *file)
 {
     if (file == NULL)
         return ERR_ARGS;
@@ -70,11 +71,24 @@ err_t load_points(points_t &points, FILE *file)
         points.array = (point_t *)malloc(points.size * sizeof(point_t));
         if (points.array != NULL)
         {
-            if ((rc = read_points(points.array, file, points.size)) != ERR_OK)
+            if ((rc = points_read(points.array, file, points.size)) != ERR_OK)
                 points_free(points);
         }
         else
             rc = ERR_MEMORY_ALLOCATION;
+    }
+
+    return rc;
+}
+
+err_t points_shift(points_t &points, const shift_t &shift)
+{
+    err_t rc = ERR_OK;
+    for (size_t i = 0; i < points.size; i++)
+    {
+        points.array[i].x += shift.x;
+        points.array[i].y += shift.y;
+        points.array[i].z += shift.z;
     }
 
     return rc;

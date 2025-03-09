@@ -2,6 +2,7 @@
 #include "constants.hpp"
 #include "edges.hpp"
 #include "errors.hpp"
+#include "model_actions.hpp"
 #include "point.hpp"
 #include "points.hpp"
 
@@ -11,7 +12,7 @@
 /**
  * @brief Функция инициализирует модель
  */
-model_t init(void)
+model_t model_init(void)
 {
     model_t model = { 0 };
     model.points = points_init();
@@ -22,7 +23,7 @@ model_t init(void)
 }
 
 // Освобождение модели
-void free_model(model_t &model)
+void model_free(model_t &model)
 {
     points_free(model.points);
     edges_free(model.edges);
@@ -42,7 +43,7 @@ bool model_is_empty(const model_t &model)
  * @param[out] temp_model ссылка на структуру для записи
  * @param[in, out] file Файловый дескриптер
  */
-static err_t _load_model(model_t &temp_model, FILE *file)
+static err_t _model_load(model_t &temp_model, FILE *file)
 {
     if (file == NULL || !model_is_empty(temp_model))
         return ERR_ARGS;
@@ -50,7 +51,7 @@ static err_t _load_model(model_t &temp_model, FILE *file)
     err_t rc = ERR_OK;
     points_t points = points_init();
     size_t points_count = 0;
-    if ((rc = load_points(points, file)) == ERR_OK)
+    if ((rc = points_load(points, file)) == ERR_OK)
     {
         temp_model.points = points;
 
@@ -73,7 +74,7 @@ static err_t _load_model(model_t &temp_model, FILE *file)
  * @param[out] model Объект типа model_t для записи данных из файла, изменяемый параметр
  * @param[in] filename Имя файла для чтения
  */
-err_t load_model(model_t &model, const filename_t &filename)
+err_t model_load(model_t &model, const filename_t &filename)
 {
     err_t rc = ERR_OK;
 
@@ -81,13 +82,13 @@ err_t load_model(model_t &model, const filename_t &filename)
     if (file != NULL)
     {
         // Инициализируем временную модель
-        model_t temp_model = init();
-        rc = _load_model(temp_model, file);
+        model_t temp_model = model_init();
+        rc = _model_load(temp_model, file);
         fclose(file);
 
         if (rc == ERR_OK)
         {
-            free_model(model);
+            model_free(model);
             model = temp_model;
         }
     }
@@ -103,17 +104,12 @@ err_t load_model(model_t &model, const filename_t &filename)
  * @param[in, out] model Структура модели
  * @param[in] shift Данные для сдвига
  */
-err_t shift_model(model_t &model, const shift_t &shift)
+err_t model_shift(model_t &model, const shift_t &shift)
 {
     err_t rc = ERR_OK;
-    if (model.points.array && model.edges.array)
+    if (!points_is_empty(model.points))
     {
-        for (size_t i = 0; i < model.points.size; i++)
-        {
-            model.points.array[i].x += shift.x;
-            model.points.array[i].y += shift.y;
-            model.points.array[i].z += shift.z;
-        }
+        rc = points_shift(model.points, shift);
     }
     else
         rc = ERR_EMPTY_MODEL;
