@@ -17,7 +17,7 @@ model_t model_init(void)
     model_t model = { 0 };
     model.points = points_init();
     model.edges = edges_init();
-    default_point(model.center);
+    point_default(model.center);
 
     return model;
 }

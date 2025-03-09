@@ -2,6 +2,7 @@
 #define POINT_HPP__
 
 #include "errors.hpp"
+#include "model_actions.hpp"
 
 // Структура для описания точки
 struct _point_struct
@@ -11,7 +12,8 @@ struct _point_struct
 
 using point_t = _point_struct;
 
-void default_point(point_t &);
-err_t read_point(point_t &, FILE *);
+void point_default(point_t &);
+err_t point_read(point_t &, FILE *);
+void point_shift(point_t &, const shift_t &);
 
 #endif // POINTS_HPP__

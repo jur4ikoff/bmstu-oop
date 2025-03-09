@@ -46,7 +46,7 @@ static err_t points_read(point_t *points, FILE *file, const size_t size)
     for (size_t i = 0; i < size; i++)
     {
         point_t new_point = { 0 };
-        if ((rc = read_point(new_point, file)) == ERR_OK)
+        if ((rc = point_read(new_point, file)) == ERR_OK)
             points[i] = new_point;
         else
             break;
@@ -81,15 +81,20 @@ err_t points_load(points_t &points, FILE *file)
     return rc;
 }
 
+/**
+ * @brief Функия реализует смещение всех точек
+ * @param[in, out] points структура точек
+ * @param[in] shift Структура со смещением
+ */
 err_t points_shift(points_t &points, const shift_t &shift)
 {
-    err_t rc = ERR_OK;
+    if (points.array == NULL)
+        return ERR_ARGS;
+
     for (size_t i = 0; i < points.size; i++)
     {
-        points.array[i].x += shift.x;
-        points.array[i].y += shift.y;
-        points.array[i].z += shift.z;
+        point_shift(points.array[i], shift);
     }
 
-    return rc;
+    return ERR_OK;
 }
