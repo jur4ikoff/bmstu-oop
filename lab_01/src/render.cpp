@@ -16,6 +16,10 @@ typedef struct _line_struct
     point_t point_1, point_2;
 } line_t;
 
+
+/**
+ * @brief Функция рисует одну линию, состоящую из двух точек
+ */
 static err_t draw_line(QPixmap *plane, const point_t &point_1, const point_t &point_2)
 {
     if (plane == NULL)
@@ -63,11 +67,11 @@ static err_t get_line(line_t &line, const point_t *points, const edge_t edge)
     size_t first = edge.first;
     size_t second = edge.second;
 
-                        point_1.x = (points[first].x);
-    point_1.y = (points[first].y);
+    point_1.x = points[first].x;
+    point_1.y = points[first].y;
 
-    point_2.x = (points[second].x);
-    point_2.y = (points[second].y);
+    point_2.x = points[second].x;
+    point_2.y = points[second].y;
 
     line.point_1 = point_1;
     line.point_2 = point_2;
@@ -88,32 +92,51 @@ static err_t convert_line(point_t &point_1, point_t &point_2, const QPixmap *pla
     return ERR_OK;
 }
 
+
+/**
+ * @brief Функцмя рисует одну грань
+ * @param[in, out] plane Указатель на холст для рисование
+ * @param[in] points Массив точек
+ * @param[in] edge одна грань
+ */
+static err_t draw_edge(QPixmap *plane, const point_t *points, const edge_t &edge)
+{
+    if (plane == NULL)
+        return ERR_ARGS;
+
+    err_t rc = ERR_OK;
+    line_t line = {};
+    if ((rc = get_line(line, points, edge)) == ERR_OK)
+    {
+        if ((rc = convert_line(line.point_1, line.point_2, plane)) == ERR_OK)
+        {
+            rc = draw_line(plane, line.point_1, line.point_2);
+        }
+    }
+
+    return rc;
+}
+
+/**
+ * @brief Функция рисует все грани фигуры
+ * @param[in] render Структура с данными о холсте
+ * @param[in] points Структурами с данными о вершине фигуры
+ * @param[in] edges Структура с данными о гранях фигуры
+ * @return Код возврата
+ */
 static err_t draw_edges(const render_t &render, const points_t &points, const edges_t &edges)
 {
     if (render.plane == NULL || points.array == NULL || edges.array == NULL)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    line_t line = {0};
-    edge_t edge = {0};
-    point_t point_1 = point_init();
-    point_t point_2 = point_init();
-
-    // Рисуем линии между точками
-    for (size_t i = 0; i < edges.size; i++)
+    edge_t edge;
+    for (size_t i = 0; rc == ERR_OK && (i < edges.size); i++)
     {
         if ((rc = validate_edge(edge, edges.array[i], points.size)) == ERR_OK)
         {
-            if ((rc = get_line(line, points.array, edge)) == ERR_OK)
-            {
-                if ((rc = convert_line(line.point_1, line.point_2, render.plane)) == ERR_OK)
-                {
-                    rc = draw_line(render.plane, line.point_1, line.point_2);
-                }
-            }
+            rc = draw_edge(render.plane, points.array, edge);
         }
-        else
-            break;
     }
 
     return rc;
