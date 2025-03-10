@@ -148,14 +148,14 @@ err_t points_calculate_center(point_t &center, const points_t &points)
  * @param[in] turn Структура с данными о повороте
  * @param[in] center точка с центром
  */
-err_t points_turn(points_t &points, const turn_t &turn, const point_t &center)
+err_t points_turn(points_t &points, const turn_t &turn)
 {
     if (points.array == NULL || points.size == 0)
         return ERR_ARGS;
 
     for (size_t i = 0; i < points.size; i++)
     {
-        point_turn(points.array[i], turn, center);
+        point_turn(points.array[i], turn);
     }
 
     return ERR_OK;

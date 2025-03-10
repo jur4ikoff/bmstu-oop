@@ -76,31 +76,31 @@ point_t point_add(const point_t &first, const point_t second)
     return res;
 }
 
-static void rotate_x(point_t &point, const point_t &center, const double angle)
+static void rotate_x(point_t &point, const double angle)
 {
-    double y = point.y - center.y;
-    double z = point.z - center.z;
+    double y = point.y;
+    double z = point.z;
 
-    point.y = center.y + y * cos(angle) - z * sin(angle);
-    point.z = center.z + y * sin(angle) + z * cos(angle);
+    point.y = y * cos(angle) - z * sin(angle);
+    point.z = y * sin(angle) + z * cos(angle);
 }
 
 // Функция для поворота точки вокруг оси Y
-static void rotate_y(point_t &point, const point_t &center, const double angle)
+static void rotate_y(point_t &point, const double angle)
 {
-    double x = point.x - center.x;
-    double z = point.z - center.z;
-    point.x = center.x + x * cos(angle) + z * sin(angle);
-    point.z = center.z - x * sin(angle) + z * cos(angle);
+    double x = point.x;
+    double z = point.z;
+    point.x = x * cos(angle) + z * sin(angle);
+    point.z = -x * sin(angle) + z * cos(angle);
 }
 
 // Функция для поворота точки вокруг оси Z
-static void rotate_z(point_t &point, const point_t &center, const double angle)
+static void rotate_z(point_t &point, const double angle)
 {
-    double x = point.x - center.x;
-    double y = point.y - center.y;
-    point.x = center.x + x * cos(angle) - y * sin(angle);
-    point.y = center.y + x * sin(angle) + y * cos(angle);
+    double x = point.x;
+    double y = point.y;
+    point.x = x * cos(angle) - y * sin(angle);
+    point.y = x * sin(angle) + y * cos(angle);
 }
 
 /**
@@ -109,9 +109,9 @@ static void rotate_z(point_t &point, const point_t &center, const double angle)
  * @param[in] turn Структура с данными о повороте
  * @param[in] center центр
  */
-void point_turn(point_t &point, const turn_t &turn, const point_t &center)
+void point_turn(point_t &point, const turn_t &turn)
 {
-    rotate_x(point, center, turn.x_angle);
-    rotate_y(point, center, turn.y_angle);
-    rotate_z(point, center, turn.z_angle);
+    rotate_x(point, turn.x_angle);
+    rotate_y(point, turn.y_angle);
+    rotate_z(point, turn.z_angle);
 }

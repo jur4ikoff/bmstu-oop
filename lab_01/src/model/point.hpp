@@ -17,5 +17,5 @@ err_t point_read(point_t &, FILE *);
 
 void point_shift(point_t &, const shift_t &);
 void point_scale(point_t &, const scale_t &, const point_t &);
-void point_turn(point_t &, const turn_t &, const point_t &);
+void point_turn(point_t &, const turn_t &);
 #endif // POINTS_HPP__

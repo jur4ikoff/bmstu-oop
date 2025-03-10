@@ -9,6 +9,32 @@
 #include <cstdio>
 
 /**
+ * @brief Фунекция получает значение, на которое нужно сдвинуть фигуру, чтобы ее центр был в 0, 0
+ * @param[in] center точка, центр
+ * @return Смещение
+ */
+static shift_t get_shift(const point_t &center)
+{
+    shift_t shift = {};
+    shift.x = -center.x;
+    shift.y = -center.y;
+    shift.z = -center.z;
+
+    return shift;
+}
+
+/**
+ * @brief Функция умножает каждую координату на -1
+ * @param[in, out] shift Структура смещения
+ */
+static void get_shift_to_turn(shift_t &shift)
+{
+    shift.x *= -1;
+    shift.y *= -1;
+    shift.z *= -1;
+}
+
+/**
  * @brief Функция инициализирует модель
  */
 model_t model_init(void)
@@ -163,7 +189,15 @@ err_t model_turn(model_t &model, const turn_t &turn)
     err_t rc = ERR_OK;
     if (!model_is_empty(model))
     {
-        rc = points_turn(model.points, turn, model.center);
+        shift_t shift = get_shift(model.center);
+        if ((rc = model_shift(model, shift)) == ERR_OK)
+        {
+            if ((rc = points_turn(model.points, turn)) == ERR_OK)
+            {
+                get_shift_to_turn(shift);
+                rc = model_shift(model, shift);
+            }
+        }
     }
     else
     {
