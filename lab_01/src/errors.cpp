@@ -30,6 +30,9 @@ void error_handler(const err_t error_code)
         case ERR_MEMORY_ALLOCATION:
             QMessageBox::warning(NULL, "Ошибка", "Ошибка при выделении памяти");
             break;
+        case ERR_EDGES:
+            QMessageBox::warning(NULL, "Ошибка", "Ошибка, задан неверный индекс грани");
+            break;
         default:
             break;
     }

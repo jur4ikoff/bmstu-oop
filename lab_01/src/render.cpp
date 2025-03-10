@@ -1,152 +1,92 @@
 #include "render.hpp"
-#include "points.hpp"
 #include "constants.hpp"
+#include "edges.hpp"
 #include "errors.hpp"
 #include "model.hpp"
+#include "point.hpp"
+#include "points.hpp"
 
 #include <QColor>
 #include <QPainter>
 #include <QPixmap>
 #include <cstdio>
 
-#define MAX(x, y) ((x) > (y) ? (x) : (y))
-
-/**
- * @brief Функция ищет минимальное значение точки по координате х, y в массиве точек
- * @param[out] min_value Минимальное значение по координате х, y в массиве точек
- * @param[in] arr Массив точек
- */
-static err_t get_min_point_coord(double &min_value, const point_t *const arr, const size_t size)
+typedef struct _line_struct
 {
-    err_t rc = ERR_OK;
-    double temp_min = INF;
-    if (arr)
-    {
-        for (size_t i = 0; i < size; i++)
-        {
-            if (arr[i].x < temp_min)
-                temp_min = arr[i].x;
+    point_t point_1, point_2;
+} line_t;
 
-            if (arr[i].y < temp_min)
-                temp_min = arr[i].y;
-        }
-    }
-    else
-        rc = ERR_ARGS;
-
-    min_value = temp_min;
-    return rc;
-}
-
-/**
- * @brief Функция ищет максимальное значение точки по координате х, y в массиве точек
- * @param[out] min_value Минимальное значение по координате х, y в массиве точек
- * @param[in] arr Массив точек
- */
-static err_t get_max_point_coord(double &max_value, const point_t *const arr, const size_t size)
+static void draw_line(QPixmap *plane, const point_t &point_1, const point_t &point_2)
 {
-    err_t rc = ERR_OK;
-    double temp_max = NINF;
-    if (arr)
-    {
-        for (size_t i = 0; i < size; i++)
-        {
-            if (arr[i].x > temp_max)
-                temp_max = arr[i].x;
-
-            if (arr[i].y > temp_max)
-                temp_max = arr[i].y;
-        }
-    }
-    else
-        rc = ERR_ARGS;
-
-    max_value = temp_max;
-    return rc;
-}
-
-/**
- * @brief Функция ищет нужный масштаб, для отрисовки на QPixmap
- * @param[out] scale В ссылку scale записывается маcштаб
- * @param[in] model Данные, для поиска
- * @param[in] window_size Размер окна, для определения масштаба
- */
-static err_t get_scale(double &scale, const model_t &model, const int window_size)
-{
-    err_t rc = ERR_OK;
-    double min_coord, max_coord;
-    rc = get_min_point_coord(min_coord, model.points.array, model.points.size);
-    if (!rc)
-    {
-        rc = get_max_point_coord(max_coord, model.points.array, model.points.size);
-        if (!rc)
-        {
-            // Задаем масштаб
-            double delta = max_coord - min_coord;
-            min_coord -= delta * 0.1;
-            max_coord += delta * 0.1;
-
-            delta = max_coord - min_coord;
-            if (delta != 0)
-                scale = (double)window_size / (max_coord - min_coord);
-            else
-                scale = 1;
-        }
-    }
-
-    return rc;
-}
-
-void drawPointsOnPixmap(QPainter &painter, const point_t *points, size_t pointsCount, double scale, const int &windowSize)
-{
+    QPainter painter(plane);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setPen(Qt::blue);
+    painter.setPen(QPen(Qt::white, 1));
 
-    // Рисуем точки
-    for (size_t i = 0; i < pointsCount; ++i)
-    {
-        QPointF scaledPoint(
-            windowSize / 2.0 + (points[i].x) * scale,
-            windowSize / 2.0 - (points[i].y) * scale);
-        painter.drawEllipse(scaledPoint, 2, 2);
-    }
+    painter.drawLine(point_1.x, point_1.y, point_2.x, point_2.y);
 }
 
-// Функция для отрисовки линий между точками на QPixmap (без отступов)
-void drawEdgesOnPixmap(QPainter &painter, const point_t *points, size_t pointsCount, const edge_t *edges, size_t edgesCount, double scale, const int &windowSize)
+/**
+ * @brief Функция проверяет, что грань существует, и записывает грань в validate_edge
+ * @param[out] validate_edge Грань, прошедшая валидацию
+ * @param[in] validate_edge Грань, которая будет проверятся
+ * @param[in] point_count Количество точек
+ */
+static err_t validate_edge(edge_t &validate_edge, const edge_t &edge_to_validate, const size_t point_count)
 {
-    painter.setRenderHint(QPainter::Antialiasing, true); // Включаем сглаживание
+    if (edge_to_validate.first >= point_count || edge_to_validate.second >= point_count)
+    {
+        return ERR_EDGES;
+    }
 
-    // Устанавливаем цвет и толщину линии
-    painter.setPen(QPen(Qt::white, 1)); // Черные линии толщиной 2 пикселя
+    validate_edge = edge_to_validate;
+    return ERR_OK;
+}
+
+
+/**
+ * @brief Функция возвращает линию на основе массива точек и грани
+ * @param[in ] render информация о размерах холста
+ * @param[in] 
+ */
+static line_t get_line(const render_t &render, const point_t *points.array, const edge_t edge)
+{
+    // СДЕЛАТЬ ОТДЕЛЬНО ШТУКУ, КОТОРАЯ ДАЕТ ЛИНИЮ, И ОТДЕЛЬНО, КОТОРАЯ КОНВЕРТИРУЕТ
+}
+
+static err_t draw_edges(const render_t &render, const points_t &points, const edges_t &edges)
+{
+    if (render.plane == NULL || points.array == NULL || edges.array == NULL)
+        return ERR_ARGS;
+
+    err_t rc = ERR_OK;
+    line_t line = { 0 };
+    edge_t edge = { 0 };
+    point_t point_1 = point_init();
+    point_t point_2 = point_init();
 
     // Рисуем линии между точками
-    for (size_t i = 0; i < edgesCount; ++i)
+    for (size_t i = 0; i < edges.size; i++)
     {
-        // Получаем индексы начальной и конечной точек
-        size_t startIndex = edges[i].first;
-        size_t endIndex = edges[i].second;
-
-        // Проверяем, что индексы корректны
-        if (startIndex >= pointsCount || endIndex >= pointsCount)
+        if ((rc = validate_edge(edge, edges.array[i], points.size)) == ERR_OK)
         {
-            qWarning() << "Неверный индекс ребра:" << i;
-            continue;
+            size_t start_index = edge.first;
+            size_t end_index = edge.second;
+
+            //line = get_line(render, points.array, edge);
+            point_1.x = render.plane->width() / 2.0 + (points.array[start_index].x);
+            point_1.y = render.plane->height() / 2.0 - (points.array[start_index].y);
+
+            point_2.x = render.plane->width() / 2.0 + (points.array[end_index].x);
+            point_2.y = render.plane->height() / 2.0 - (points.array[end_index].y);
+            // Рисуем линию между точками
+            // rc = get_line(render.plane, line, points.array, size, edges.array[i]);
+            draw_line(render.plane, point_1, point_2);
         }
-
-        // Масштабируем координаты и смещаем их относительно центра
-        // Фикс
-        QPointF startPoint(
-            windowSize / 2.0 + (points[startIndex].x) * scale,
-            windowSize / 2.0 - (points[startIndex].y) * scale);
-
-        QPointF endPoint(
-            windowSize / 2.0 + (points[endIndex].x) * scale,
-            windowSize / 2.0 - (points[endIndex].y) * scale);
-
-        // Рисуем линию между точками
-        painter.drawLine(startPoint, endPoint);
+        else
+            break;
     }
+
+    return rc;
 }
 
 /**
@@ -156,23 +96,12 @@ void drawEdgesOnPixmap(QPainter &painter, const point_t *points, size_t pointsCo
  */
 err_t render_model(const render_t &render, const model_t &model)
 {
+    if (render.plane == NULL || model_is_empty(model))
+        return ERR_ARGS;
+
     err_t rc = ERR_OK;
-    // Обновляем QPixmap
-    if (render.plane)
-    {
-        // НАПИСАТЬ ПРОВЕРКУ НА МОДЕЛЬ
-        render.plane->fill("#252525");
-        QPainter painter(render.plane);
-        int window_size = MAX(render.width, render.height);
+    render.plane->fill("#252525");
 
-        double scale = (window_size) / 10;
-
-        drawPointsOnPixmap(painter, model.points.array, model.points.size, scale, window_size);
-        // Сделать функцию скейла СПРОСИТЬ У ВАНИ
-        drawEdgesOnPixmap(painter, model.points.array, model.points.size, model.edges.array, model.edges.size, scale, window_size);
-        painter.end();
-    }
-    else
-        rc = ERR_ARGS;
+    rc = draw_edges(render, model.points, model.edges);
     return rc;
 }

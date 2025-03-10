@@ -71,16 +71,11 @@ void MainWindow::open_file(void)
             error_handler(rc);
         }
     }
-    else
-    {
-        // Пользователь не выбрал файл
-        qDebug() << "No file";
-    }
 }
 
 err_t MainWindow::draw_update(void)
 {
-    render_t to_render = { .plane = &pixmap, .width = pixmap.width(), .height = pixmap.height() };
+    render_t to_render = { .plane = &pixmap };
     request_t request = { .task = REQ_RENDER, .render = to_render };
     err_t rc = request_handler(request);
     if (rc != ERR_OK)
