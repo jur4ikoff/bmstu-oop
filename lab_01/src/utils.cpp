@@ -20,10 +20,10 @@ const char *convert_QString_to_char(const QString &to_convert)
 
 /**
  * @brief Функция читает из файла целое положительное число
- * @param[out] file ИЗМЕНЯЕМЫЙ. Указатель на файловый дескриптор
  * @param[out] number Прочитанное число
+ * @param[in, out] file ИЗМЕНЯЕМЫЙ. Указатель на файловый дескриптор
  */
-err_t read_int_number(FILE *file, size_t &number)
+err_t read_int_number(size_t &number, FILE *file)
 {
     if (file == NULL)
         return ERR_ARGS;
@@ -45,7 +45,6 @@ err_t read_int_number(FILE *file, size_t &number)
     return rc;
 }
 
-
 /**
  * @brief Функция читает количество элементов в файле, если их меньше 1, то возвращается ошибка
  * @param[out] count Количество граней в моделе
@@ -57,7 +56,7 @@ err_t read_elements_count(size_t &count, FILE *file)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    if ((rc = read_int_number(file, count)) == ERR_OK)
+    if ((rc = read_int_number(count, file)) == ERR_OK)
     {
         if (count < 1)
             rc = ERR_ARRAY_EMPTY;

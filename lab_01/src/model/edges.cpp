@@ -39,9 +39,9 @@ static err_t read_edge(edge_t &edge, FILE *file)
 {
     err_t rc = ERR_OK;
     size_t first, second;
-    if ((rc = read_int_number(file, first)) != ERR_OK)
+    if ((rc = read_int_number(first, file)) != ERR_OK)
         return rc;
-    if ((rc = read_int_number(file, second)) != ERR_OK)
+    if ((rc = read_int_number(second, file)) != ERR_OK)
         return rc;
 
     edge.first = first;

@@ -6,6 +6,6 @@
 
 const char *convert_QString_to_char(const QString &);
 
-err_t read_int_number(FILE *, size_t &);
-err_t read_elements_count(size_t &count, FILE *file);
+err_t read_int_number(size_t &, FILE *);
+err_t read_elements_count(size_t &, FILE *);
 #endif // UTILS_HPP__
