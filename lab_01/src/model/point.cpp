@@ -5,11 +5,6 @@
 
 #include <cstdio>
 
-static double to_radians(const double &angle)
-{
-    return angle * (PI / 180);
-}
-
 // Функция записывает в точку значение в точке (0, 0, 0)
 point_t point_init(void)
 {
@@ -83,36 +78,30 @@ point_t point_add(const point_t &first, const point_t second)
 
 static void rotate_x(point_t &point, const point_t &center, const double angle)
 {
-    double rad_angle = to_radians(angle);
     double y = point.y - center.y;
     double z = point.z - center.z;
 
-    point.y = center.y + y * cos(rad_angle) - z * sin(rad_angle);
-    point.z = center.z + y * sin(rad_angle) + z * cos(rad_angle);
+    point.y = center.y + y * cos(angle) - z * sin(angle);
+    point.z = center.z + y * sin(angle) + z * cos(angle);
 }
 
 // Функция для поворота точки вокруг оси Y
 static void rotate_y(point_t &point, const point_t &center, const double angle)
 {
-    double rad_angle = to_radians(angle);
-
     double x = point.x - center.x;
     double z = point.z - center.z;
-    point.x = center.x + x * cos(rad_angle) + z * sin(rad_angle);
-    point.z = center.z - x * sin(rad_angle) + z * cos(rad_angle);
+    point.x = center.x + x * cos(angle) + z * sin(angle);
+    point.z = center.z - x * sin(angle) + z * cos(angle);
 }
 
 // Функция для поворота точки вокруг оси Z
 static void rotate_z(point_t &point, const point_t &center, const double angle)
 {
-    double rad_angle = to_radians(angle);
-
     double x = point.x - center.x;
     double y = point.y - center.y;
-    point.x = center.x + x * cos(rad_angle) - y * sin(rad_angle);
-    point.y = center.y + x * sin(rad_angle) + y * cos(rad_angle);
+    point.x = center.x + x * cos(angle) - y * sin(angle);
+    point.y = center.y + x * sin(angle) + y * cos(angle);
 }
-
 
 /**
  * @brief Функция поворачивает точку на определенный угол

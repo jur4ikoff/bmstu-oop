@@ -15,6 +15,11 @@
 #include <QPixmap>
 #include <QString>
 
+static double to_radians(const double &angle)
+{
+    return angle * (PI / 180);
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -158,17 +163,17 @@ void MainWindow::on_button_turn_clicked(void)
     bool is_record = false;
     if (ok_x)
     {
-        turn.x_angle = x;
+        turn.x_angle = to_radians(x);
         is_record = true;
     }
     if (ok_y)
     {
-        turn.y_angle = y;
+        turn.y_angle = to_radians(y);
         is_record = true;
     }
     if (ok_z)
     {
-        turn.z_angle = z;
+        turn.z_angle = to_radians(z);
         is_record = true;
     }
 
