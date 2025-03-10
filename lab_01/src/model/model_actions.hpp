@@ -1,22 +1,20 @@
 #ifndef MODEL_ACTIONS_HPP__
 #define MODEL_ACTIONS_HPP__
 
-struct _shift_struct
+typedef struct _shift_struct
 {
     double x, y, z;
-};
+} shift_t;
 
-struct _scale_struct
+typedef struct _scale_struct
 {
     double x, y, z;
-};
+} scale_t;
 
-struct _turn_struct
+// Углы заданы в радианах
+typedef struct _turn_struct
 {
     double x_angle, y_angle, z_angle;
-};
+} turn_t;
 
-using shift_t = _shift_struct;
-using scale_t = _scale_struct;
-using turn_t = _turn_struct;
 #endif

@@ -9,14 +9,14 @@
 #include <cstdio>
 
 
-struct _model_struct
+typedef struct _model_struct
 {
     points_t points;
     edges_t edges;
     point_t center;
-};
+} model_t;
 
-using model_t = _model_struct;
+
 using filename_t = const char *;
 
 

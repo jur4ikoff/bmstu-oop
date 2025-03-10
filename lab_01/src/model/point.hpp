@@ -5,12 +5,10 @@
 #include "model_actions.hpp"
 
 // Структура для описания точки
-struct _point_struct
+typedef struct _point_struct
 {
     double x, y, z;
-};
-
-using point_t = _point_struct;
+} point_t;
 
 point_t point_init(void);
 point_t point_add(const point_t &, const point_t);

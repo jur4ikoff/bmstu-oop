@@ -5,11 +5,10 @@
 #include "model.hpp"
 #include <QPixmap>
 
-struct _render_struct_
+typedef struct _render_struct_
 {
     QPixmap *plane;
-};
+} render_t;
 
-using render_t = _render_struct_;
 err_t render_model(const render_t &, const model_t &);
 #endif // RENDER_HPP__

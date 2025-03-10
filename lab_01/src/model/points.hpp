@@ -7,13 +7,11 @@
 
 #include <cstdio>
 
-struct _points_struct
+typedef struct _points_struct
 {
     point_t *array;
     size_t size;
-};
-
-using points_t = _points_struct;
+} points_t;
 
 points_t points_init(void);
 void points_free(points_t &);
