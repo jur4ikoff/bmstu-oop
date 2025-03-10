@@ -19,6 +19,9 @@ typedef struct _line_struct
 
 /**
  * @brief Функция рисует одну линию, состоящую из двух точек
+ * @param[in, out] plane Холст для рисования
+ * @param[in] point_1 Точка 1
+ * @param[in] point_2 Точка 2
  */
 static err_t draw_line(QPixmap *plane, const point_t &point_1, const point_t &point_2)
 {
@@ -52,7 +55,7 @@ static err_t validate_edge(edge_t &validate_edge, const edge_t &edge_to_validate
 
 /**
  * @brief Функция возвращает линию на основе массива точек и грани
- * @param[out] render информация о размерах холста
+ * @param[out] line линия
  * @param[in] points массив точек
  * @param[in] edge структура с данными о грани
  * @return Код возврата
@@ -78,6 +81,13 @@ static err_t get_line(line_t &line, const point_t *points, const edge_t edge)
     return ERR_OK;
 }
 
+
+/**
+ * @brief Конвертация координат в формат, необходимый для вывода на экран
+ * @param[in, out] point_1 Точка 1
+ * @param[in, out] point_2 Точка 2
+ * @param[in] plane Холст для рисования
+ */
 static err_t convert_line(point_t &point_1, point_t &point_2, const QPixmap *plane)
 {
     if (plane == NULL)
