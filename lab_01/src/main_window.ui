@@ -17,7 +17,7 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>730</x>
       <y>10</y>
       <width>513</width>
       <height>691</height>
@@ -35,6 +35,7 @@
        <property name="font">
         <font>
          <pointsize>16</pointsize>
+         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -144,6 +145,7 @@
        <property name="font">
         <font>
          <pointsize>5</pointsize>
+         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -163,6 +165,7 @@
        <property name="font">
         <font>
          <pointsize>16</pointsize>
+         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -272,6 +275,7 @@
        <property name="font">
         <font>
          <pointsize>5</pointsize>
+         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
@@ -291,6 +295,7 @@
        <property name="font">
         <font>
          <pointsize>16</pointsize>
+         <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
