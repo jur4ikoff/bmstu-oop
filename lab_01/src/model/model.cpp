@@ -38,6 +38,17 @@ bool model_is_empty(const model_t &model)
 }
 
 /**
+ * @brief Фукнкция валидирует модель
+ * @param[in] model Структура модели
+ * @param[in] point_count Количество точек
+ */
+err_t model_validate(const model_t &model, const size_t point_count)
+{
+    err_t rc = edges_validate(model.edges, point_count);
+    return rc;
+}
+
+/**
  * @brief Функция считывает данные из файла и записывает их в temp_model
  * @param[out] temp_model ссылка на структуру для записи
  * @param[in, out] file Файловый дескриптер
@@ -62,6 +73,7 @@ static err_t model_load_elements(model_t &temp_model, FILE *file)
         else
         {
             temp_model.edges = edges;
+            rc = model_validate(temp_model, points.size);
         }
     }
 

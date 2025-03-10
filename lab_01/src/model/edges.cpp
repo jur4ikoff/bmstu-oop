@@ -24,7 +24,7 @@ void edges_free(edges_t &edges)
 }
 
 bool edges_is_empty(const edges_t &edges)
-{ 
+{
     if (edges.size == 0 && edges.array == NULL)
         return true;
     return false;
@@ -94,6 +94,35 @@ err_t load_edges(edges_t &edges, FILE *file)
         }
         else
             rc = ERR_MEMORY_ALLOCATION;
+    }
+
+    return rc;
+}
+
+/**
+ * @brief Функция проверяет, что все ребра существуют
+ * @param[in] edge Одна грань
+ * @param[in] points_count Количество точек в моделе
+ */
+static err_t edge_validate(const edge_t edge, const size_t points_count)
+{
+    if (edge.first >= points_count || edge.second >= points_count)
+        return ERR_EDGES;
+
+    return ERR_OK;
+}
+
+/**
+ * @brief Функция проверяет, что все ребра существуют
+ * @param[in] edges Структура, хранящая грани
+ * @param[in] points_count Количество точек в моделе
+ */
+err_t edges_validate(const edges_t edges, const size_t points_count)
+{
+    err_t rc = ERR_OK;
+    for (size_t i = 0; rc == ERR_OK && (i < edges.size); i++)
+    {
+        rc = edge_validate(edges.array[i], points_count);
     }
 
     return rc;
