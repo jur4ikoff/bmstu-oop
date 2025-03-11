@@ -8,7 +8,7 @@
 
 points_t points_init(void)
 {
-    points_t new_points = {0};
+    points_t new_points = { 0 };
     new_points.array = NULL;
     new_points.size = 0;
 
@@ -35,18 +35,37 @@ bool points_is_empty(const points_t &points)
  * @brief Функция читает массив точек из файла
  * @param [out] points Файлвый дескриптор
  * @param [in, out] file Файлвый дескриптор
- * @param [in] size Количество элементов массива
  */
-static err_t points_read(point_t *points, FILE *file, const size_t size)
+static err_t points_read(points_t &points, FILE *file)
 {
-    if (points == NULL || file == NULL)
+    if (points.array == NULL || file == NULL)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    for (size_t i = 0; rc == ERR_OK && (i < size); i++)
+    for (size_t i = 0; rc == ERR_OK && (i < points.size); i++)
     {
-        rc = point_read(points[i], file);
+        rc = point_read(points.array[i], file);
     }
+    return rc;
+}
+
+/**
+ * @brief Функция выделяет память под массив точек
+ * @param[out] points - Структура точек
+ * @param[in] size - Количество элементов в массиве точек
+ */
+static err_t points_allocate(points_t &points, const size_t size)
+{
+    if (size == 0)
+        return ERR_ARGS;
+
+    err_t rc = ERR_OK;
+    points.size = size;
+    points.array = (point_t *)malloc(points.size * sizeof(point_t));
+
+    if (points.array == NULL)
+        rc = ERR_MEMORY_ALLOCATION;
+
     return rc;
 }
 
@@ -61,16 +80,16 @@ err_t points_load(points_t &points, FILE *file)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    if ((rc = read_elements_count(points.size, file)) == ERR_OK)
+    size_t count;
+    if ((rc = read_elements_count(count, file)) == ERR_OK)
     {
-        points.array = (point_t *)malloc(points.size * sizeof(point_t));
-        if (points.array != NULL)
+        rc = points_allocate(points, count);
+        if (rc == ERR_OK)
         {
-            if ((rc = points_read(points.array, file, points.size)) != ERR_OK)
-                free(points.array);
+            rc = points_read(points, file);
+            if (rc != ERR_OK)
+                points_free(points);
         }
-        else
-            rc = ERR_MEMORY_ALLOCATION;
     }
 
     return rc;
