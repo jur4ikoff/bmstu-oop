@@ -68,9 +68,22 @@ bool model_is_empty(const model_t &model)
  * @param[in] edges Структура граней
  * @param[in] points Структура точек
  */
-err_t model_validate(const edges_t &edges, const points_t &points)
+static err_t model_validate_content(const edges_t &edges, const points_t &points)
 {
+    if (edges.array == NULL)
+        return ERR_ARGS;
+
     err_t rc = edges_validate(edges, points.size);
+    return rc;
+}
+
+/**
+ * @brief Фукнкция валидирует модель
+ * @param[in] model ссылка на структуру с моделью
+ */
+err_t model_validate(const model_t &model)
+{
+    err_t rc = model_validate_content(model.edges, model.points);
     return rc;
 }
 
@@ -99,7 +112,7 @@ static err_t model_load_elements(model_t &temp_model, FILE *file)
         else
         {
             temp_model.edges = edges;
-            rc = model_validate(temp_model.edges, temp_model.points);
+            rc = model_validate(temp_model);
         }
     }
 

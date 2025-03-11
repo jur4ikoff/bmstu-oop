@@ -28,6 +28,6 @@ err_t model_load(model_t &, const filename_t &);
 err_t model_shift(model_t &, const shift_t &);
 err_t model_scale(model_t &, const scale_t &);
 err_t model_turn(model_t &, const turn_t &);
-err_t model_validate(const edges_t &edges, const points_t &points);
+err_t model_validate(const model_t &model);
 
 #endif // MODEL_HPP__

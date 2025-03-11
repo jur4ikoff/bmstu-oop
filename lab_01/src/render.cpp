@@ -160,7 +160,7 @@ err_t render_model(const render_t &render, const model_t &model)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    if ((rc = model_validate(model.edges, model.points)) == ERR_OK)
+    if ((rc = model_validate(model)) == ERR_OK)
     {
         render.plane->fill("#252525");
         rc = draw_edges(render, model.points, model.edges);
