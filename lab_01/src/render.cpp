@@ -16,7 +16,6 @@ typedef struct _line_struct
     point_t point_1, point_2;
 } line_t;
 
-
 /**
  * @brief Функция рисует одну линию, состоящую из двух точек
  * @param[in, out] plane Холст для рисования
@@ -81,7 +80,6 @@ static err_t get_line(line_t &line, const point_t *points, const edge_t edge)
     return ERR_OK;
 }
 
-
 /**
  * @brief Конвертация координат в формат, необходимый для вывода на экран
  * @param[in, out] point_1 Точка 1
@@ -101,7 +99,6 @@ static err_t convert_line(point_t &point_1, point_t &point_2, const QPixmap *pla
 
     return ERR_OK;
 }
-
 
 /**
  * @brief Функцмя рисует одну грань
@@ -163,8 +160,10 @@ err_t render_model(const render_t &render, const model_t &model)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    render.plane->fill("#252525");
-
-    rc = draw_edges(render, model.points, model.edges);
+    if ((rc = model_validate(model.edges, model.points)) == ERR_OK)
+    {
+        render.plane->fill("#252525");
+        rc = draw_edges(render, model.points, model.edges);
+    }
     return rc;
 }

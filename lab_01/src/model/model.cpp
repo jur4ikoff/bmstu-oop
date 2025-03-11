@@ -39,7 +39,7 @@ static void get_shift_to_turn(shift_t &shift)
  */
 model_t model_init(void)
 {
-    model_t model = { 0 };
+    model_t model = {0};
     model.points = points_init();
     model.edges = edges_init();
     model.center = point_init();
@@ -65,12 +65,12 @@ bool model_is_empty(const model_t &model)
 
 /**
  * @brief Фукнкция валидирует модель
- * @param[in] model Структура модели
- * @param[in] point_count Количество точек
+ * @param[in] edges Структура граней
+ * @param[in] points Структура точек
  */
-err_t model_validate(const model_t &model, const size_t point_count)
+err_t model_validate(const edges_t &edges, const points_t &points)
 {
-    err_t rc = edges_validate(model.edges, point_count);
+    err_t rc = edges_validate(edges, points.size);
     return rc;
 }
 
@@ -99,7 +99,7 @@ static err_t model_load_elements(model_t &temp_model, FILE *file)
         else
         {
             temp_model.edges = edges;
-            rc = model_validate(temp_model, points.size);
+            rc = model_validate(temp_model.edges, temp_model.points);
         }
     }
 
