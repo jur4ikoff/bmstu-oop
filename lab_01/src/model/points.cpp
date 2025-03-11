@@ -133,9 +133,33 @@ err_t points_scale(points_t &points, const scale_t &scale, const point_t &center
 }
 
 /**
+ * @brief Функция считает сумму всех точекя
+ * @param[in, out] center Точка сумма всех остальных
+ * @param[in] points Массив точек
+ * @param[in] size Размер массива
+ * @warning points должен быть проверен перед вызовом
+ */
+static void get_sum_all_points(point_t &sum, const point_t *points, const size_t size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
+        sum.x += points[i].x;
+        sum.y += points[i].y;
+        sum.z += points[i].z;
+    }
+}
+
+static void div_point_on_koef(point_t &point, double koef)
+{
+    point.x /= koef;
+    point.y /= koef;
+    point.z /= koef;
+}
+
+/**
  * @brief Функция определяет центр фигуры
  * @param[out] center Точка - центр
- * @param[in] points Структура типа points_t
+ * @param[in] points Точки
  */
 err_t points_calculate_center(point_t &center, const points_t &points)
 {
@@ -144,14 +168,10 @@ err_t points_calculate_center(point_t &center, const points_t &points)
         return ERR_EMPTY_MODEL;
     }
 
-    for (size_t i = 0; i < points.size; ++i)
-    {
-        center = point_add(center, points.array[i]);
-    }
+    center = point_init();
+    get_sum_all_points(center, points.array, points.size);
+    div_point_on_koef(center, points.size);
 
-    center.x /= points.size;
-    center.y /= points.size;
-    center.z /= points.size;
     return ERR_OK;
 }
 

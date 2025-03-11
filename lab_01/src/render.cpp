@@ -29,8 +29,7 @@ static err_t draw_line(const render_t &render, const point_t &point_1, const poi
 
     QPainter painter(render.plane);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    // painter.setPen(render.draw_pen);
-    painter.setPen(QPen(Qt::white, 1));
+    painter.setPen(render.draw_pen);
 
     painter.drawLine(point_1.x, point_1.y, point_2.x, point_2.y);
     return ERR_OK;

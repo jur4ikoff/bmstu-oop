@@ -6,6 +6,7 @@
 #include "point.hpp"
 #include "points.hpp"
 
+#include <QDebug>
 #include <cstdio>
 
 /**
@@ -94,7 +95,7 @@ err_t model_validate(const model_t &model)
  */
 static err_t model_load_content(model_t &temp_model, FILE *file)
 {
-    if (file == NULL || !points_is_empty(temp_model.points) || !edges_is_empty(temp_model.edges))
+    if (file == NULL)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;

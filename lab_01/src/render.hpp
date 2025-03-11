@@ -10,7 +10,6 @@ typedef struct _render_struct_
 {
     QPixmap *plane;
     QPen &draw_pen;
-    // QPen(Qt::white, 1)
 } render_t;
 
 err_t model_render(const render_t &, const model_t &);
