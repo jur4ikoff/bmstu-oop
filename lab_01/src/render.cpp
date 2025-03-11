@@ -29,7 +29,8 @@ static err_t draw_line(const render_t &render, const point_t &point_1, const poi
 
     QPainter painter(render.plane);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setPen(render.draw_pen);
+    // painter.setPen(render.draw_pen);
+    painter.setPen(QPen(Qt::white, 1));
 
     painter.drawLine(point_1.x, point_1.y, point_2.x, point_2.y);
     return ERR_OK;
@@ -154,7 +155,7 @@ static err_t draw_edges(const render_t &render, const points_t &points, const ed
  * @param[in] render Холст и его размеры
  * @param[in] model Данные для отрисовки
  */
-err_t render_model(const render_t &render, const model_t &model)
+err_t model_render(const render_t &render, const model_t &model)
 {
     if (render.plane == NULL || model_is_empty(model))
         return ERR_ARGS;

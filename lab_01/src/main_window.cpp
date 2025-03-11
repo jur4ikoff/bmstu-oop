@@ -62,7 +62,7 @@ void MainWindow::open_file(void)
     {
         // Сделаем структуру, для запроса загрузки
         const char *str_filename = convert_QString_to_char(filename);
-        request_t request = {.task = REQ_LOAD, .filename = str_filename};
+        request_t request = { .task = REQ_LOAD, .filename = str_filename };
         err_t rc = request_handler(request);
         if (rc == ERR_OK)
         {
@@ -80,9 +80,9 @@ void MainWindow::open_file(void)
 
 err_t MainWindow::draw_update(void)
 {
-    QPen pen(Qt::white, 1);
-    render_t to_render = {.plane = &pixmap, .draw_pen = pen};
-    request_t request = {.task = REQ_RENDER, .render = to_render};
+    QPen pen = QPen(Qt::white, 1);
+    render_t to_render = { .plane = &pixmap, .draw_pen = pen };
+    request_t request = { .task = REQ_RENDER, .render = to_render };
     err_t rc = request_handler(request);
     if (rc != ERR_OK)
     {
@@ -110,7 +110,7 @@ void MainWindow::on_button_shift_clicked(void)
     double y = y_str.toDouble(&ok_y);
     double z = z_str.toDouble(&ok_z);
 
-    shift_t shift = {.x = 0, .y = 0, .z = 0};
+    shift_t shift = { .x = 0, .y = 0, .z = 0 };
     bool is_record = false;
     if (ok_x)
     {
@@ -130,7 +130,7 @@ void MainWindow::on_button_shift_clicked(void)
 
     if (is_record)
     {
-        request_t request = {.task = REQ_SHIFT, .shift = shift};
+        request_t request = { .task = REQ_SHIFT, .shift = shift };
         rc = request_handler(request);
         if (rc == ERR_OK)
         {
@@ -160,7 +160,7 @@ void MainWindow::on_button_turn_clicked(void)
     double y = y_str.toDouble(&ok_y);
     double z = z_str.toDouble(&ok_z);
 
-    turn_t turn = {.x_angle = 0, .y_angle = 0, .z_angle = 0};
+    turn_t turn = { .x_angle = 0, .y_angle = 0, .z_angle = 0 };
     bool is_record = false;
     if (ok_x)
     {
@@ -180,7 +180,7 @@ void MainWindow::on_button_turn_clicked(void)
 
     if (is_record)
     {
-        request_t request = {.task = REQ_TURN, .turn = turn};
+        request_t request = { .task = REQ_TURN, .turn = turn };
         rc = request_handler(request);
         if (rc == ERR_OK)
         {
@@ -210,7 +210,7 @@ void MainWindow::on_button_scale_clicked(void)
     double y = y_str.toDouble(&ok_y);
     double z = z_str.toDouble(&ok_z);
 
-    scale_t scale = {.x = 1, .y = 1, .z = 1};
+    scale_t scale = { .x = 1, .y = 1, .z = 1 };
     bool is_record = false;
     if (ok_x)
     {
@@ -230,7 +230,7 @@ void MainWindow::on_button_scale_clicked(void)
 
     if (is_record)
     {
-        request_t request = {.task = REQ_SCALE, .scale = scale};
+        request_t request = { .task = REQ_SCALE, .scale = scale };
         rc = request_handler(request);
         if (rc == ERR_OK)
         {
@@ -248,8 +248,8 @@ void MainWindow::on_button_scale_clicked(void)
 
 MainWindow::~MainWindow(void)
 {
-    request_t request = {.task = REQ_QUIT};
-
+    request_t request = { .task = REQ_QUIT, .quit = 0 };
     request_handler(request);
+
     delete ui;
 }

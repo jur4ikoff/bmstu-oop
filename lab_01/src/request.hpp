@@ -13,8 +13,9 @@ typedef enum
     REQ_SCALE,
     REQ_RENDER,
     REQ_QUIT,
-    REQ_DEBUG, // Только в дебаг версии
 } req_type;
+
+typedef int quit_t; // Чтобы компилятор не ругался
 
 typedef struct
 {
@@ -27,6 +28,7 @@ typedef struct
         shift_t shift;
         scale_t scale;
         turn_t turn;
+        quit_t quit; // Чтобы компилятор не ругался
     };
 
 } request_t;

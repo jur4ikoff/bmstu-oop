@@ -35,7 +35,7 @@ bool edges_is_empty(const edges_t &edges)
  * @param[out] edge - одна грань
  * @param[in, out] file - файловый дескриптор
  */
-static err_t read_edge(edge_t &edge, FILE *file)
+static err_t edge_read(edge_t &edge, FILE *file)
 {
     err_t rc = ERR_OK;
     size_t first, second;
@@ -55,7 +55,7 @@ static err_t read_edge(edge_t &edge, FILE *file)
  * @param[in, out] file Файловый дескриптор
  * @param[in] size Размер массива
  */
-static err_t read_edges(edge_t *edges, FILE *file, const size_t size)
+static err_t edges_read(edge_t *edges, FILE *file, const size_t size)
 {
     if (edges == NULL || file == NULL)
         return ERR_ARGS;
@@ -63,32 +63,52 @@ static err_t read_edges(edge_t *edges, FILE *file, const size_t size)
     err_t rc = ERR_OK;
     for (size_t i = 0; rc == ERR_OK && (i < size); i++)
     {
-        rc = read_edge(edges[i], file);
+        rc = edge_read(edges[i], file);
     }
     return rc;
 }
 
 /**
- * @brief Функция читает из файла все границы
- * @param[out] edges - Структура для записей информации о гранях
- * @param[in, out] file  - файловый дескриптор
+ * @brief Функция выделяет память под массив граней
+ * @param[out] edges Структура граней
+ * @param[in] size Количество элементов в массиве граней
  */
-err_t load_edges(edges_t &edges, FILE *file)
+static err_t edges_allocate(edges_t &edges, const size_t size)
+{
+    if (size == 0)
+        return ERR_ARGS;
+
+    err_t rc = ERR_OK;
+    edges.size = size;
+    edges.array = (edge_t *)malloc(edges.size * sizeof(edges_t));
+
+    if (edges.array == NULL)
+        rc = ERR_MEMORY_ALLOCATION;
+
+    return rc;
+}
+
+/**
+ * @brief Функция читает из файла все границы
+ * @param[out] edges Структура для записей информации о гранях
+ * @param[in, out] file файловый дескриптор
+ */
+err_t edges_load(edges_t &edges, FILE *file)
 {
     if (file == NULL)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    if ((rc = read_elements_count(edges.size, file)) == ERR_OK)
+    size_t count;
+    if ((rc = read_elements_count(count, file)) == ERR_OK)
     {
-        edges.array = (edge_t *)malloc(edges.size * sizeof(edge_t));
-        if (edges.array != NULL)
+        rc = edges_allocate(edges, count);
+        if (rc == ERR_OK)
         {
-            if ((rc = read_edges(edges.array, file, edges.size)) != ERR_OK)
-                free(edges.array);
+            rc = edges_read(edges.array, file, edges.size);
+            if (rc != ERR_OK)
+                edges_free(edges);
         }
-        else
-            rc = ERR_MEMORY_ALLOCATION;
     }
 
     return rc;

@@ -13,5 +13,5 @@ typedef struct _render_struct_
     // QPen(Qt::white, 1)
 } render_t;
 
-err_t render_model(const render_t &, const model_t &);
+err_t model_render(const render_t &, const model_t &);
 #endif // RENDER_HPP__

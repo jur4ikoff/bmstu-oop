@@ -51,8 +51,8 @@ static err_t points_read(points_t &points, FILE *file)
 
 /**
  * @brief Функция выделяет память под массив точек
- * @param[out] points - Структура точек
- * @param[in] size - Количество элементов в массиве точек
+ * @param[out] points Структура точек
+ * @param[in] size Количество элементов в массиве точек
  */
 static err_t points_allocate(points_t &points, const size_t size)
 {
@@ -71,8 +71,8 @@ static err_t points_allocate(points_t &points, const size_t size)
 
 /**
  * @brief Функция читает из файла все точки
- * @param[out] points - массив точек
- * @param[in, out] file - файловый дескриптер
+ * @param[out] points массив точек
+ * @param[in, out] file файловый дескриптер
  */
 err_t points_load(points_t &points, FILE *file)
 {

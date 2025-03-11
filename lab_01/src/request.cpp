@@ -24,7 +24,7 @@ err_t request_handler(const request_t &request)
             rc = model_scale(model, request.scale);
             break;
         case REQ_RENDER:
-            rc = render_model(request.render, model);
+            rc = model_render(request.render, model);
             break;
         case REQ_QUIT:
             model_free(model);

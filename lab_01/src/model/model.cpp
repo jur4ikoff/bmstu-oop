@@ -39,7 +39,7 @@ static void get_shift_back(shift_t &shift)
  */
 model_t model_init(void)
 {
-    model_t model = {0};
+    model_t model = { 0 };
     model.points = points_init();
     model.edges = edges_init();
     model.center = point_init();
@@ -100,18 +100,16 @@ static err_t model_load_content(model_t &temp_model, FILE *file)
     err_t rc = ERR_OK;
     if ((rc = points_load(temp_model.points, file)) == ERR_OK)
     {
-        if ((rc = load_edges(temp_model.edges, file)) == ERR_OK)
+        if ((rc = edges_load(temp_model.edges, file)) == ERR_OK)
         {
-            if ((rc = points_calculate_center(temp_model.center, temp_model.points)) != ERR_OK)
-            {
-                points_free(temp_model.points);
-                edges_free(temp_model.edges);
-            }
+            rc = points_calculate_center(temp_model.center, temp_model.points);
         }
-        else
-        {
-            points_free(temp_model.points);
-        }
+    }
+
+    if (rc != ERR_OK)
+    {
+        points_free(temp_model.points);
+        edges_free(temp_model.edges);
     }
 
     return rc;
@@ -119,7 +117,7 @@ static err_t model_load_content(model_t &temp_model, FILE *file)
 
 /**
  * @brief Функция загружает данные из файла в структуру типа model_t
- * @param[out] model Объект типа model_t для записи данных из файла, изменяемый параметр
+ * @param[in, out] model Объект типа model_t для записи данных из файла, изменяемый параметр
  * @param[in] filename Имя файла для чтения
  */
 err_t model_load(model_t &model, const filename_t &filename)
@@ -127,9 +125,8 @@ err_t model_load(model_t &model, const filename_t &filename)
     err_t rc = ERR_OK;
     FILE *file = fopen(filename, "r");
 
-    // Инициализируем временную модель
-    model_t temp_model = model_init();
-
+    // Определяем временную модель, потому что основная это var параметр, и меняется только при успешном считываними
+    model_t temp_model;
     if (file != NULL)
     {
         rc = model_load_content(temp_model, file);
@@ -143,9 +140,7 @@ err_t model_load(model_t &model, const filename_t &filename)
         }
     }
     else
-    {
         rc = ERR_FILE;
-    }
 
     if (rc == ERR_OK)
     {

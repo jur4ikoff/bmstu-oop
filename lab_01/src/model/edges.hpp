@@ -27,6 +27,6 @@ void edges_free(edges_t &edges);
 bool edges_is_empty(const edges_t &edges);
 
 err_t edges_validate(const edges_t edges, const size_t points_count);
-err_t load_edges(edges_t &edges, FILE *file);
+err_t edges_load(edges_t &edges, FILE *file);
 
 #endif // EDGES_HPP__
