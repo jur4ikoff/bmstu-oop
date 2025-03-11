@@ -92,7 +92,7 @@ err_t model_validate(const model_t &model)
  * @param[out] temp_model ссылка на структуру для записи
  * @param[in, out] file Файловый дескриптер
  */
-static err_t model_load_elements(model_t &temp_model, FILE *file)
+static err_t model_load_content(model_t &temp_model, FILE *file)
 {
     if (file == NULL || !model_is_empty(temp_model))
         return ERR_ARGS;
@@ -133,7 +133,7 @@ err_t model_load(model_t &model, const filename_t &filename)
     {
         // Инициализируем временную модель
         model_t temp_model = model_init();
-        rc = model_load_elements(temp_model, file);
+        rc = model_load_content(temp_model, file);
         fclose(file);
 
         if (rc == ERR_OK)

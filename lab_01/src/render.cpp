@@ -18,18 +18,18 @@ typedef struct _line_struct
 
 /**
  * @brief Функция рисует одну линию, состоящую из двух точек
- * @param[in, out] plane Холст для рисования
+ * @param[in] render Структура с данными для рисования
  * @param[in] point_1 Точка 1
  * @param[in] point_2 Точка 2
  */
-static err_t draw_line(QPixmap *plane, const point_t &point_1, const point_t &point_2)
+static err_t draw_line(const render_t &render, const point_t &point_1, const point_t &point_2)
 {
-    if (plane == NULL)
+    if (render.plane == NULL)
         return ERR_ARGS;
 
-    QPainter painter(plane);
+    QPainter painter(render.plane);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setPen(QPen(Qt::white, 1));
+    painter.setPen(render.draw_pen);
 
     painter.drawLine(point_1.x, point_1.y, point_2.x, point_2.y);
     return ERR_OK;
@@ -106,18 +106,18 @@ static err_t convert_line(point_t &point_1, point_t &point_2, const QPixmap *pla
  * @param[in] points Массив точек
  * @param[in] edge одна грань
  */
-static err_t draw_edge(QPixmap *plane, const point_t *points, const edge_t &edge)
+static err_t draw_edge(const render_t &render, const point_t *points, const edge_t &edge)
 {
-    if (plane == NULL)
+    if (points == NULL)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
     line_t line = {};
     if ((rc = get_line(line, points, edge)) == ERR_OK)
     {
-        if ((rc = convert_line(line.point_1, line.point_2, plane)) == ERR_OK)
+        if ((rc = convert_line(line.point_1, line.point_2, render.plane)) == ERR_OK)
         {
-            rc = draw_line(plane, line.point_1, line.point_2);
+            rc = draw_line(render, line.point_1, line.point_2);
         }
     }
 
@@ -142,7 +142,7 @@ static err_t draw_edges(const render_t &render, const points_t &points, const ed
     {
         if ((rc = validate_edge(edge, edges.array[i], points.size)) == ERR_OK)
         {
-            rc = draw_edge(render.plane, points.array, edge);
+            rc = draw_edge(render, points.array, edge);
         }
     }
 
