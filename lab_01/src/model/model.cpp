@@ -158,14 +158,12 @@ err_t model_load(model_t &model, const filename_t &filename)
  */
 err_t model_shift(model_t &model, const shift_t &shift)
 {
-    err_t rc = ERR_OK;
-    if (!points_is_empty(model.points))
-    {
+    if (points_is_empty(model.points))
+        return ERR_EMPTY_MODEL;
+
+    err_t rc = points_shift(model.points, shift);
+    if (rc == ERR_OK)
         point_shift(model.center, shift);
-        rc = points_shift(model.points, shift);
-    }
-    else
-        rc = ERR_EMPTY_MODEL;
 
     return rc;
 }
@@ -177,19 +175,14 @@ err_t model_shift(model_t &model, const shift_t &shift)
  */
 err_t model_scale(model_t &model, const scale_t &scale)
 {
-    err_t rc = ERR_OK;
+    if (points_is_empty(model.points))
+        return ERR_EMPTY_MODEL;
 
-    if (!points_is_empty(model.points))
+    err_t rc = points_scale(model.points, model.center, scale);
+    if (rc == ERR_OK)
     {
-        if ((rc = points_scale(model.points, model.center, scale)) == ERR_OK)
-        {
-            // Если скейл, тогда обновляем центр, потому что онг может немного сдвинуться
-            rc = points_calculate_center(model.center, model.points);
-        }
+        rc = points_calculate_center(model.center, model.points);
     }
-    else
-        rc = ERR_EMPTY_MODEL;
-
     return rc;
 }
 
@@ -200,22 +193,20 @@ err_t model_scale(model_t &model, const scale_t &scale)
  */
 err_t model_turn(model_t &model, const turn_t &turn)
 {
-    err_t rc = ERR_OK;
-    if (!model_is_empty(model))
+    if (points_is_empty(model.points))
+        return ERR_EMPTY_MODEL;
+
+    shift_t shift = get_shift(model.center);
+
+    err_t rc = model_shift(model, shift);
+    if (rc == ERR_OK)
     {
-        shift_t shift = get_shift(model.center);
-        if ((rc = model_shift(model, shift)) == ERR_OK)
+        rc = points_turn(model.points, turn);
+        if (rc == ERR_OK)
         {
-            if ((rc = points_turn(model.points, turn)) == ERR_OK)
-            {
-                get_shift_back(shift);
-                rc = model_shift(model, shift);
-            }
+            get_shift_back(shift);
+            rc = model_shift(model, shift);
         }
-    }
-    else
-    {
-        rc = ERR_EMPTY_MODEL;
     }
 
     return rc;
