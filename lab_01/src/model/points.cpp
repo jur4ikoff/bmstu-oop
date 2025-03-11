@@ -8,7 +8,7 @@
 
 points_t points_init(void)
 {
-    points_t new_points = { 0 };
+    points_t new_points = {0};
     new_points.array = NULL;
     new_points.size = 0;
 
@@ -39,19 +39,14 @@ bool points_is_empty(const points_t &points)
  */
 static err_t points_read(point_t *points, FILE *file, const size_t size)
 {
-    if (points == NULL)
+    if (points == NULL || file == NULL)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    for (size_t i = 0; i < size; i++)
+    for (size_t i = 0; rc == ERR_OK && (i < size); i++)
     {
-        point_t new_point = { 0 };
-        if ((rc = point_read(new_point, file)) == ERR_OK)
-            points[i] = new_point;
-        else
-            break;
+        rc = point_read(points[i], file);
     }
-
     return rc;
 }
 
@@ -72,7 +67,7 @@ err_t points_load(points_t &points, FILE *file)
         if (points.array != NULL)
         {
             if ((rc = points_read(points.array, file, points.size)) != ERR_OK)
-                points_free(points);
+                free(points.array);
         }
         else
             rc = ERR_MEMORY_ALLOCATION;
@@ -141,7 +136,6 @@ err_t points_calculate_center(point_t &center, const points_t &points)
     return ERR_OK;
 }
 
-
 /**
  * @brief Функция поворачивает массив точек на определенный угол
  * @param[in, out] points Массив точек
@@ -159,4 +153,4 @@ err_t points_turn(points_t &points, const turn_t &turn)
     }
 
     return ERR_OK;
-}   
+}

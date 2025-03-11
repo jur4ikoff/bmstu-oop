@@ -57,7 +57,7 @@ void model_free(model_t &model)
 // Определяет пустая ли модель или нет. 1 если пустая, иначе 0
 bool model_is_empty(const model_t &model)
 {
-    if (points_is_empty(model.points) && edges_is_empty(model.edges))
+    if (points_is_empty(model.points) || edges_is_empty(model.edges))
         return true;
 
     return false;
@@ -94,25 +94,23 @@ err_t model_validate(const model_t &model)
  */
 static err_t model_load_content(model_t &temp_model, FILE *file)
 {
-    if (file == NULL || !model_is_empty(temp_model))
+    if (file == NULL || !points_is_empty(temp_model.points) || !edges_is_empty(temp_model.edges))
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    points_t points = points_init();
-    size_t points_count = 0;
-    if ((rc = points_load(points, file)) == ERR_OK)
+    if ((rc = points_load(temp_model.points, file)) == ERR_OK)
     {
-        temp_model.points = points;
-
-        edges_t edges = edges_init();
-        if ((rc = load_edges(edges, file)) != ERR_OK)
+        if ((rc = load_edges(temp_model.edges, file)) == ERR_OK)
         {
-            points_free(points);
+            if ((rc = points_calculate_center(temp_model.center, temp_model.points)) != ERR_OK)
+            {
+                points_free(temp_model.points);
+                edges_free(temp_model.edges);
+            }
         }
         else
         {
-            temp_model.edges = edges;
-            rc = model_validate(temp_model);
+            points_free(temp_model.points);
         }
     }
 
@@ -127,25 +125,32 @@ static err_t model_load_content(model_t &temp_model, FILE *file)
 err_t model_load(model_t &model, const filename_t &filename)
 {
     err_t rc = ERR_OK;
-
     FILE *file = fopen(filename, "r");
+
+    // Инициализируем временную модель
+    model_t temp_model = model_init();
+
     if (file != NULL)
     {
-        // Инициализируем временную модель
-        model_t temp_model = model_init();
         rc = model_load_content(temp_model, file);
         fclose(file);
-
         if (rc == ERR_OK)
         {
-            model_free(model);
-            model = temp_model;
-            rc = points_calculate_center(model.center, model.points);
+            if ((rc = model_validate(temp_model)) != ERR_OK)
+            {
+                model_free(temp_model);
+            }
         }
     }
     else
     {
         rc = ERR_FILE;
+    }
+
+    if (rc == ERR_OK)
+    {
+        model_free(model);
+        model = temp_model;
     }
     return rc;
 }
