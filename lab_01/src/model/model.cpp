@@ -74,7 +74,7 @@ static err_t model_validate_content(const edges_t &edges, const points_t &points
     if (edges.array == NULL)
         return ERR_ARGS;
 
-    err_t rc = edges_validate(edges, points.size);
+    err_t rc = edges_validate(edges.array, edges.size, points.size);
     return rc;
 }
 
