@@ -181,7 +181,7 @@ err_t model_scale(model_t &model, const scale_t &scale)
 
     if (!points_is_empty(model.points))
     {
-        if ((rc = points_scale(model.points, scale, model.center)) == ERR_OK)
+        if ((rc = points_scale(model.points, model.center, scale)) == ERR_OK)
         {
             // Если скейл, тогда обновляем центр, потому что онг может немного сдвинуться
             rc = points_calculate_center(model.center, model.points);

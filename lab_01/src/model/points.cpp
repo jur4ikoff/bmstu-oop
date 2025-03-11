@@ -116,17 +116,17 @@ err_t points_shift(points_t &points, const shift_t &shift)
 /**
  * @brief Функия реализует скейл всех точек
  * @param[in, out] points структура точек
- * @param[in] shift Структура со смещением
  * @param[in] center Центр
+ * @param[in] shift Структура со смещением
  */
-err_t points_scale(points_t &points, const scale_t &scale, const point_t &center)
+err_t points_scale(points_t &points, const point_t &center, const scale_t &scale)
 {
     if (points.array == NULL)
         return ERR_ARGS;
 
     for (size_t i = 0; i < points.size; i++)
     {
-        point_scale(points.array[i], scale, center);
+        point_scale(points.array[i], center, scale);
     }
 
     return ERR_OK;

@@ -52,7 +52,7 @@ void point_shift(point_t &point, const shift_t &shift)
  * @param[in] scale Структура с масштабом
  * @param[in] center Точка центра
  */
-void point_scale(point_t &point, const scale_t &scale, const point_t &center)
+void point_scale(point_t &point, const point_t &center, const scale_t &scale)
 {
     point.x = (point.x - center.x) * scale.x + center.x;
     point.y = (point.y - center.y) * scale.y + center.y;
