@@ -63,7 +63,7 @@ static err_t read_edges(edge_t *edges, FILE *file, const size_t size)
     err_t rc = ERR_OK;
     for (size_t i = 0; i < size; i++)
     {
-        edge_t new_edge = { 0 };
+        edge_t new_edge = {0};
         if ((rc = read_edge(new_edge, file)) == ERR_OK)
             edges[i] = new_edge;
         else
@@ -120,10 +120,15 @@ static err_t edge_validate(const edge_t edge, const size_t points_count)
 err_t edges_validate(const edges_t edges, const size_t points_count)
 {
     err_t rc = ERR_OK;
-    for (size_t i = 0; rc == ERR_OK && (i < edges.size); i++)
+    if (edges.size > 0)
     {
-        rc = edge_validate(edges.array[i], points_count);
+        for (size_t i = 0; rc == ERR_OK && (i < edges.size); i++)
+        {
+            rc = edge_validate(edges.array[i], points_count);
+        }
     }
+    else
+        rc = ERR_EDGES;
 
     return rc;
 }
