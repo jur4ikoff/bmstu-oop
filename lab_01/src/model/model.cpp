@@ -27,7 +27,7 @@ static shift_t get_shift(const point_t &center)
  * @brief Функция умножает каждую координату на -1
  * @param[in, out] shift Структура смещения
  */
-static void get_shift_to_turn(shift_t &shift)
+static void get_shift_back(shift_t &shift)
 {
     shift.x *= -1;
     shift.y *= -1;
@@ -207,7 +207,7 @@ err_t model_turn(model_t &model, const turn_t &turn)
         {
             if ((rc = points_turn(model.points, turn)) == ERR_OK)
             {
-                get_shift_to_turn(shift);
+                get_shift_back(shift);
                 rc = model_shift(model, shift);
             }
         }
