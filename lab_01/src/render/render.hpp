@@ -20,7 +20,9 @@ typedef struct _line_struct
 
 err_t model_render(const render_t &, const model_t &);
 
-err_t clear_scene(const render_t &render);
+void plane_clear(const render_t &);
+void plane_fill(const QPixmap &plane, const QColor &color);
+
 err_t draw_line(const render_t &, const line_t &);
 err_t convert_point(point_t &, const QPixmap &);
 #endif // RENDER_HPP__

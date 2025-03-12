@@ -29,10 +29,15 @@ err_t draw_line(const render_t &render, const line_t &line)
     return ERR_OK;
 }
 
-err_t clear_scene(const render_t &render)
+void plane_fill(const QPixmap &plane, const QColor &color)
 {
-    render.plane.fill(render.background_color);
-    return ERR_OK;
+    plane.fill(color);
+}
+
+void plane_clear(const render_t &render)
+{
+    plane_fill(render.plane, render.background_color);
+    // render.plane.fill(render.background_color);
 }
 
 /**
