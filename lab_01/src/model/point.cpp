@@ -80,9 +80,11 @@ static void rotate_x(point_t &point, const double angle)
 {
     double y = point.y;
     double z = point.z;
+    double cos_a = cos(angle);
+    double sin_a = sin(angle);
 
-    point.y = y * cos(angle) - z * sin(angle);
-    point.z = y * sin(angle) + z * cos(angle);
+    point.y = y * cos_a - z * sin_a;
+    point.z = y * sin_a + z * cos_a;
 }
 
 // Функция для поворота точки вокруг оси Y
@@ -90,8 +92,12 @@ static void rotate_y(point_t &point, const double angle)
 {
     double x = point.x;
     double z = point.z;
-    point.x = x * cos(angle) + z * sin(angle);
-    point.z = -x * sin(angle) + z * cos(angle);
+
+    double cos_a = cos(angle);
+    double sin_a = sin(angle);
+
+    point.x = x * cos_a + z * sin_a;
+    point.z = -x * sin_a + z * cos_a;
 }
 
 // Функция для поворота точки вокруг оси Z
@@ -99,8 +105,12 @@ static void rotate_z(point_t &point, const double angle)
 {
     double x = point.x;
     double y = point.y;
-    point.x = x * cos(angle) - y * sin(angle);
-    point.y = x * sin(angle) + y * cos(angle);
+
+    double cos_a = cos(angle);
+    double sin_a = sin(angle);
+
+    point.x = x * cos_a - y * sin_a;
+    point.y = x * sin_a + y * cos_a;
 }
 
 /**

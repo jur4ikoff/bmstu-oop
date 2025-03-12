@@ -69,7 +69,7 @@ bool model_is_empty(const model_t &model)
  * @param[in] edges Структура граней
  * @param[in] points Структура точек
  */
-static err_t model_validate_content(const edges_t &edges, const points_t &points)
+err_t model_validate_content(const edges_t &edges, const points_t &points)
 {
     if (edges.array == NULL)
         return ERR_ARGS;

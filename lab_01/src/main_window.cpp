@@ -81,7 +81,7 @@ void MainWindow::open_file(void)
 err_t MainWindow::draw_update(void)
 {
     QPen pen = QPen(Qt::white, 1);
-    render_t to_render = { .plane = &pixmap, .draw_pen = pen };
+    render_t to_render = { .plane = &pixmap, .draw_pen = pen, .background_color= "#252525" };
     request_t request = { .task = REQ_RENDER, .render = to_render };
     err_t rc = request_handler(request);
     if (rc != ERR_OK)
