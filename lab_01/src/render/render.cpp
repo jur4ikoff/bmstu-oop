@@ -35,15 +35,10 @@ static err_t get_line(line_t &line, const point_t *points, const edge_t &edge)
  * @param[in, out] line Структура с линией
  * @param[in] render структура с данными для рисования
  */
-static err_t convert_line(line_t &line, const render_t &render)
+static void convert_line(line_t &line, const render_t &render)
 {
-    err_t rc = convert_point(line.point_1, render.plane);
-    if (rc == ERR_OK)
-    {
-        rc = convert_point(line.point_2, render.plane);
-    }
-
-    return rc;
+    convert_point(line.point_1, render.plane);
+    convert_point(line.point_2, render.plane);
 }
 
 /**
@@ -61,12 +56,9 @@ static err_t draw_edge(const render_t &render, const point_t *points, const edge
     line_t line;
     if ((rc = get_line(line, points, edge)) == ERR_OK)
     {
-        if ((rc = convert_line(line, render)) == ERR_OK)
-        {
-            rc = draw_line(render, line);
-        }
+        convert_line(line, render);
+        rc = draw_line(render, line);
     }
-
     return rc;
 }
 
@@ -91,11 +83,6 @@ static err_t draw_edges(const render_t &render, const edges_t &edges, const poin
     return rc;
 }
 
-static err_t draw_model(const render_t &render, const model_t &model)
-{
-    return draw_edges(render, model.edges, model.points);
-}
-
 /**
  * @brief Функция для отрисовки модели
  * @param[in] render Холст и его размеры
@@ -103,14 +90,11 @@ static err_t draw_model(const render_t &render, const model_t &model)
  */
 err_t model_render(const render_t &render, const model_t &model)
 {
-    if (model_is_empty(model))
+    if (edges_is_empty(model.edges) || points_is_empty(model.points))
         return ERR_EMPTY_MODEL;
 
-    err_t rc = clear_scene(render);
-    if (rc == ERR_OK)
-    {
-        rc = draw_model(render, model);
-    }
+    plane_clear(render);
+    err_t rc = draw_edges(render, model.edges, model.points);
 
     return rc;
 }
