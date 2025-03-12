@@ -8,7 +8,7 @@
 
 points_t points_init(void)
 {
-    points_t new_points = { 0 };
+    points_t new_points = {0};
     new_points.array = NULL;
     new_points.size = 0;
 
@@ -79,9 +79,9 @@ err_t points_load(points_t &points, FILE *file)
     if (file == NULL)
         return ERR_ARGS;
 
-    err_t rc = ERR_OK;
     size_t count;
-    if ((rc = read_elements_count(count, file)) == ERR_OK)
+    err_t rc = read_elements_count(count, file);
+    if (rc == ERR_OK)
     {
         rc = points_allocate(points, count);
         if (rc == ERR_OK)
@@ -137,16 +137,19 @@ err_t points_scale(points_t &points, const point_t &center, const scale_t &scale
  * @param[in, out] center Точка сумма всех остальных
  * @param[in] points Массив точек
  * @param[in] size Размер массива
- * @warning points должен быть проверен перед вызовом
  */
-static void get_sum_all_points(point_t &sum, const point_t *points, const size_t size)
+static err_t sum_all_points(point_t &sum, const point_t *points, const size_t size)
 {
+    if (points == NULL || size == 0)
+        return ERR_ARGS;
+
     for (size_t i = 0; i < size; ++i)
     {
         sum.x += points[i].x;
         sum.y += points[i].y;
         sum.z += points[i].z;
     }
+    return ERR_OK;
 }
 
 static void div_point_on_koef(point_t &point, double koef)
@@ -164,13 +167,14 @@ static void div_point_on_koef(point_t &point, double koef)
 err_t points_calculate_center(point_t &center, const points_t &points)
 {
     if (points.size == 0 || points.array == NULL)
-    {
         return ERR_EMPTY_MODEL;
-    }
 
     center = point_init();
-    get_sum_all_points(center, points.array, points.size);
-    div_point_on_koef(center, points.size);
+    err_t rc = sum_all_points(center, points.array, points.size);
+    if (rc == ERR_OK)
+    {
+        div_point_on_koef(center, points.size);
+    }
 
     return ERR_OK;
 }

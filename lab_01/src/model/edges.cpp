@@ -129,19 +129,18 @@ static err_t edge_validate(const edge_t edge, const size_t points_count)
 
 /**
  * @brief Функция проверяет, что все ребра существуют
- * @param[in] edges массив граней
+ * @param[in] edges Структура граней
  * @param[in] edges_count Количество граней в моделе
- * @param[in] points_count Количество точек в моделе
  */
-err_t edges_validate(const edge_t *edges, const size_t edges_count, const size_t points_count)
+err_t edges_validate(const edges_t &edges, const size_t points_count)
 {
-    if (edges_count < 1 || points_count < 1 || edges == NULL)
+    if (edges.size < 1 || edges.array == NULL || points_count < 1)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    for (size_t i = 0; rc == ERR_OK && (i < edges_count); i++)
+    for (size_t i = 0; rc == ERR_OK && (i < edges.size); i++)
     {
-        rc = edge_validate(edges[i], points_count);
+        rc = edge_validate(edges.array[i], points_count);
     }
 
     return rc;

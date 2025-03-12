@@ -23,50 +23,40 @@ typedef struct _line_struct
  * @param[in] edge структура с данными о грани
  * @return Код возврата
  */
-static err_t get_line(line_t &line, const point_t *points, const edge_t edge)
+static err_t get_line(line_t &line, const point_t *points, const edge_t &edge)
 {
     if (points == NULL)
         return ERR_ARGS;
-    point_t point_1 = point_init();
-    point_t point_2 = point_init();
 
     size_t first = edge.first;
     size_t second = edge.second;
 
-    point_1.x = points[first].x;
-    point_1.y = points[first].y;
-
-    point_2.x = points[second].x;
-    point_2.y = points[second].y;
-
-    line.point_1 = point_1;
-    line.point_2 = point_2;
+    line = {points[first], points[second]};
     return ERR_OK;
 }
 
 /**
  * @brief Конвертация координат в формат, необходимый для вывода на экран
- * @param[in, out] point_1 Точка 1
- * @param[in, out] point_2 Точка 2
+ * @param[in, out] line Структура с линией
  * @param[in] render структура с данными для рисования
  */
-static err_t convert_line(point_t &point_1, point_t &point_2, const render_t &render)
+static err_t convert_line(line_t &line, const render_t &render)
 {
     if (render.plane == NULL)
         return ERR_ARGS;
 
-    point_1.x = render.plane->width() / 2.0 + point_1.x;
-    point_1.y = render.plane->height() / 2.0 - point_1.y;
+    err_t rc = convert_point(line.point_1, render.plane);
+    if (rc == ERR_OK)
+    {
+        rc = convert_point(line.point_2, render.plane);
+    }
 
-    point_2.x = render.plane->width() / 2.0 + point_2.x;
-    point_2.y = render.plane->height() / 2.0 - point_2.y;
-
-    return ERR_OK;
+    return rc;
 }
 
 /**
  * @brief Функцмя рисует одну грань
- * @param[in, out] plane Указатель на холст для рисование
+ * @param[in] render Структура с данными для вывода
  * @param[in] points Массив точек
  * @param[in] edge одна грань
  */
@@ -76,10 +66,10 @@ static err_t draw_edge(const render_t &render, const point_t *points, const edge
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    line_t line = {};
+    line_t line;
     if ((rc = get_line(line, points, edge)) == ERR_OK)
     {
-        if ((rc = convert_line(line.point_1, line.point_2, render)) == ERR_OK)
+        if ((rc = convert_line(line, render)) == ERR_OK)
         {
             rc = draw_line(render, line.point_1, line.point_2);
         }

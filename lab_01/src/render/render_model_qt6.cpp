@@ -34,3 +34,18 @@ err_t clear_scene(const render_t &render)
     render.plane->fill(render.background_color);
     return ERR_OK;
 }
+
+/**
+ * @brief Конвертация координат в формат, необходимый для вывода на экран
+ * @param[in, out] point Точка 2
+ * @param[in] plane Данные о холсте
+ */
+err_t convert_point(point_t &point, const QPixmap *plane)
+{
+    if (plane == NULL)
+        return ERR_ARGS;
+
+    point.x = plane->width() / 2.0 + point.x;
+    point.y = plane->height() / 2.0 - point.y;
+    return ERR_OK;
+}

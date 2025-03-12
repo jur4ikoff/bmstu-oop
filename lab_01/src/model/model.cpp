@@ -40,7 +40,7 @@ static void get_shift_back(shift_t &shift)
  */
 model_t model_init(void)
 {
-    model_t model = { 0 };
+    model_t model = {0};
     model.points = points_init();
     model.edges = edges_init();
     model.center = point_init();
@@ -71,11 +71,7 @@ bool model_is_empty(const model_t &model)
  */
 err_t model_validate_content(const edges_t &edges, const points_t &points)
 {
-    if (edges.array == NULL)
-        return ERR_ARGS;
-
-    err_t rc = edges_validate(edges.array, edges.size, points.size);
-    return rc;
+    return edges_validate(edges, points.size);
 }
 
 /**
@@ -84,8 +80,7 @@ err_t model_validate_content(const edges_t &edges, const points_t &points)
  */
 err_t model_validate(const model_t &model)
 {
-    err_t rc = model_validate_content(model.edges, model.points);
-    return rc;
+    return model_validate_content(model.edges, model.points);
 }
 
 /**
