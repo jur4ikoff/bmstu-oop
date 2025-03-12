@@ -15,11 +15,18 @@
  * @param[in] center точка, центр
  * @return Смещение
  */
-static void get_shift(shift_t &shift, const point_t &center)
+static void get_shift_to_center(shift_t &shift, const point_t &center)
 {
     shift.x = -center.x;
     shift.y = -center.y;
     shift.z = -center.z;
+}
+
+static void get_shift_to_reset(shift_t &shift, const point_t &center)
+{
+    shift.x = center.x;
+    shift.y = center.y;
+    shift.z = center.z;
 }
 
 /**
@@ -167,6 +174,20 @@ err_t model_shift(model_t &model, const shift_t &shift)
     return rc;
 }
 
+static err_t model_shift_to_center(points_t &points, const point_t &center)
+{
+    shift_t shift;
+    get_shift_to_center(shift, center);
+    return points_shift(points, shift);
+}
+
+static err_t model_return_position(points_t &points, const point_t &center)
+{
+    shift_t shift;
+    get_shift_to_reset(shift, center);
+    return points_shift(points, shift);
+}
+
 /**
  * @brief Функция реализует скейл
  * @param[in, out] model Структура модели
@@ -181,18 +202,13 @@ err_t model_scale(model_t &model, const scale_t &scale)
     }
     else
     {
-        shift_t shift;
-        get_shift(shift, model.center);
-        point_shift(model.center, shift);
-        rc = points_shift(model.points, shift);
+        rc = model_shift_to_center(model.points, model.center);
         if (rc == ERR_OK)
         {
             rc = points_scale(model.points, scale);
             if (rc == ERR_OK)
             {
-                get_shift_back(shift);
-                point_shift(model.center, shift);
-                rc = points_shift(model.points, shift);
+                rc = model_return_position(model.points, model.center);
             }
         }
     }
@@ -214,18 +230,13 @@ err_t model_turn(model_t &model, const turn_t &turn)
     }
     else
     {
-        shift_t shift;
-        get_shift(shift, model.center);
-        point_shift(model.center, shift);
-        rc = points_shift(model.points, shift);
+        rc = model_shift_to_center(model.points, model.center);
         if (rc == ERR_OK)
         {
             rc = points_turn(model.points, turn);
             if (rc == ERR_OK)
             {
-                get_shift_back(shift);
-                point_shift(model.center, shift);
-                rc = points_shift(model.points, shift);
+                rc = model_return_position(model.points, model.center);
             }
         }
     }
