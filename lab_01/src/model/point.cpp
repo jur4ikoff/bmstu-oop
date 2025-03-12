@@ -5,18 +5,6 @@
 
 #include <cstdio>
 
-// Функция записывает в точку значение в точке (0, 0, 0)
-point_t point_init(void)
-{
-    point_t point;
-
-    point.x = 0;
-    point.y = 0;
-    point.z = 0;
-
-    return point;
-}
-
 /**
  * @brief Функция читает из файла одну точку
  * @param[out] point - одна точка
@@ -32,6 +20,13 @@ err_t point_read(point_t &point, FILE *file)
     point.y = y;
     point.z = z;
     return ERR_OK;
+}
+
+void point_set_default_value(point_t &point)
+{
+    point.x = 0;
+    point.y = 0;
+    point.z = 0;
 }
 
 /**
@@ -57,23 +52,6 @@ void point_scale(point_t &point, const point_t &center, const scale_t &scale)
     point.x = (point.x - center.x) * scale.x + center.x;
     point.y = (point.y - center.y) * scale.y + center.y;
     point.z = (point.z - center.z) * scale.z + center.z;
-}
-
-/**
- * @brief Функция сложения двух точек
- * @param[in] first Первая точка
- * @param[in] second Вторая точка
- * @return point_t результат сложения
- */
-point_t point_add(const point_t &first, const point_t second)
-{
-    point_t res = point_init();
-
-    res.x = first.x + second.x;
-    res.y = first.y + second.y;
-    res.z = first.z + second.z;
-
-    return res;
 }
 
 static void rotate_x(point_t &point, const double angle)

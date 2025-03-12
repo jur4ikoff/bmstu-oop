@@ -109,14 +109,11 @@ err_t model_render(const render_t &render, const model_t &model)
     if (model_is_empty(model))
         return ERR_EMPTY_MODEL;
 
-    err_t rc = model_validate(model);
+    err_t rc = clear_scene(render);
     if (rc == ERR_OK)
     {
-        rc = clear_scene(render);
-        if (rc == ERR_OK)
-        {
-            rc = draw_model(render, model);
-        }
+        rc = draw_model(render, model);
     }
+
     return rc;
 }

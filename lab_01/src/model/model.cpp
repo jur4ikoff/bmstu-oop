@@ -11,17 +11,15 @@
 
 /**
  * @brief Фунекция получает значение, на которое нужно сдвинуть фигуру, чтобы ее центр был в 0, 0
+ * @param[out] shift Смещение
  * @param[in] center точка, центр
  * @return Смещение
  */
-static shift_t get_shift(const point_t &center)
+static void get_shift(shift_t &shift, const point_t &center)
 {
-    shift_t shift = {};
     shift.x = -center.x;
     shift.y = -center.y;
     shift.z = -center.z;
-
-    return shift;
 }
 
 /**
@@ -43,8 +41,8 @@ model_t model_init(void)
     model_t model = {0};
     model.points = points_init();
     model.edges = edges_init();
-    model.center = point_init();
-
+    
+    point_set_default_value(model.center);
     return model;
 }
 
@@ -191,16 +189,17 @@ err_t model_turn(model_t &model, const turn_t &turn)
     if (points_is_empty(model.points))
         return ERR_EMPTY_MODEL;
 
-    shift_t shift = get_shift(model.center);
+    shift_t shift;
+    get_shift(shift, model.center);
 
-    err_t rc = model_shift(model, shift);
+    err_t rc = points_shift(model.points, shift);
     if (rc == ERR_OK)
     {
         rc = points_turn(model.points, turn);
         if (rc == ERR_OK)
         {
             get_shift_back(shift);
-            rc = model_shift(model, shift);
+            rc = points_shift(model.points, shift);
         }
     }
 

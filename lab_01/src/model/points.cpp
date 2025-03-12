@@ -134,7 +134,7 @@ err_t points_scale(points_t &points, const point_t &center, const scale_t &scale
 
 /**
  * @brief Функция считает сумму всех точекя
- * @param[in, out] center Точка сумма всех остальных
+ * @param[out] sum Точка сумма всех остальных
  * @param[in] points Массив точек
  * @param[in] size Размер массива
  */
@@ -169,7 +169,7 @@ err_t points_calculate_center(point_t &center, const points_t &points)
     if (points.size == 0 || points.array == NULL)
         return ERR_EMPTY_MODEL;
 
-    center = point_init();
+    point_set_default_value(center);
     err_t rc = sum_all_points(center, points.array, points.size);
     if (rc == ERR_OK)
     {
