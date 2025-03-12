@@ -175,6 +175,18 @@ err_t points_calculate_center(point_t &center, const points_t &points)
     return ERR_OK;
 }
 
+static trig_funcs_t get_functions(const double angle)
+{
+    return {cos(angle), sin(angle)};
+}
+
+void convert_angle_to_triangle(trig_val_t &trig, const turn_t &turn)
+{
+    trig.x_angle = get_functions(turn.x_angle);
+    trig.y_angle = get_functions(turn.y_angle);
+    trig.z_angle = get_functions(turn.z_angle);
+}
+
 /**
  * @brief Функция поворачивает массив точек на определенный угол
  * @param[in, out] points Массив точек
@@ -186,9 +198,11 @@ err_t points_turn(points_t &points, const turn_t &turn)
     if (points.array == NULL || points.size == 0)
         return ERR_ARGS;
 
+    trig_val_t trig;
+    convert_angle_to_triangle(trig, turn);
     for (size_t i = 0; i < points.size; i++)
     {
-        point_turn(points.array[i], turn);
+        point_turn(points.array[i], trig);
     }
 
     return ERR_OK;

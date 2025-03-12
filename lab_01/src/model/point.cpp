@@ -61,41 +61,41 @@ void point_scale(point_t &point, const scale_t &scale)
     point.z *= scale.z;
 }
 
-static void rotate_x(point_t &point, const double angle)
+static void rotate_x(point_t &point, const trig_funcs_t &func)
 {
     double y = point.y;
     double z = point.z;
-    double cos_a = cos(angle);
-    double sin_a = sin(angle);
+    double r_cos = func.r_cos;
+    double r_sin = func.r_sin;
 
-    point.y = y * cos_a - z * sin_a;
-    point.z = y * sin_a + z * cos_a;
+    point.y = y * r_cos - z * r_sin;
+    point.z = y * r_sin + z * r_cos;
 }
 
 // Функция для поворота точки вокруг оси Y
-static void rotate_y(point_t &point, const double angle)
+static void rotate_y(point_t &point, const trig_funcs_t &func)
 {
     double x = point.x;
     double z = point.z;
 
-    double cos_a = cos(angle);
-    double sin_a = sin(angle);
+    double r_cos = func.r_cos;
+    double r_sin = func.r_sin;
 
-    point.x = x * cos_a + z * sin_a;
-    point.z = -x * sin_a + z * cos_a;
+    point.x = x * r_cos + z * r_sin;
+    point.z = -x * r_sin + z * r_cos;
 }
 
 // Функция для поворота точки вокруг оси Z
-static void rotate_z(point_t &point, const double angle)
+static void rotate_z(point_t &point, const trig_funcs_t &func)
 {
     double x = point.x;
     double y = point.y;
 
-    double cos_a = cos(angle);
-    double sin_a = sin(angle);
+    double r_cos = func.r_cos;
+    double r_sin = func.r_sin;
 
-    point.x = x * cos_a - y * sin_a;
-    point.y = x * sin_a + y * cos_a;
+    point.x = x * r_cos - y * r_sin;
+    point.y = x * r_sin + y * r_cos;
 }
 
 /**
@@ -104,9 +104,9 @@ static void rotate_z(point_t &point, const double angle)
  * @param[in] turn Структура с данными о повороте
  * @param[in] center центр
  */
-void point_turn(point_t &point, const turn_t &turn)
+void point_turn(point_t &point, const trig_val_t &trig)
 {
-    rotate_x(point, turn.x_angle);
-    rotate_y(point, turn.y_angle);
-    rotate_z(point, turn.z_angle);
+    rotate_x(point, trig.x_angle);
+    rotate_y(point, trig.y_angle);
+    rotate_z(point, trig.z_angle);
 }

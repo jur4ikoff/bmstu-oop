@@ -174,6 +174,11 @@ err_t model_shift(model_t &model, const shift_t &shift)
     return rc;
 }
 
+/**
+ * @brief Функция перемещает модель в центр
+ * @param[in, out] points Массив точек
+ * @param[in] center Данные центра модели
+ */
 static err_t model_shift_to_center(points_t &points, const point_t &center)
 {
     shift_t shift;
@@ -181,6 +186,11 @@ static err_t model_shift_to_center(points_t &points, const point_t &center)
     return points_shift(points, shift);
 }
 
+/**
+ * @brief Функция перемещает модель в исходные коориднаты
+ * @param[in, out] points Массив точек
+ * @param[in] center Данные центра модели
+ */
 static err_t model_return_position(points_t &points, const point_t &center)
 {
     shift_t shift;
