@@ -12,6 +12,9 @@
  */
 err_t point_read(point_t &point, FILE *file)
 {
+    if (file == NULL)
+        return ERR_FILE;
+        
     err_t rc = ERR_OK;
     if ((fscanf(file, "%lf %lf %lf", &point.x, &point.y, &point.z)) != 3)
         rc = ERR_FILE_CONTENT;

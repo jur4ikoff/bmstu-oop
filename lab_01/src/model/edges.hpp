@@ -6,21 +6,16 @@
 #include <cstdio>
 
 // Структура для описания ребра (точка начала и конец)
-struct _edge_type
+typedef struct _edge_type
 {
     size_t first, second;
-};
+} edge_t;
 
-using edge_t = _edge_type;
-
-struct _edges_struct
-
+typedef struct _edges_struct
 {
     edge_t *array;
     size_t size;
-};
-
-using edges_t = _edges_struct;
+} edges_t;
 
 edges_t edges_init(void);
 void edges_free(edges_t &edges);

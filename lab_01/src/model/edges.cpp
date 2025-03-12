@@ -37,15 +37,13 @@ bool edges_is_empty(const edges_t &edges)
  */
 static err_t edge_read(edge_t &edge, FILE *file)
 {
-    err_t rc = ERR_OK;
-    size_t first, second;
-    if ((rc = read_int_number(first, file)) != ERR_OK)
-        return rc;
-    if ((rc = read_int_number(second, file)) != ERR_OK)
-        return rc;
+    if (file == NULL)
+        return ERR_FILE;
 
-    edge.first = first;
-    edge.second = second;
+    err_t rc = ERR_OK;
+    if ((fscanf(file, "%zu %zu", &edge.first, &edge.second)) != 2)
+        rc = ERR_FILE_CONTENT;
+
     return rc;
 }
 
