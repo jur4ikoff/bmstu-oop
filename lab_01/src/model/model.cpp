@@ -117,30 +117,30 @@ static err_t model_load_content(model_t &temp_model, FILE *file)
 err_t model_load(model_t &model, const filename_t &filename)
 {
     err_t rc = ERR_OK;
-    FILE *file = fopen(filename, "r");
-
     // Определяем временную модель, потому что основная это var параметр, и меняется только при успешном считываними
     model_t temp_model;
-    if (file != NULL)
+    FILE *file = fopen(filename, "r");
+    if (file == NULL)
+    {
+        rc = ERR_FILE;
+    }
+    else
     {
         rc = model_load_content(temp_model, file);
         fclose(file);
         if (rc == ERR_OK)
         {
-            if ((rc = model_validate(temp_model)) != ERR_OK)
-            {
+            rc = model_validate(temp_model);
+            if (rc != ERR_OK)
                 model_free(temp_model);
+            else
+            {
+                model_free(model);
+                model = temp_model;
             }
         }
     }
-    else
-        rc = ERR_FILE;
 
-    if (rc == ERR_OK)
-    {
-        model_free(model);
-        model = temp_model;
-    }
     return rc;
 }
 
@@ -171,15 +171,8 @@ err_t model_scale(model_t &model, const scale_t &scale)
     if (points_is_empty(model.points))
         return ERR_EMPTY_MODEL;
 
-    // err_t rc = points_scale(model.points, model.center, scale);
-    // if (rc == ERR_OK)
-    // {
-    //     rc = points_calculate_center(model.center, model.points);
-    // }
-
     shift_t shift;
     get_shift(shift, model.center);
-
     point_shift(model.center, shift);
     err_t rc = points_shift(model.points, shift);
     if (rc == ERR_OK)

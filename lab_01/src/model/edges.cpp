@@ -51,19 +51,18 @@ static err_t edge_read(edge_t &edge, FILE *file)
 
 /**
  * @brief Функция читает все грани из файла
- * @param[out] edges Массив граней
+ * @param[out] edges Структура граней
  * @param[in, out] file Файловый дескриптор
- * @param[in] size Размер массива
  */
-static err_t edges_read(edge_t *edges, FILE *file, const size_t size)
+static err_t edges_read(edges_t &edges, FILE *file)
 {
-    if (edges == NULL || file == NULL)
+    if (edges.array == NULL || file == NULL)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    for (size_t i = 0; rc == ERR_OK && (i < size); i++)
+    for (size_t i = 0; rc == ERR_OK && (i < edges.size); i++)
     {
-        rc = edge_read(edges[i], file);
+        rc = edge_read(edges.array[i], file);
     }
     return rc;
 }
@@ -105,7 +104,7 @@ err_t edges_load(edges_t &edges, FILE *file)
         rc = edges_allocate(edges, count);
         if (rc == ERR_OK)
         {
-            rc = edges_read(edges.array, file, edges.size);
+            rc = edges_read(edges, file);
             if (rc != ERR_OK)
                 edges_free(edges);
         }

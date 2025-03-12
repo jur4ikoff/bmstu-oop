@@ -12,14 +12,11 @@
  */
 err_t point_read(point_t &point, FILE *file)
 {
-    double x, y, z;
-    if ((fscanf(file, "%lf %lf %lf", &x, &y, &z)) != 3)
-        return ERR_FILE_CONTENT;
+    err_t rc = ERR_OK;
+    if ((fscanf(file, "%lf %lf %lf", &point.x, &point.y, &point.z)) != 3)
+        rc = ERR_FILE_CONTENT;
 
-    point.x = x;
-    point.y = y;
-    point.z = z;
-    return ERR_OK;
+    return rc;
 }
 
 void point_set_default_value(point_t &point)
