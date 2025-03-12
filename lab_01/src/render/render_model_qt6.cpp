@@ -20,10 +20,8 @@ static void draw_line_by_points(QPainter &painter, const point_t &point_1, const
  */
 err_t draw_line(const render_t &render, const line_t &line)
 {
-    if (render.plane == NULL)
-        return ERR_ARGS;
-
-    QPainter painter(render.plane);
+    QPixmap *ptr = &render.plane;
+    QPainter painter(ptr);
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setPen(render.draw_pen);
 
@@ -33,10 +31,7 @@ err_t draw_line(const render_t &render, const line_t &line)
 
 err_t clear_scene(const render_t &render)
 {
-    if (render.plane == NULL)
-        return ERR_ARGS;
-
-    render.plane->fill(render.background_color);
+    render.plane.fill(render.background_color);
     return ERR_OK;
 }
 
@@ -45,12 +40,9 @@ err_t clear_scene(const render_t &render)
  * @param[in, out] point Точка 2
  * @param[in] plane Данные о холсте
  */
-err_t convert_point(point_t &point, const QPixmap *plane)
+err_t convert_point(point_t &point, const QPixmap &plane)
 {
-    if (plane == NULL)
-        return ERR_ARGS;
-
-    point.x = plane->width() / 2.0 + point.x;
-    point.y = plane->height() / 2.0 - point.y;
+    point.x = plane.width() / 2.0 + point.x;
+    point.y = plane.height() / 2.0 - point.y;
     return ERR_OK;
 }

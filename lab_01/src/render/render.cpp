@@ -37,9 +37,6 @@ static err_t get_line(line_t &line, const point_t *points, const edge_t &edge)
  */
 static err_t convert_line(line_t &line, const render_t &render)
 {
-    if (render.plane == NULL)
-        return ERR_ARGS;
-
     err_t rc = convert_point(line.point_1, render.plane);
     if (rc == ERR_OK)
     {

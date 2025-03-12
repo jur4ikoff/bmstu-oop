@@ -8,7 +8,7 @@
 
 typedef struct _render_struct_
 {
-    QPixmap *plane;
+    QPixmap &plane;
     QPen &draw_pen;
     QColor background_color;
 } render_t;
@@ -22,5 +22,5 @@ err_t model_render(const render_t &, const model_t &);
 
 err_t clear_scene(const render_t &render);
 err_t draw_line(const render_t &, const line_t &);
-err_t convert_point(point_t &, const QPixmap *);
+err_t convert_point(point_t &, const QPixmap &);
 #endif // RENDER_HPP__
