@@ -11,11 +11,6 @@
 #include <QPixmap>
 #include <cstdio>
 
-typedef struct _line_struct
-{
-    point_t point_1, point_2;
-} line_t;
-
 /**
  * @brief Функция возвращает линию на основе массива точек и грани
  * @param[out] line линия
@@ -71,7 +66,7 @@ static err_t draw_edge(const render_t &render, const point_t *points, const edge
     {
         if ((rc = convert_line(line, render)) == ERR_OK)
         {
-            rc = draw_line(render, line.point_1, line.point_2);
+            rc = draw_line(render, line);
         }
     }
 
@@ -114,10 +109,10 @@ err_t model_render(const render_t &render, const model_t &model)
     if (model_is_empty(model))
         return ERR_EMPTY_MODEL;
 
-    err_t rc = clear_scene(render);
+    err_t rc = model_validate(model);
     if (rc == ERR_OK)
     {
-        rc = model_validate(model);
+        rc = clear_scene(render);
         if (rc == ERR_OK)
         {
             rc = draw_model(render, model);
