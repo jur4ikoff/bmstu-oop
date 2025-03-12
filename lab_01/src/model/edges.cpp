@@ -5,13 +5,10 @@
 #include <cstdio>
 #include <cstdlib>
 
-edges_t edges_init(void)
+void edges_init(edges_t &new_edges)
 {
-    edges_t new_edges = {};
     new_edges.array = NULL;
     new_edges.size = 0;
-
-    return new_edges;
 }
 
 void edges_free(edges_t &edges)
@@ -118,10 +115,11 @@ err_t edges_load(edges_t &edges, FILE *file)
  */
 static err_t edge_validate(const edge_t edge, const size_t points_count)
 {
+    err_t rc = ERR_OK;
     if (edge.first >= points_count || edge.second >= points_count)
-        return ERR_EDGES;
+        rc = ERR_EDGES;
 
-    return ERR_OK;
+    return rc;
 }
 
 /**

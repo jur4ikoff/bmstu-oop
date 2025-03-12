@@ -16,4 +16,5 @@ void point_set_default_value(point_t &);
 void point_shift(point_t &, const shift_t &);
 void point_scale(point_t &, const scale_t &);
 void point_turn(point_t &, const turn_t &);
+void point_add(point_t &, const point_t &);
 #endif // POINTS_HPP__

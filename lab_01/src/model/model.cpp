@@ -38,11 +38,11 @@ static void get_shift_back(shift_t &shift)
  */
 model_t model_init(void)
 {
-    model_t model = {0};
-    model.points = points_init();
-    model.edges = edges_init();
-
+    model_t model;
+    points_init(model.points);
+    edges_init(model.edges);
     point_set_default_value(model.center);
+
     return model;
 }
 
@@ -91,10 +91,11 @@ static err_t model_load_content(model_t &temp_model, FILE *file)
     if (file == NULL)
         return ERR_ARGS;
 
-    err_t rc = ERR_OK;
-    if ((rc = points_load(temp_model.points, file)) == ERR_OK)
+    err_t rc = points_load(temp_model.points, file);
+    if (rc == ERR_OK)
     {
-        if ((rc = edges_load(temp_model.edges, file)) == ERR_OK)
+        rc = edges_load(temp_model.edges, file);
+        if (rc == ERR_OK)
         {
             rc = points_calculate_center(temp_model.center, temp_model.points);
         }

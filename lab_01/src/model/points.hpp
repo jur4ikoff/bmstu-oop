@@ -13,7 +13,7 @@ typedef struct _points_struct
     size_t size;
 } points_t;
 
-points_t points_init(void);
+void points_init(points_t &);
 void points_free(points_t &);
 bool points_is_empty(const points_t &);
 

@@ -6,13 +6,10 @@
 
 #include <cstdlib>
 
-points_t points_init(void)
+void points_init(points_t &new_points)
 {
-    points_t new_points = {0};
     new_points.array = NULL;
     new_points.size = 0;
-
-    return new_points;
 }
 
 void points_free(points_t &points)
@@ -145,10 +142,9 @@ static err_t sum_all_points(point_t &sum, const point_t *points, const size_t si
 
     for (size_t i = 0; i < size; ++i)
     {
-        sum.x += points[i].x;
-        sum.y += points[i].y;
-        sum.z += points[i].z;
+        point_add(sum, points[i]);
     }
+
     return ERR_OK;
 }
 

@@ -17,7 +17,7 @@ typedef struct _edges_struct
     size_t size;
 } edges_t;
 
-edges_t edges_init(void);
+void edges_init(edges_t &new_edges);
 void edges_free(edges_t &edges);
 bool edges_is_empty(const edges_t &edges);
 

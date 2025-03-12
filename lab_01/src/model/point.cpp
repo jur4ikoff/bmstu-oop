@@ -14,12 +14,19 @@ err_t point_read(point_t &point, FILE *file)
 {
     if (file == NULL)
         return ERR_FILE;
-        
+
     err_t rc = ERR_OK;
     if ((fscanf(file, "%lf %lf %lf", &point.x, &point.y, &point.z)) != 3)
         rc = ERR_FILE_CONTENT;
 
     return rc;
+}
+
+void point_add(point_t &point_1, const point_t &point_2)
+{
+    point_1.x += point_2.x;
+    point_1.y += point_2.y;
+    point_1.z += point_2.z;
 }
 
 void point_set_default_value(point_t &point)
