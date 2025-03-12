@@ -71,7 +71,7 @@ static err_t draw_edge(const render_t &render, const point_t *points, const edge
  */
 static err_t draw_edges(const render_t &render, const edges_t &edges, const points_t &points)
 {
-    if (points.array == NULL || edges.array == NULL)
+    if (points.array == NULL || edges.array == NULL || edges.size == 0 || points.size == 0)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
@@ -90,11 +90,16 @@ static err_t draw_edges(const render_t &render, const edges_t &edges, const poin
  */
 err_t model_render(const render_t &render, const model_t &model)
 {
+    err_t rc = ERR_OK;
     if (edges_is_empty(model.edges) || points_is_empty(model.points))
-        return ERR_EMPTY_MODEL;
-
-    plane_clear(render);
-    err_t rc = draw_edges(render, model.edges, model.points);
+    {
+        rc = ERR_EMPTY_MODEL;
+    }
+    else
+    {
+        plane_clear(render);
+        err_t rc = draw_edges(render, model.edges, model.points);
+    }
 
     return rc;
 }

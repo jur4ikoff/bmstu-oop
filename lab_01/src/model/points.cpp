@@ -99,7 +99,7 @@ err_t points_load(points_t &points, FILE *file)
  */
 err_t points_shift(points_t &points, const shift_t &shift)
 {
-    if (points.array == NULL)
+    if (points.array == NULL || points.size == 0)
         return ERR_ARGS;
 
     for (size_t i = 0; i < points.size; i++)

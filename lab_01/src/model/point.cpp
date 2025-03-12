@@ -56,9 +56,9 @@ void point_shift(point_t &point, const shift_t &shift)
  */
 void point_scale(point_t &point, const scale_t &scale)
 {
-    point.x = point.x * scale.x;
-    point.y = point.y * scale.y;
-    point.z = point.z * scale.z;
+    point.x *= scale.x;
+    point.y *= scale.y;
+    point.z *= scale.z;
 }
 
 static void rotate_x(point_t &point, const double angle)
