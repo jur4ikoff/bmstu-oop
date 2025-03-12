@@ -117,6 +117,12 @@ static err_t model_load_content(model_t &temp_model, FILE *file)
     return rc;
 }
 
+void model_copy(model_t &dest, const model_t &src)
+{
+    dest = src;
+}
+
+
 /**
  * @brief Функция загружает данные из файла в структуру типа model_t
  * @param[in, out] model Объект типа model_t для записи данных из файла, изменяемый параметр
@@ -144,7 +150,7 @@ err_t model_load(model_t &model, const filename_t &filename)
             else
             {
                 model_free(model);
-                model = temp_model;
+                model_copy(model, temp_model);
             }
         }
     }
