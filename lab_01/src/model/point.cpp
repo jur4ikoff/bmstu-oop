@@ -47,11 +47,11 @@ void point_shift(point_t &point, const shift_t &shift)
  * @param[in] scale Структура с масштабом
  * @param[in] center Точка центра
  */
-void point_scale(point_t &point, const point_t &center, const scale_t &scale)
+void point_scale(point_t &point, const scale_t &scale)
 {
-    point.x = (point.x - center.x) * scale.x + center.x;
-    point.y = (point.y - center.y) * scale.y + center.y;
-    point.z = (point.z - center.z) * scale.z + center.z;
+    point.x = point.x * scale.x;
+    point.y = point.y * scale.y;
+    point.z = point.z * scale.z;
 }
 
 static void rotate_x(point_t &point, const double angle)

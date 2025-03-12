@@ -41,7 +41,7 @@ model_t model_init(void)
     model_t model = {0};
     model.points = points_init();
     model.edges = edges_init();
-    
+
     point_set_default_value(model.center);
     return model;
 }
@@ -171,11 +171,30 @@ err_t model_scale(model_t &model, const scale_t &scale)
     if (points_is_empty(model.points))
         return ERR_EMPTY_MODEL;
 
-    err_t rc = points_scale(model.points, model.center, scale);
+    // err_t rc = points_scale(model.points, model.center, scale);
+    // if (rc == ERR_OK)
+    // {
+    //     rc = points_calculate_center(model.center, model.points);
+    // }
+
+    shift_t shift;
+    get_shift(shift, model.center);
+
+    point_shift(model.center, shift);
+    err_t rc = points_shift(model.points, shift);
     if (rc == ERR_OK)
     {
-        rc = points_calculate_center(model.center, model.points);
+        rc = points_scale(model.points, scale);
+        if (rc == ERR_OK)
+        {
+            get_shift_back(shift);
+            point_shift(model.center, shift);
+            rc = points_shift(model.points, shift);
+            if (rc == ERR_OK)
+                rc = points_calculate_center(model.center, model.points);
+        }
     }
+
     return rc;
 }
 
@@ -192,6 +211,7 @@ err_t model_turn(model_t &model, const turn_t &turn)
     shift_t shift;
     get_shift(shift, model.center);
 
+    point_shift(model.center, shift);
     err_t rc = points_shift(model.points, shift);
     if (rc == ERR_OK)
     {
@@ -199,6 +219,7 @@ err_t model_turn(model_t &model, const turn_t &turn)
         if (rc == ERR_OK)
         {
             get_shift_back(shift);
+            point_shift(model.center, shift);
             rc = points_shift(model.points, shift);
         }
     }

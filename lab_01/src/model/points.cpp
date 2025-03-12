@@ -119,14 +119,14 @@ err_t points_shift(points_t &points, const shift_t &shift)
  * @param[in] center Центр
  * @param[in] shift Структура со смещением
  */
-err_t points_scale(points_t &points, const point_t &center, const scale_t &scale)
+err_t points_scale(points_t &points, const scale_t &scale)
 {
     if (points.array == NULL)
         return ERR_ARGS;
 
     for (size_t i = 0; i < points.size; i++)
     {
-        point_scale(points.array[i], center, scale);
+        point_scale(points.array[i], scale);
     }
 
     return ERR_OK;
