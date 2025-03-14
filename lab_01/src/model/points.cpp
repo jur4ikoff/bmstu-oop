@@ -175,16 +175,17 @@ err_t points_calculate_center(point_t &center, const points_t &points)
     return ERR_OK;
 }
 
-static trig_funcs_t get_functions(const double angle)
+static void get_trig_functions(trig_funcs_t &trig_functions, const double angle)
 {
-    return {cos(angle), sin(angle)};
+    trig_functions.r_cos = cos(angle);
+    trig_functions.r_sin = sin(angle);
 }
 
-void convert_angle_to_triangle(trig_val_t &trig, const turn_t &turn)
+static void convert_angle_to_triangle(trig_val_t &trig, const turn_t &turn)
 {
-    trig.x_angle = get_functions(turn.x_angle);
-    trig.y_angle = get_functions(turn.y_angle);
-    trig.z_angle = get_functions(turn.z_angle);
+    get_trig_functions(trig.x_angle, turn.x_angle);
+    get_trig_functions(trig.y_angle, turn.y_angle);
+    get_trig_functions(trig.z_angle, turn.z_angle);
 }
 
 /**

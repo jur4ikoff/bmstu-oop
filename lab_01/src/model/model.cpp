@@ -30,17 +30,6 @@ static void get_shift_to_reset(shift_t &shift, const point_t &center)
 }
 
 /**
- * @brief Функция умножает каждую координату на -1
- * @param[in, out] shift Структура смещения
- */
-static void get_shift_back(shift_t &shift)
-{
-    shift.x *= -1;
-    shift.y *= -1;
-    shift.z *= -1;
-}
-
-/**
  * @brief Функция инициализирует модель
  */
 model_t model_init(void)
