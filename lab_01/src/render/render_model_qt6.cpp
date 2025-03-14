@@ -1,4 +1,6 @@
 #include "render.hpp"
+#include "render_model_qt6.hpp"
+
 #include "errors.hpp"
 #include "model.hpp"
 #include "point.hpp"
@@ -48,4 +50,16 @@ void convert_point(point_t &point, const QPixmap &plane)
 {
     point.x = plane.width() / 2.0 + point.x;
     point.y = plane.height() / 2.0 - point.y;
+}
+
+
+/**
+ * @brief Конвертация координат в формат, необходимый для вывода на экран
+ * @param[in, out] line Структура с линией
+ * @param[in] render структура с данными для рисования
+ */
+void convert_line(line_t &line, const render_t &render)
+{
+    convert_point(line.point_1, render.plane);
+    convert_point(line.point_2, render.plane);
 }

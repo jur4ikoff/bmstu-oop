@@ -140,7 +140,7 @@ static err_t sum_all_points(point_t &sum, const point_t *points, const size_t si
     if (points == NULL || size == 0)
         return ERR_ARGS;
 
-    for (size_t i = 0; i < size; ++i)
+    for (size_t i = 0; i < size; i++)
     {
         point_add(sum, points[i]);
     }

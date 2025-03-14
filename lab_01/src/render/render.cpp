@@ -1,14 +1,13 @@
 #include "render.hpp"
 #include "constants.hpp"
 #include "edges.hpp"
+#include "render_model_qt6.hpp"
 #include "errors.hpp"
 #include "model.hpp"
 #include "point.hpp"
 #include "points.hpp"
 
 #include <QColor>
-#include <QPainter>
-#include <QPixmap>
 #include <cstdio>
 
 /**
@@ -28,17 +27,6 @@ static err_t get_line(line_t &line, const point_t *points, const edge_t &edge)
 
     line = {points[first], points[second]};
     return ERR_OK;
-}
-
-/**
- * @brief Конвертация координат в формат, необходимый для вывода на экран
- * @param[in, out] line Структура с линией
- * @param[in] render структура с данными для рисования
- */
-static void convert_line(line_t &line, const render_t &render)
-{
-    convert_point(line.point_1, render.plane);
-    convert_point(line.point_2, render.plane);
 }
 
 /**

@@ -21,8 +21,7 @@ typedef struct _line_struct
 err_t model_render(const render_t &, const model_t &);
 
 void plane_clear(const render_t &);
-void plane_fill(QPixmap &plane, const QColor &color);
-void convert_point(point_t &, const QPixmap &);
+
 
 err_t draw_line(const render_t &, const line_t &);
 
