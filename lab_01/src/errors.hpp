@@ -11,8 +11,10 @@ typedef enum
     ERR_UNKNOWN_COMMAND,
     ERR_WRONG_INPUT_LABEL,
     ERR_EMPTY_MODEL,
-    ERR_MEMORY_ALLOCATION, 
-    ERR_ARGS, ERR_EDGES
+    ERR_MEMORY_ALLOCATION,
+    ERR_ARGS,
+    ERR_EDGES,
+    ERR_LINE,
 } err_t;
 
 void error_handler(const err_t);

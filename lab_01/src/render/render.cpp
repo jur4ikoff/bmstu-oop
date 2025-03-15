@@ -17,15 +17,22 @@
  * @param[in] edge структура с данными о грани
  * @return Код возврата
  */
-static err_t get_line(line_t &line, const point_t *points, const edge_t &edge)
+static err_t get_line(line_t &line, const point_t *points, const size_t points_count, const edge_t &edge)
 {
-    if (points == NULL)
+    if (points == NULL || points_count < 1)
         return ERR_ARGS;
 
     size_t first = edge.first;
     size_t second = edge.second;
+    err_t rc = ERR_OK;
+    
+    if (first < points_count || second < points_count)
+    {
+        line = {points[first], points[second]};
+    }
+    else
+        rc = ERR_LINE;
 
-    line = {points[first], points[second]};
     return ERR_OK;
 }
 
@@ -35,18 +42,27 @@ static err_t get_line(line_t &line, const point_t *points, const edge_t &edge)
  * @param[in] points Массив точек
  * @param[in] edge одна грань
  */
-static err_t draw_edge(const render_t &render, const point_t *points, const edge_t &edge)
+static err_t draw_edge(const render_t &render, const point_t *array, const size_t points_count, const edge_t &edge)
 {
-    if (points == NULL)
+    if (array == NULL || points_count <= 1)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
     line_t line;
-    if ((rc = get_line(line, points, edge)) == ERR_OK)
+    if ((rc = get_line(line, array, points_count, edge)) == ERR_OK)
     {
         convert_line(line, render);
         rc = draw_line(render, line);
     }
+    return rc;
+}
+
+static err_t validate_edge(const edge_t &edge, const size_t point_count)
+{
+    err_t rc = ERR_OK;
+    if (edge.first >= point_count || edge.second >= point_count)
+        rc = ERR_EDGES;
+
     return rc;
 }
 
@@ -65,7 +81,9 @@ static err_t draw_edges(const render_t &render, const edges_t &edges, const poin
     err_t rc = ERR_OK;
     for (size_t i = 0; rc == ERR_OK && (i < edges.size); i++)
     {
-        rc = draw_edge(render, points.array, edges.array[i]);
+        rc = validate_edge(edges.array[i], points.size);
+        if (rc == ERR_OK)
+            rc = draw_edge(render, points.array, points.size, edges.array[i]);
     }
 
     return rc;
