@@ -33,15 +33,15 @@ bool points_is_empty(const points_t &points)
  * @param [out] points Файлвый дескриптор
  * @param [in, out] file Файлвый дескриптор
  */
-static err_t points_read(points_t &points, FILE *file)
+static err_t points_read(point_t *array, FILE *file, const size_t size)
 {
-    if (points.array == NULL || file == NULL)
+    if (array == NULL || file == NULL)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    for (size_t i = 0; rc == ERR_OK && (i < points.size); i++)
+    for (size_t i = 0; rc == ERR_OK && (i < size); i++)
     {
-        rc = point_read(points.array[i], file);
+        rc = point_read(array[i], file);
     }
     return rc;
 }
@@ -51,16 +51,15 @@ static err_t points_read(points_t &points, FILE *file)
  * @param[out] points Структура точек
  * @param[in] size Количество элементов в массиве точек
  */
-static err_t points_allocate(points_t &points, const size_t size)
+static err_t points_allocate(point_t **array, const size_t size)
 {
     if (size == 0)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    points.size = size;
-    points.array = (point_t *)malloc(points.size * sizeof(point_t));
+    *array = (point_t *)malloc(size * sizeof(point_t));
 
-    if (points.array == NULL)
+    if (*array == NULL)
         rc = ERR_MEMORY_ALLOCATION;
 
     return rc;
@@ -77,13 +76,13 @@ err_t points_load(points_t &points, FILE *file)
         return ERR_ARGS;
 
     size_t count;
-    err_t rc = read_elements_count(count, file);
+    err_t rc = read_elements_count(points.size, file);
     if (rc == ERR_OK)
     {
-        rc = points_allocate(points, count);
+        rc = points_allocate(&points.array, points.size);
         if (rc == ERR_OK)
         {
-            rc = points_read(points, file);
+            rc = points_read(points.array, file, points.size);
             if (rc != ERR_OK)
                 points_free(points);
         }
