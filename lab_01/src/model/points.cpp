@@ -75,7 +75,6 @@ err_t points_load(points_t &points, FILE *file)
     if (file == NULL)
         return ERR_ARGS;
 
-    size_t count;
     err_t rc = read_elements_count(points.size, file);
     if (rc == ERR_OK)
     {
@@ -84,7 +83,7 @@ err_t points_load(points_t &points, FILE *file)
         {
             rc = points_read(points.array, file, points.size);
             if (rc != ERR_OK)
-                points_free(points);
+                free(points.array);
         }
     }
 

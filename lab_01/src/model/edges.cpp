@@ -49,15 +49,15 @@ static err_t edge_read(edge_t &edge, FILE *file)
  * @param[out] edges Структура граней
  * @param[in, out] file Файловый дескриптор
  */
-static err_t edges_read(edges_t &edges, FILE *file)
+static err_t edges_read(edge_t *array, FILE *file, const size_t size)
 {
-    if (edges.array == NULL || file == NULL)
+    if (array == NULL || file == NULL)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    for (size_t i = 0; rc == ERR_OK && (i < edges.size); i++)
+    for (size_t i = 0; rc == ERR_OK && (i < size); i++)
     {
-        rc = edge_read(edges.array[i], file);
+        rc = edge_read(array[i], file);
     }
     return rc;
 }
@@ -67,16 +67,15 @@ static err_t edges_read(edges_t &edges, FILE *file)
  * @param[out] edges Структура граней
  * @param[in] size Количество элементов в массиве граней
  */
-static err_t edges_allocate(edges_t &edges, const size_t size)
+static err_t edges_allocate(edge_t **array, const size_t size)
 {
     if (size == 0)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    edges.size = size;
-    edges.array = (edge_t *)malloc(edges.size * sizeof(edges_t));
+    *array = (edge_t *)malloc(size * sizeof(edges_t));
 
-    if (edges.array == NULL)
+    if (*array == NULL)
         rc = ERR_MEMORY_ALLOCATION;
 
     return rc;
@@ -93,15 +92,14 @@ err_t edges_load(edges_t &edges, FILE *file)
         return ERR_ARGS;
 
     err_t rc = ERR_OK;
-    size_t count;
-    if ((rc = read_elements_count(count, file)) == ERR_OK)
+    if ((rc = read_elements_count(edges.size, file)) == ERR_OK)
     {
-        rc = edges_allocate(edges, count);
+        rc = edges_allocate(&edges.array, edges.size);
         if (rc == ERR_OK)
         {
-            rc = edges_read(edges, file);
+            rc = edges_read(edges.array, file, edges.size);
             if (rc != ERR_OK)
-                edges_free(edges);
+                free(edges.array);
         }
     }
 
