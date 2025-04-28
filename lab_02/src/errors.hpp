@@ -1,10 +1,10 @@
 #ifndef ERRORS_H__
 #define ERRORS_H__
 
-enum
+enum _err_type
 {
     ERR_OK,
-} _err_type;
+};
 
 using err_t = _err_type;
 

@@ -2,7 +2,7 @@
 
 #include "errors.hpp"
 
-err_t main()
+int main()
 {
     std::cout << "meow" << std::endl;
     return ERR_OK;

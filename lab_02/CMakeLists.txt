@@ -26,9 +26,7 @@ qt_add_executable(app.exe
 # target_include_directories(app.exe PRIVATE src src/model src/render)
 target_include_directories(app.exe PRIVATE src)
 
-target_precompile_headers(app.exe
-PRIVATE "pch.hxx"
-)
+target_precompile_headers(app.exe PRIVATE)
 
 # qt_add_uic(UI_FILES src/main_window.ui)
 target_link_libraries(app.exe PRIVATE)
