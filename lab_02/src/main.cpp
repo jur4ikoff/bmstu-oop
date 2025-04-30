@@ -1,9 +1,11 @@
+#include "gtest/gtest.h"
+
+#include "test.hpp"
 #include <iostream>
 
-#include "errors.hpp"
-
-int main()
+int main(int argc, char **argv)
 {
-    std::cout << "meow" << std::endl;
-    return ERR_OK;
+    test();
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
