@@ -17,11 +17,14 @@ include_directories(
     ${GTEST_INCLUDE_DIRS}
     /opt/homebrew/Cellar/googletest/1.16.0  # Путь где Homebrew устанавливает заголовки
     /usr/local/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/container  # Добавляем папку с вашими заголовками
+    ${CMAKE_CURRENT_SOURCE_DIR}          # Добавляем текущую директорию (если заголовки там)
 )
 
 file(GLOB SOURCES "src/*.cpp")
+file(GLOB CONTAINER "container/*.cpp")
 file(GLOB TESTS "tests/*.cpp")
 
 # Если нужно добавить тесты
-add_executable(app.exe ${SOURCES} ${TESTS})
+add_executable(app.exe ${SOURCES} ${TESTS} ${CONTAINER})
 target_link_libraries(app.exe GTest::GTest GTest::Main)
