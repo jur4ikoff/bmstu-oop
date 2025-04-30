@@ -54,18 +54,17 @@ include(GoogleTest)
 include_directories(
     ${GTEST_INCLUDE_DIRS}
     /opt/homebrew/Cellar/googletest/1.16.0  # Путь где Homebrew устанавливает заголовки
+    /usr/local/include
 )
+
 
 # Настройка стандарта C++
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Основное приложение
-add_executable(app.exe src/main.cpp)
-
 # Если нужно добавить тесты
-add_executable(run_tests tests/test_test.cpp)
-target_link_libraries(run_tests GTest::GTest GTest::Main)
+add_executable(app.exe src/main.cpp tests/test_test.cpp)
+target_link_libraries(app.exe GTest::GTest GTest::Main)
 
 # Автоматическая регистрация тестов
 # gtest_discover_tests(run_tests)

@@ -15,8 +15,8 @@ TEST(MyCodeTest, NegativeTest)
     EXPECT_EQ(-1, add(-2, 1));
 }
 
-int main(int argc, char **argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
+// int main(int argc, char **argv)
+// {
+//     ::testing::InitGoogleTest(&argc, argv);
+//     return RUN_ALL_TESTS();
+// }
