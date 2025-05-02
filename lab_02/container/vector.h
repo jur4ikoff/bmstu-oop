@@ -13,6 +13,11 @@ class Vector : public baseContainer
 {
 public:
     using value_type = T;
+    using iterator = VectorIterator<T>;
+    using const_iterator = VectorConstIterator<T>;
+
+    friend class VectorIterator<T>;
+    friend class VectorConstIterator<T>;
 
     // Обычный конструктор
     Vector();

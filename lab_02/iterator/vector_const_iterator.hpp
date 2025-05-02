@@ -14,19 +14,19 @@ VectorConstIterator<T>::VectorConstIterator(const VectorConstIterator<T> &iter)
     this->piter = iter.piter;
 }
 
-// // Конструктор по обычному итератору
-// template <ContainerType T>
-// VectorConstIterator<T>::VectorConstIterator(const VectorIterator<T> &iter)
-// {
-//     size = iter.size;
-//     index = iter.index;
-//     piter = iter.piter;
-// }
+// Конструктор по обычному итератору
+template <ContainerType T>
+VectorConstIterator<T>::VectorConstIterator(const VectorIterator<T> &iter)
+{
+    this->size = iter.size;
+    this->index = iter.index;
+    this->piter = iter.piter;
+}
 
-// template <ContainerType T>
-// VectorConstIterator<T>::VectorConstIterator(const Vector<T> &vec)
-// {
-//     size = vec.size();
-//     index = 0;
-//     piter = vec.container();
-// }
+template <ContainerType T>
+VectorConstIterator<T>::VectorConstIterator(const Vector<T> &vec)
+{
+    this->size = vec.size();
+    this->index = 0;
+    this->piter = vec.container;
+}

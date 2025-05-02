@@ -18,9 +18,9 @@ VectorIterator<T>::VectorIterator(const VectorIterator <T> &iter)
 template <ContainerType T>
 VectorIterator<T>::VectorIterator(const Vector<T> &vec)
 {
-    size = vec.size();
-    index = 0;
-    piter = vec.container();
+    this->size = vec.size();
+    this->index = 0;
+    this->piter = vec.container;
 }
 
 template <ContainerType T>
