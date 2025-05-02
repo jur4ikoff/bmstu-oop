@@ -18,10 +18,12 @@ include_directories(
     /opt/homebrew/Cellar/googletest/1.16.0  # Путь где Homebrew устанавливает заголовки
     /usr/local/include
     ${CMAKE_CURRENT_SOURCE_DIR}/container  # Добавляем папку с вашими заголовками
+    ${CMAKE_CURRENT_SOURCE_DIR}/exceptions
     ${CMAKE_CURRENT_SOURCE_DIR}          # Добавляем текущую директорию (если заголовки там)
 )
 
 file(GLOB SOURCES "src/*.cpp")
+# file(GLOB EXCEPTIONS "exceptions/*.h")
 file(GLOB CONTAINER "container/*.cpp")
 file(GLOB TESTS "tests/*.cpp")
 

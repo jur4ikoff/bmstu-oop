@@ -1,14 +1,37 @@
-#pragma once
+#include "vector.h"
+#include "vector_exceptions.h"
 
-#include "base_container.hpp"
+#include <iostream>
+#include <memory>
 
-#include "vector_concepts.hpp"
 
-template <CopyMoveAssignableNumeric T>
-class Vector : public baseContainer
+template <ContainerType T>
+Vector<T>::Vector()
 {
-public:
-    Vector() {};
+}
 
-    ~Vector() {};
-};
+template <ContainerType T>
+Vector<T>::Vector(const Vector<T> &other)
+{
+    len = other.size();
+    memory_allocation(len, __LINE__);
+}
+
+// template <ContainerType T>
+// {
+
+// }
+
+template <ContainerType T>
+void Vector<T>::memory_allocation(const size_t &size, int line)
+{
+    try
+    {
+        container.reset(new T[size], std::default_delete<T[]>());
+    }
+    catch (std::bad_alloc &exc)
+    {
+        time_t now = time(NULL);
+        throw errMemory(__FILE__, line, typeid(*this).name(), ctime(&now));
+    }
+}

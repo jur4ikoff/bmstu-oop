@@ -1,18 +1,16 @@
 #pragma once
 
-#include <iostream>
+#include "base_container.h"
 
-class baseContainer
+baseContainer::~baseContainer() {};
+
+bool baseContainer::is_empty() const noexcept
 {
-public:
-    // [[nodiscard]] — атрибут, указывающий, что возвращаемое значение не должно игнорироваться (иначе компилятор выдаст предупреждение).
-    // virtual - Указывает, что функция может быть переопределена в производных классах
-    // const - Метод не изменяет состояние объекта
-    // noexcept - метод не выбрасывает исключения
-    // [[nodiscard]] virtual bool empty() const noexcept = 0;
-    // virtual size_t size() noexcept = 0;
-    virtual ~baseContainer() = 0;
+    return len == 0;
+}
 
-protected:  
-    size_t len = 0;
-};
+size_t baseContainer::size() const noexcept
+{
+    return len;
+}
+

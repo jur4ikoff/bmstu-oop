@@ -1,14 +1,16 @@
-#include "vector.hpp"
+#include "vector.h"
 #include "gtest/gtest.h"
 
+template <typename T, typename = void>
+struct is_vector_constructible : std::false_type
+{
+};
 
-
-template<typename T, typename = void>
-struct is_vector_constructible : std::false_type {};
-
-template<typename T>
-struct is_vector_constructible<T, 
-    std::void_t<decltype(Vector<T>{})>> : std::true_type {};
+template <typename T>
+struct is_vector_constructible<T,
+                               std::void_t<decltype(Vector<T>{})>> : std::true_type
+{
+};
 
 // int add(int a, int b)
 // {
@@ -25,9 +27,9 @@ struct is_vector_constructible<T,
 //     EXPECT_EQ(-1, add(-2, 1));
 // }
 
-TEST(CreationTest, test_creation_pos)
+TEST(CreationTest, test_creation_pos_1)
 {
-    // Создание на основе всех математических типов
+    // Создание на основе всех математических типов, без начального добавления
     Vector<int> a;
     Vector<float> b;
     Vector<double> c;
@@ -35,9 +37,20 @@ TEST(CreationTest, test_creation_pos)
     Vector<short int> e;
     Vector<long long int> f;
     Vector<uint16_t> g;
+
+    EXPECT_EQ(g.size(), 0);
 }
 
-TEST(CreationTest, test_creation_neg)
+TEST(CreationTest, test_copy_same_types)
+{
+    // Тестирование конструктора копирования
+    Vector<int> a;
+    Vector<int> b = Vector(a);
+
+    EXPECT_EQ(0, b.size());
+}
+
+TEST(CreationTest, test_creation_neg_1)
 {
     EXPECT_FALSE(is_vector_constructible<char *>::value);
     EXPECT_FALSE(is_vector_constructible<std::string>::value);
