@@ -2,6 +2,8 @@
 
 #include "base_container.hpp"
 #include "vector_concepts.hpp"
+#include "vector_const_iterator.h"
+#include "vector_iterator.h"
 
 #include <iostream>
 #include <memory>
@@ -20,6 +22,15 @@ public:
     // Преобразование из другого контейнера
     // template <ConvertAssignable<T> T1>
     // Vector(const Vector<T1> &other);
+
+    // Возвращает иттератор на начало вектора
+    VectorIterator<T> begin(void) noexcept;
+    // Итератор на конец вектора
+    VectorIterator<T> end(void) noexcept;
+
+    // Возвращает константный интератор на начало/кенец вектора
+    VectorConstIterator<T> cbegin(void) const noexcept;
+    VectorConstIterator<T> cend(void) const noexcept;
 
     ~Vector() = default;
 

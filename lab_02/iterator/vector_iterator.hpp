@@ -9,16 +9,16 @@
 template <ContainerType T>
 VectorIterator<T>::VectorIterator(const VectorIterator <T> &iter)
 {
-    size = iter.size;
+    my_size = iter.my_size;
     index = iter.index;
     piter = iter.piter;
 }
 
 // Конструктор по контейнеру
 template <ContainerType T>
-VectorIterator<T>::VectorIterator(const Vector &vec)
+VectorIterator<T>::VectorIterator(const Vector<T> &vec)
 {
-    size = vec.size();
+    my_size = vec.size();
     index = 0;
     piter = vec.container();
 }

@@ -11,7 +11,7 @@ class BaseIterator
 {
 public:
 #pragma region alias
-    using iterator_category = std::forward_iterator_tag; // std::bidirectional_iterator_tag;
+    using iterator_category = std::forward_iterator_tag; // std::bidirectional_iterator_tag; //  random_access_itterator
     using difference_type = ptrdiff_t;
     using value_type = T;
     using pointer = T *;
@@ -30,8 +30,9 @@ public:
 
     virtual ~BaseIterator() = default;
 
+
 protected:
-    size_t size = 0;
+    size_t my_size = 0;
     size_t index = 0;
 
     // Проверка, жив ли тот объект, на который указывает иттератор

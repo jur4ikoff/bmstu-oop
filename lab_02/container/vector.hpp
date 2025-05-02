@@ -3,6 +3,7 @@
 #include "vector.h"
 #include "vector_exceptions.h"
 #include "vector_iterator.h"
+#include "vector_const_iterator.h"
 
 #include <iostream>
 #include <memory>
@@ -30,10 +31,35 @@ Vector<T>::Vector(const Vector<T> &other)
 
 }
 
-// template <ContainerType T>
-// {
+template <ContainerType T>
+VectorIterator<T> Vector<T>::begin(void) noexcept
+{
+    VectorIterator<T> iter(*this);
+    return iter;
+}
+// возвращает мой итератор на конец вектора
+template <ContainerType T>
+VectorIterator<T> Vector<T>::end(void) noexcept
+{
+    VectorIterator<T> iter(*this);
+    return iter + len;
+}
 
-// }
+// возвращает мой константный итератор на начало вектора
+template <ContainerType T>
+VectorConstIterator<T> Vector<T>::cbegin(void) const noexcept
+{
+    VectorConstIterator<T> iter(*this);
+    return iter;
+}
+// возвращает мой константный итератор на конец вектора
+template <ContainerType T>
+VectorConstIterator<T> Vector<T>::cend(void) const noexcept
+{
+    VectorConstIterator<T> iter(*this);
+    return iter + len;
+}
+
 
 template <ContainerType T>
 void Vector<T>::memory_allocation(const size_t &size, int line)
