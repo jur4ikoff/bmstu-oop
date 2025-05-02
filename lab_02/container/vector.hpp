@@ -1,3 +1,5 @@
+#pragma once
+
 #include "vector.h"
 #include "vector_exceptions.h"
 #include "vector_iterator.h"
@@ -17,6 +19,15 @@ Vector<T>::Vector(const Vector<T> &other)
 {
     len = other.size();
     memory_allocation(len, __LINE__);
+
+    VectorIterator<T> iter = this->begin();
+
+    for (auto iter1 = other.cbegin(); iter1 != other.cend(); iter1++)
+    {
+        *iter = *iter1;
+        iter++;
+    }
+
 }
 
 // template <ContainerType T>
