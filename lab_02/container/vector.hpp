@@ -1,13 +1,15 @@
 #include "vector.h"
 #include "vector_exceptions.h"
+#include "vector_iterator.h"
 
 #include <iostream>
 #include <memory>
 
-
 template <ContainerType T>
 Vector<T>::Vector()
 {
+    len = 0;
+    memory_allocation(len, __LINE__);
 }
 
 template <ContainerType T>
