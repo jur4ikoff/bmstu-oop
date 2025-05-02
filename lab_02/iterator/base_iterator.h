@@ -21,8 +21,8 @@ public:
     BaseIterator() = default;
 
     // Перегружаем * и ->
-    const T &operator*(const);
-    const T &operator->(const);
+    const T &operator*() const;
+    const T *operator->() const;
 
     // Перегружаем операторы == и !=
     bool operator==(const BaseIterator<T> &other) const;
