@@ -11,35 +11,26 @@ template <ContainerType T>
 class VectorIterator : public BaseIterator<T>
 {
 public:
-    // Пустой конструктор
-    VectorIterator() = default;
-
-    // Конструктор по иттератору
-    VectorIterator(const VectorIterator<T> &iter);
-
-    // Коструктор по контейнеру
-    VectorIterator(const Vector<T> &vec);
-
-    // Деструктор
-    ~VectorIterator() = default;
-
-    // Перегрузка иттераторов
+    VectorIterator() = default;                    // Пустой конструктор
+    VectorIterator(const VectorIterator<T> &iter); // Конструктор по иттератору
+    VectorIterator(const Vector<T> &vec);          // Коструктор по контейнеру
+    ~VectorIterator() = default;                   // Деструктор
 
     // Перегрузка оператора =
-    VectorIterator<T> &operator = (const VectorIterator<T> &other);
+    VectorIterator<T> &operator=(const VectorIterator<T> &other);
 
     // Перегруза операторов * и ->
-    T& operator * ();
-    T * operator -> ();
+    T &operator*();
+    T *operator->();
 
     // Перегрузка оператроа +
-    VectorIterator<T> operator + (const int i ) const;
-    VectorIterator<T> &operator += (const int i);
+    VectorIterator<T> operator+(const int i) const;
+    VectorIterator<T> &operator+=(const int i);
 
     // Перегрузка инкремента
-    VectorIterator<T> &operator ++ (); // ++iter
-    VectorIterator<T> operator ++ (int); // iter++
+    VectorIterator<T> &operator++();   // ++iter
+    VectorIterator<T> operator++(int); // iter++
 
     // VectorIterator<T> &operator -- ();
-    // VectorIterator<T> operator -- (int); 
+    // VectorIterator<T> operator -- (int);
 };

@@ -9,9 +9,9 @@
 template <ContainerType T>
 VectorConstIterator<T>::VectorConstIterator(const VectorConstIterator<T> &iter)
 {
-    my_size = iter.my_size;
-    index = iter.index;
-    piter = iter.piter;
+    this->size = iter.size;
+    this->index = iter.index;
+    this->piter = iter.piter;
 }
 
 // // Конструктор по обычному итератору

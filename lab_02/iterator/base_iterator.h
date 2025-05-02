@@ -32,7 +32,7 @@ public:
 
 
 protected:
-    size_t my_size = 0;
+    size_t size = 0;
     size_t index = 0;
 
     // Проверка, жив ли тот объект, на который указывает иттератор
