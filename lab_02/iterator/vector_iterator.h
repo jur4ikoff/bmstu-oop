@@ -34,3 +34,5 @@ public:
     // VectorIterator<T> &operator -- ();
     // VectorIterator<T> operator -- (int);
 };
+
+#include "vector_iterator.hpp"

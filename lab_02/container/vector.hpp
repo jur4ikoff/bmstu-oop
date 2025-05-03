@@ -37,6 +37,7 @@ VectorIterator<T> Vector<T>::begin(void) noexcept
     VectorIterator<T> iter(*this);
     return iter;
 }
+
 // возвращает мой итератор на конец вектора
 template <ContainerType T>
 VectorIterator<T> Vector<T>::end(void) noexcept
@@ -50,6 +51,7 @@ template <ContainerType T>
 VectorConstIterator<T> Vector<T>::cbegin(void) const noexcept
 {
     VectorConstIterator<T> iter(*this);
+    // VectorConstIterator<T> iter(); Ошибка компиляции
     return iter;
 }
 // возвращает мой константный итератор на конец вектора
