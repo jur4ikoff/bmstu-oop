@@ -10,11 +10,11 @@ public:
     // const - Метод не изменяет состояние объекта
     // noexcept - метод не выбрасывает исключения
     [[nodiscard]] bool is_empty() const noexcept;
-    size_t size() const noexcept;
+    int size() const noexcept;
     virtual ~baseContainer() = 0;
 
 protected:
-    size_t len = 0;
+    int len = 0;
 };
 
 #include "base_container.hpp"

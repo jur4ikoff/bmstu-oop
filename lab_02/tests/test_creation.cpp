@@ -56,11 +56,66 @@ TEST(CreationTest, test_creation_neg_1)
     EXPECT_FALSE(is_vector_constructible<std::string>::value);
 }
 
+TEST(CreationTest, ConstructsFromInitializerList)
+{
+    // Проверка на инициализацию от списка инициализации целых чисел
+    Vector<int> vec = { 1, 2, 3, 4, 5 };
+    int excepected[5] = { 1, 2, 3, 4, 5 };
+
+    EXPECT_EQ(vec.size(), 5); // Проверяем размер
+
+    int i = 0;
+    for (auto el : vec)
+    {
+        EXPECT_EQ(el, excepected[i]);
+        i++;
+    }
+}
+
+TEST(CreationTest, ConstructsFromInitializerListFloat)
+{
+    // Проверка на инициализацию от списка инициализации целых чисел
+    Vector<double> vec = { 1.0, 2.0f, 3.0f, 4.0f, 5.0f };
+    float excepected[5] = { 1, 2.0, 3, 4, 5 };
+
+    EXPECT_EQ(vec.size(), 5); // Проверяем размер
+
+    int i = 0;
+    for (auto el : vec)
+    {
+        EXPECT_EQ(el, excepected[i]);
+        i++;
+    }
+}
+
+
+
+TEST(CreationTest, ConstructsFromConvertibleTypes)
+{
+    // 2. Проверка с типами, конвертируемыми в T (например, double -> int)
+    // Vector<int> vec = {1.5, 2.7, 3.0};  // T1 = double (должно сработать, если ConvertAssignable<double, int>)
+
+    // // Проверяем, что значения сконвертировались (отбрасывается дробная часть)
+    // EXPECT_EQ(vec.size(), 3);
+    // EXPECT_EQ(vec[0], 1);  // 1.5 -> 1
+    // EXPECT_EQ(vec[1], 2);  // 2.7 -> 2
+    // EXPECT_EQ(vec[2], 3);  // 3.0 -> 3
+}
+
+TEST(CreationTest, HandlesEmptyList)
+{
+    // 3. Проверка пустого списка
+    // Vector<int> vec = {};
+
+    // EXPECT_EQ(vec.size(), 0);
+    // EXPECT_TRUE(vec.empty());
+}
+
 TEST(MyCodeTest, test_pos)
 {
 
     // Vector<int> a = { -100, -4, 5 };
-    Vector<int> a;
+    std::vector<float> vec = {1, 2.5, 3U, 4.2f, 5LL};
     // Vector<int> b = { 2, 2, 2 };
 
     // Vector<int> res(a + b);
