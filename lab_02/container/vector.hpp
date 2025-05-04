@@ -77,8 +77,10 @@ Vector<T>::Vector(const int &size)
 }
 
 template <ContainerType T>
-template <ConvertAssignable<T> T1>
-Vector<T>::Vector(std::initializer_list<T1> arr)
+// template <Convertiable <T> T1>
+// Убрал концепт, потому что он мешает билду,
+// при случаях, когда в списке данные разных типов
+Vector<T>::Vector(std::initializer_list<T> arr)
 {
     this->len = arr.size();
     this->memory_allocation(len, __LINE__);
@@ -91,6 +93,16 @@ Vector<T>::Vector(std::initializer_list<T1> arr)
         iter++;
     }
 }
+
+// template <ContainerType T>
+// template <typename... Args>
+//     requires(std::convertible_to<Args, T> && ...)
+// Vector<T>::Vector(Args &&...args) : len(sizeof...(Args))
+// {
+//     memory_allocation(len, __LINE__);
+//     T *data = begin();
+//     ((*data++ = static_cast<T>(args)), ...); // Распаковка аргументов
+// }
 
 template <ContainerType T>
 VectorIterator<T> Vector<T>::begin(void) noexcept

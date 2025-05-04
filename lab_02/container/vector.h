@@ -35,8 +35,14 @@ public:
 
     explicit Vector(const int &size); // конструктор по рамзеру
 
-    template <ConvertAssignable<T> T1>
-    Vector(std::initializer_list<T1> arr); // Конструктор по списку инициализации Vector vec = {1, 2, 3, 4};
+    Vector(std::initializer_list<T> arr);
+
+    // template <Convertiable<T> T1>
+    // template <typename... Args>
+    //     requires(std::convertible_to<Args, T> && ...)::Vector
+    // (Args &&...args)
+    //     : len(sizeof...(Args))
+    // Vector(std::initializer_list<T1> arr); // Конструктор по списку инициализации Vector vec = {1, 2, 3, 4};
 
 #pragma endregion Constructors
 

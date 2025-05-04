@@ -37,6 +37,9 @@ template <typename T, typename U>
 concept ConvertAssignable = Convertiable<U, T> &&
                             Assignable<U, T>;
 
+template <typename T, typename U>
+concept ConvertibleToT = Convertiable<U, T>;
+
 template <typename T, typename Con>
 concept ValidContainer = Container<Con> &&
                          Convertiable<typename Con::value_type, T> &&

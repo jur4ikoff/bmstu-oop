@@ -59,7 +59,7 @@ TEST(CreationTest, test_creation_neg_1)
 TEST(CreationTest, ConstructsFromInitializerList)
 {
     // Проверка на инициализацию от списка инициализации целых чисел
-    Vector<int> vec = { 1, 2, 3, 4, 5 };
+    Vector<int> vec({ 1, 2, 3, 4, 5 });
     int excepected[5] = { 1, 2, 3, 4, 5 };
 
     EXPECT_EQ(vec.size(), 5); // Проверяем размер
@@ -75,8 +75,8 @@ TEST(CreationTest, ConstructsFromInitializerList)
 TEST(CreationTest, ConstructsFromInitializerListFloat)
 {
     // Проверка на инициализацию от списка инициализации целых чисел
-    Vector<double> vec = { 1.0, 2.0f, 3.0f, 4.0f, 5.0f };
-    float excepected[5] = { 1, 2.0, 3, 4, 5 };
+    Vector<float> vec({ 1.0, 2, 3.0f, 4.23232, 5.0 });
+    float excepected[5] = { 1, 2.0, 3, 4.23232, 5 };
 
     EXPECT_EQ(vec.size(), 5); // Проверяем размер
 
@@ -87,8 +87,6 @@ TEST(CreationTest, ConstructsFromInitializerListFloat)
         i++;
     }
 }
-
-
 
 TEST(CreationTest, ConstructsFromConvertibleTypes)
 {
@@ -115,7 +113,7 @@ TEST(MyCodeTest, test_pos)
 {
 
     // Vector<int> a = { -100, -4, 5 };
-    std::vector<float> vec = {1, 2.5, 3U, 4.2f, 5LL};
+    std::vector<float> vec = { 1, 2.5, 3U, 4.2f, 5LL };
     // Vector<int> b = { 2, 2, 2 };
 
     // Vector<int> res(a + b);
