@@ -186,14 +186,14 @@ decltype(auto) Vector<T>::normalization(void) const
 {
     this->check_vector_size(this->container_size, __LINE__); // Проверяем размер вектора
 
-    auto len = this->len(); // Узнаем математическую длину вектора
+    auto vector_len = this->len(); // Узнаем математическую длину вектора
 
     // try:
-    this->check_division_zero(len, __LINE__);
+    this->check_division_zero(vector_len, __LINE__);
     // catch (const errDivisionZero &e)
 
-    Vector<decltype((*this)[0] / len)> res_vector(*this);
-    res_vector /= len;
+    Vector<decltype((*this)[0] / vector_len)> res_vector(*this);
+    res_vector /= vector_len;
 }
 
 template <ContainerType T>
