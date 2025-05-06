@@ -55,11 +55,16 @@ public:
     // Функция возвращает математическую длину вектора
     decltype(auto) len() const;
 
+#pragma region normalize
     /**
      * @brief Функция нормализует вектор
      * @return Новый, нормализованный вектор
      */
     decltype(auto) normalization(void) const;
+    bool is_normalize() const; // Функция проверяет нормализован ли вектор
+    bool is_zero() const;   // Функция проверяет нулевой ли вектор
+
+#pragma endregion normalize
 
     // Получить элемент по индексу
     T &get_item(int ind);
@@ -111,7 +116,7 @@ public:
 
 #pragma endregion equal
 
-        ~Vector() = default;
+    ~Vector() = default;
 
 protected:
     void memory_allocation(const int &container_size, int line);

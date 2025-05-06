@@ -196,6 +196,29 @@ decltype(auto) Vector<T>::normalization(void) const
     return res_vector;
 }
 
+// Функция проверяет нормализован ли вектор
+template <ContainerType T>
+bool Vector<T>::is_normalize() const
+{
+    this->check_vector_size(this->container_size, __LINE__); // Проверяем размер вектора
+
+    auto vector_len = this->len();
+    if (std::fabs(vector_len) < EPS)
+        return false;
+
+    return std::fabs(vector_len - 1) < EPS;
+}
+
+// Функция проверяет нулевой ли вектор
+template <ContainerType T>
+bool Vector<T>::is_zero() const
+{
+    this->check_vector_size(this->container_size, __LINE__); // Проверяем размер вектора
+
+    auto vector_len = this->len();
+    return std::fabs(vector_len) < EPS;
+}
+
 template <ContainerType T>
 VectorIterator<T> Vector<T>::begin(void) const noexcept
 {
@@ -333,7 +356,7 @@ Vector<T> &Vector<T>::operator/=(const T1 &num)
     VectorIterator<T> iter = this->begin();
     for (; iter != this->end(); iter++)
     {
-        *iter =  static_cast<T>(*iter / num);
+        *iter = static_cast<T>(*iter / num);
     }
     return *this;
 }

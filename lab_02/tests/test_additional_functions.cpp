@@ -92,3 +92,60 @@ TEST(test_normalization, test_three_axis_vec)
         EXPECT_EQ(res[i], expect[i]);
     }
 }
+
+TEST(test_is_normalize, no_vector)
+{
+    Vector<int> vec;
+    MY_EXCEPT_THROW(vec.is_normalize(), errNegSize)
+}
+
+TEST(test_is_normalize, null_vector)
+{
+    Vector<int> vec = { 0, 0, 0, 0 };
+    bool expected = false;
+
+    bool res = vec.is_normalize();
+    EXPECT_EQ(res, expected);
+}
+
+TEST(test_is_normalize, not_normalize_vector)
+{
+    Vector<int> vec = { 2, 4, 1, 3 };
+    bool expected = false;
+
+    bool res = vec.is_normalize();
+    EXPECT_EQ(res, expected);
+}
+
+TEST(test_is_normalize, normalize_vector)
+{
+    Vector<int> vec = { 1, 0, 0, 0 };
+    bool expected = true;
+
+    bool res = vec.is_normalize();
+    EXPECT_EQ(res, expected);
+}
+
+TEST(test_is_zero, none_vector)
+{
+    Vector<int> vec;
+    MY_EXCEPT_THROW(vec.is_zero(), errNegSize)
+}
+
+TEST(test_is_zero, zero_vector)
+{
+    Vector<int> vec = { 0, 0, 0, 0 };
+    bool expected = true;
+
+    bool res = vec.is_zero();
+    EXPECT_EQ(res, expected);
+}
+
+TEST(test_is_zero, not_zero_vector)
+{
+    Vector<int> vec = { 1, 2, 3, 4 };
+    bool expected = false;
+
+    bool res = vec.is_zero();
+    EXPECT_EQ(res, expected);
+}
