@@ -329,8 +329,12 @@ Vector<T> &Vector<T>::operator/=(const T1 &num)
     this->check_vector_size(this->container_size, __LINE__);
     this->check_division_zero(num, __LINE__);
 
-    *this /= num;
-    // *this = (Vector<T>)(*this / num);
+    // *this = *this / num;
+    VectorIterator<T> iter = this->begin();
+    for (; iter != this->end(); iter++)
+    {
+        *iter =  static_cast<T>(*iter / num);
+    }
     return *this;
 }
 
