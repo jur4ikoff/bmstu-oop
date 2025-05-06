@@ -35,20 +35,16 @@ public:
 
     explicit Vector(const int &size); // конструктор по рамзеру
 
-    Vector(std::initializer_list<T> arr);
+    template <ConvertAssignable<T> U>
+    Vector(std::initializer_list<U> arr); // Конструктор по списку иницалиизации
 
-    // template <Convertiable<T> T1>
-    // template <typename... Args>
-    //     requires(std::convertible_to<Args, T> && ...)::Vector
-    // (Args &&...args)
-    //     : len(sizeof...(Args))
-    // Vector(std::initializer_list<T1> arr); // Конструктор по списку инициализации Vector vec = {1, 2, 3, 4};
+    template <ConvertAssignable <T> U>
+    Vector(int size, const U *arr); // Конструктор по размеру и массиву заполнения
+
+    template <ConvertAssignable <T> U>
+    Vector(int  size, U elem, ...); // По длине и параметрам, для заполнения
 
 #pragma endregion Constructors
-
-    // Преобразование из другого контейнера
-    // template <ConvertAssignable<T> T1>
-    // Vector(const Vector<T1> &other);
 
     // Возвращает иттератор на начало вектора
     VectorIterator<T> begin(void) noexcept;
@@ -64,6 +60,7 @@ protected:
     void memory_allocation(const int &size, int line);
 
     void check_vector_size(const int &size, int line);
+    void check_arr_null(const T *arr, int line);
 
 private:
     std::shared_ptr<T[]> container;

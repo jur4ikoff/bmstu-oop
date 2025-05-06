@@ -5,8 +5,15 @@
 #include "vector_exceptions.h"
 #include "vector_iterator.h"
 
+#include "constants.hpp"
+
 #include <iostream>
 #include <memory>
+#include <stdarg.h>
+
+// ------------------------------------------------------------------
+// Конструкторы
+// ------------------------------------------------------------------
 
 template <ContainerType T>
 Vector<T>::Vector()
@@ -77,10 +84,8 @@ Vector<T>::Vector(const int &size)
 }
 
 template <ContainerType T>
-// template <Convertiable <T> T1>
-// Убрал концепт, потому что он мешает билду,
-// при случаях, когда в списке данные разных типов
-Vector<T>::Vector(std::initializer_list<T> arr)
+template <ConvertAssignable<T> U>
+Vector<T>::Vector(std::initializer_list<U> arr)
 {
     this->len = arr.size();
     this->memory_allocation(len, __LINE__);
@@ -94,15 +99,49 @@ Vector<T>::Vector(std::initializer_list<T> arr)
     }
 }
 
-// template <ContainerType T>
-// template <typename... Args>
-//     requires(std::convertible_to<Args, T> && ...)
-// Vector<T>::Vector(Args &&...args) : len(sizeof...(Args))
-// {
-//     memory_allocation(len, __LINE__);
-//     T *data = begin();
-//     ((*data++ = static_cast<T>(args)), ...); // Распаковка аргументов
-// }
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+Vector<T>::Vector(int size, const U *arr)
+{
+    this->check_vector_size(size, __LINE__);
+    this->check_arr_null(arr, __LINE__);
+
+    this->len = size;
+    this->memory_allocation(this->len, __LINE__);
+
+    VectorIterator<T> iter = this->begin();
+
+    for (int i = 0; i < size; i++)
+    {
+        *iter = arr[i];
+        iter++;
+    }
+}
+
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+Vector<T>::Vector(int size, U elem, ...)
+{
+    this->check_vector_size(size, __LINE__);
+    this->len = size;
+
+    this->memory_allocation(len, __LINE__);
+    VectorIterator<T> iter = this->begin();
+
+    va_list args;
+    va_start(args, elem);
+
+    for (int i = 0; i < size; i++)
+    {
+        *iter = elem;
+        elem = va_arg(args, U);
+        iter++;
+    }
+}
+
+// ----------------------------------------------------------------------------------
+//
+//
 
 template <ContainerType T>
 VectorIterator<T> Vector<T>::begin(void) noexcept
@@ -150,6 +189,9 @@ void Vector<T>::memory_allocation(const int &size, int line)
     }
 }
 
+// --------------------------------------------------------------------
+// Проверки
+// --------------------------------------------------------------------
 template <ContainerType T>
 void Vector<T>::check_vector_size(const int &size, int line)
 {
@@ -157,5 +199,15 @@ void Vector<T>::check_vector_size(const int &size, int line)
     {
         time_t now = time(NULL);
         throw errNegSize(__FILE__, line, typeid(*this).name(), ctime(&now));
+    }
+}
+
+template <ContainerType T>
+void Vector<T>::check_arr_null(const T *arr, int line)
+{
+    if (arr == NULL)
+    {
+        time_t now = time(NULL);
+        throw errArrNull(__FILE__, line, typeid(*this).name(), ctime(&now));
     }
 }

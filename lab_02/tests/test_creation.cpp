@@ -75,7 +75,7 @@ TEST(CreationTest, ConstructsFromInitializerList)
 TEST(CreationTest, ConstructsFromInitializerListFloat)
 {
     // Проверка на инициализацию от списка инициализации целых чисел
-    Vector<float> vec({ 1.0, 2, 3.0f, 4.23232, 5.0 });
+    Vector<float> vec({ 1.0f, 2.f, 3.0f, 4.23232f, 5.0f });
     float excepected[5] = { 1, 2.0, 3, 4.23232, 5 };
 
     EXPECT_EQ(vec.size(), 5); // Проверяем размер
@@ -84,6 +84,24 @@ TEST(CreationTest, ConstructsFromInitializerListFloat)
     for (auto el : vec)
     {
         EXPECT_EQ(el, excepected[i]);
+        i++;
+    }
+}
+
+TEST(CreationTest, constructs_from_arr_with_size)
+{
+    // Проверка на инициализацию от списка инициализации целых чисел
+    int size = 5;
+    int arr[5] = {1, 2 ,3 ,4 ,5};
+
+    Vector <int> vec(size, arr);
+
+    EXPECT_EQ(vec.size(), 5); // Проверяем размер
+
+    int i = 0;
+    for (auto el : vec)
+    {
+        EXPECT_EQ(el, arr[i]);
         i++;
     }
 }

@@ -39,9 +39,20 @@ class errNegSize : public BaseContainerError
 {
 public:
     errNegSize(const char *filename,
-                       int line,
-                       const char *class_name,
-                       const char *time,
-                       const char *err_msg = "Ошибка, отрицательные размер")
+               int line,
+               const char *class_name,
+               const char *time,
+               const char *err_msg = "Ошибка, отрицательный размер")
+        : BaseContainerError(filename, line, class_name, time, err_msg) {};
+};
+
+class errArrNull : public BaseContainerError
+{
+public:
+    errArrNull(const char *filename,
+               int line,
+               const char *class_name,
+               const char *time,
+               const char *err_msg = "Ошибка, указатель на массив = NULL, в конструктор нужно передать валидный массив.")
         : BaseContainerError(filename, line, class_name, time, err_msg) {};
 };
