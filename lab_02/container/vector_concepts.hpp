@@ -1,6 +1,8 @@
 #pragma once
 
 #include <concepts>
+#include <iostream>
+#include <type_traits>
 
 // Концепт проверки на конвертабельность
 template <typename From, typename To>
@@ -9,6 +11,8 @@ concept Convertiable = std::convertible_to<From, To>;
 template <typename From, typename To>
 concept Assignable = requires(From from, To to) { to = from; };
 
+template <typename T, typename U>
+concept Divisable = requires(T t, U u) { t / u; };
 template <typename T>
 concept Container = requires(T t) {
     typename T::value_type;
@@ -38,49 +42,17 @@ concept ConvertAssignable = Convertiable<U, T> &&
                             Assignable<U, T>;
 
 template <typename T, typename U>
+concept ConvertAssignableDiv = Convertiable<U, T> &&
+                               Assignable<U, T> &&
+                               Divisable<U, T>;
+
+template <typename T, typename U>
 concept ConvertibleToT = Convertiable<U, T>;
 
 template <typename T, typename Con>
 concept ValidContainer = Container<Con> &&
                          Convertiable<typename Con::value_type, T> &&
                          Assignable<typename Con::value_type, T>;
-
-// template <typename T>
-// concept Iterator = requires(T t) {
-//     typename T::value_type;
-//     typename T::pointer;
-//     typename T::reference;
-//     typename T::difference_type;
-// };
-
-// template <typename T>
-// concept Comparable = requires(T a, T b) {
-//     { a == b } -> std::same_as<bool>;
-//     { a != b } -> std::same_as<bool>;
-// };
-
-// template <typename T>
-// concept Incrementable = requires(T a) {
-//     { a++ } -> std::same_as<T>;
-//     { ++a } -> std::same_as<T>;
-// };
-
-// template <typename T, typename U>
-// concept TypeDerivedFrom = std::is_base_of<T, U>::value;
-
-// template <typename T>
-// concept InputIterator = Iterator<T> &&
-//                         requires { typename T::iterator_category; } &&
-//                         Comparable<T> &&
-//                         TypeDerivedFrom<typename T::iterator_category, std::input_iterator_tag>;
-
-// template <typename T>
-// concept ForwardIterator = InputIterator<T> &&
-//                           Incrementable<T> &&
-//                           TypeDerivedFrom<typename T::iterator_category, std::forward_iterator_tag>;
-
-// template <typename Iter>
-// concept ForwardIterator = std::forward_iterator<Iter>;
 
 template <typename Iter>
 concept ForwardIterator = requires(Iter it) {

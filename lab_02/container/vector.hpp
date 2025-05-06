@@ -8,6 +8,7 @@
 #include "constants.hpp"
 
 #include <iostream>
+#include <math.h>
 #include <memory>
 #include <stdarg.h>
 
@@ -40,7 +41,7 @@ Vector<T>::Vector(const Vector<T> &other)
 template <ContainerType T>
 Vector<T>::Vector(Vector<T> &&other) noexcept
 {
-    this->container_size = other.container_size;
+    this->container_size = other.size();
     this->container = other.container;
     other.container.reset();
 }
@@ -49,7 +50,7 @@ template <ContainerType T>
 template <ConvertAssignable<T> T1>
 Vector<T>::Vector(const Vector<T1> &other)
 {
-    this->container_size = other.container_size;
+    this->container_size = other.size();
     this->memory_allocation(this->container_size, __LINE__);
 
     VectorIterator<T> iter = this->begin();
@@ -61,7 +62,8 @@ Vector<T>::Vector(const Vector<T1> &other)
 }
 
 template <ContainerType T>
-template <ValidContainer<T> Con>
+template <typename Con>
+    requires ValidContainer<T, Con>
 Vector<T>::Vector(const Con &other)
 {
     container_size = other.container_size;
@@ -164,7 +166,7 @@ Vector<T>::Vector(U begin, U end)
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 template <ContainerType T>
-decltype(auto) Vector<T>::len()
+decltype(auto) Vector<T>::len() const
 {
     this->check_vector_size(this->container_size, __LINE__);
 
@@ -187,17 +189,15 @@ decltype(auto) Vector<T>::normalization(void) const
     this->check_vector_size(this->container_size, __LINE__); // Проверяем размер вектора
 
     auto vector_len = this->len(); // Узнаем математическую длину вектора
-
-    // try:
     this->check_division_zero(vector_len, __LINE__);
-    // catch (const errDivisionZero &e)
 
     Vector<decltype((*this)[0] / vector_len)> res_vector(*this);
     res_vector /= vector_len;
+    return res_vector;
 }
 
 template <ContainerType T>
-VectorIterator<T> Vector<T>::begin(void) noexcept
+VectorIterator<T> Vector<T>::begin(void) const noexcept
 {
     VectorIterator<T> iter(*this);
     return iter;
@@ -205,7 +205,7 @@ VectorIterator<T> Vector<T>::begin(void) noexcept
 
 // возвращает мой итератор на конец вектора
 template <ContainerType T>
-VectorIterator<T> Vector<T>::end(void) noexcept
+VectorIterator<T> Vector<T>::end(void) const noexcept
 {
     VectorIterator<T> iter(*this);
     return iter + container_size;
@@ -216,7 +216,6 @@ template <ContainerType T>
 VectorConstIterator<T> Vector<T>::cbegin(void) const noexcept
 {
     VectorConstIterator<T> iter(*this);
-    // VectorConstIterator<T> iter(); Ошибка компиляции
     return iter;
 }
 
@@ -228,6 +227,151 @@ VectorConstIterator<T> Vector<T>::cend(void) const noexcept
     return iter + container_size;
 }
 
+// Получить элемент по индексу
+template <ContainerType T>
+T &Vector<T>::get_item(int ind)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_index(ind, __LINE__);
+    VectorIterator<T> iter = this->begin();
+    for (int i = 0; i < ind; i++)
+        iter++;
+    return *iter;
+}
+
+template <ContainerType T>
+const T &Vector<T>::get_item(int ind) const
+{
+    this->check_vector_size(this->count_axis, __LINE__);
+    this->check_index(ind, __LINE__);
+    VectorIterator<T> iter = this->cbegin();
+    for (int i = 0; i < ind; i++)
+        iter++;
+    return *iter;
+}
+
+// Перегрузка оператора []
+template <ContainerType T>
+T &Vector<T>::operator[](int ind)
+{
+    return get_item(ind);
+}
+
+// Перегрузка оператора []
+template <ContainerType T>
+const T &Vector<T>::operator[](int ind) const
+{
+    return get_item(ind);
+}
+
+// Перегрузка оператора ==
+template <ContainerType T>
+template <typename Con>
+    requires ValidContainer<T, Con>
+bool Vector<T>::operator==(const Con &other) const
+{
+    bool rc = this->container_size == other.size();
+
+    if (rc)
+    {
+        VectorIterator<T> iter = this->begin();
+
+        for (auto iter1 = other.begin(); iter1 != other.end() && rc; iter++)
+        {
+            if (std::fabs(*iter - *iter1) > EPS)
+                rc = false;
+
+            iter++;
+        }
+    }
+
+    return rc;
+}
+
+// Перегрузка оператора !=
+template <ContainerType T>
+template <typename Con>
+    requires ValidContainer<T, Con>
+bool Vector<T>::operator!=(const Con &other) const
+{
+    return !(*this == other);
+}
+
+// Метод
+template <ContainerType T>
+template <typename Con>
+    requires ValidContainer<T, Con>
+bool Vector<T>::is_equal(const Con &other) const
+{
+    return *this == other;
+}
+
+// Перегрузка оператора /
+template <ContainerType T>
+template <ConvertAssignableDiv<T> T1>
+decltype(auto) Vector<T>::operator/(const T1 &num) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_division_zero(num, __LINE__);
+
+    Vector<decltype((*this)[0] / num)> res_vector(*this);
+    VectorIterator<T> iter = res_vector.begin();
+    for (; iter != res_vector.end(); iter++)
+        *iter /= num;
+    return res_vector;
+}
+
+// Перегрузка оператора /=
+template <ContainerType T>
+template <ConvertAssignableDiv<T> T1>
+Vector<T> &Vector<T>::operator/=(const T1 &num)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_division_zero(num, __LINE__);
+
+    *this /= num;
+    // *this = (Vector<T>)(*this / num);
+    return *this;
+}
+
+// перегрузка оператора равно
+template <ContainerType T>
+template <Convertiable<T> U>
+Vector<T> &Vector<T>::operator=(const std::initializer_list<U> &arr)
+{
+    this->container_size = arr.size();
+    this->memory_allocation(this->container_size, __LINE__);
+
+    VectorIterator<T> iter = this->begin();
+    for (const auto &elem : arr)
+    {
+        *iter = static_cast<T>(elem);
+        iter++;
+    }
+
+    return *this;
+}
+
+// перегрузка оператора равно
+template <ContainerType T>
+template <Convertiable<T> U>
+Vector<T> &Vector<T>::operator=(const Vector<U> &other)
+{
+    this->container_size = other.size();
+    this->memory_allocation(this->container_size, __LINE__);
+    VectorIterator<T> iter = this->begin();
+    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++)
+    {
+        *iter = *iter1;
+        iter++;
+    }
+    return *this;
+}
+
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// |                          Приватные функции                                |
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 template <ContainerType T>
 void Vector<T>::memory_allocation(const int &container_size, int line)
 {
@@ -237,8 +381,7 @@ void Vector<T>::memory_allocation(const int &container_size, int line)
     }
     catch (std::bad_alloc &exc)
     {
-        time_t now = time(NULL);
-        throw errMemory(__FILE__, line, typeid(*this).name(), ctime(&now));
+        throw errMemory(__FILE__, line, typeid(*this).name());
     }
 }
 
@@ -250,8 +393,7 @@ void Vector<T>::check_vector_size(const int &container_size, int line) const
 {
     if (container_size <= 0)
     {
-        time_t now = time(NULL);
-        throw errNegSize(__FILE__, line, typeid(*this).name(), ctime(&now));
+        throw errNegSize(__FILE__, line, typeid(*this).name());
     }
 }
 
@@ -260,8 +402,7 @@ void Vector<T>::check_arr_null(const T *arr, int line) const
 {
     if (arr == NULL)
     {
-        time_t now = time(NULL);
-        throw errArrNull(__FILE__, line, typeid(*this).name(), ctime(&now));
+        throw errArrNull(__FILE__, line, typeid(*this).name());
     }
 }
 
@@ -271,7 +412,15 @@ void Vector<T>::check_division_zero(const U &num, int line) const
 {
     if (std::abs(num) < EPS)
     {
-        time_t now = time(NULL);
-        throw errDivisionZero(__FILE__, line, typeid(*this).name(), ctime(&now));
+        throw errDivisionZero(__FILE__, line, typeid(*this).name());
+    }
+}
+
+template <ContainerType T>
+void Vector<T>::check_index(const int &index, int line) const
+{
+    if (index < 0 || index >= this->container_size)
+    {
+        throw errIndexOutOfRange(__FILE__, line, typeid(*this).name());
     }
 }
