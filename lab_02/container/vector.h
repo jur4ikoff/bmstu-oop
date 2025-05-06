@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base_container.hpp"
+#include "base_container.h"
 #include "vector_concepts.hpp"
 #include "vector_const_iterator.h"
 #include "vector_iterator.h"
@@ -16,6 +16,8 @@ public:
     using value_type = T;
     using iterator = VectorIterator<T>;
     using const_iterator = VectorConstIterator<T>;
+
+    using size_type = int;
 
     friend class VectorIterator<T>;
     friend class VectorConstIterator<T>;
@@ -33,18 +35,30 @@ public:
     template <ValidContainer<T> Con>
     Vector(const Con &other); // Преобразование из контейнера
 
-    explicit Vector(const int &size); // конструктор по рамзеру
+    explicit Vector(const int &container_size); // конструктор по рамзеру
 
     template <ConvertAssignable<T> U>
     Vector(std::initializer_list<U> arr); // Конструктор по списку иницалиизации
 
-    template <ConvertAssignable <T> U>
-    Vector(int size, const U *arr); // Конструктор по размеру и массиву заполнения
+    template <ConvertAssignable<T> U>
+    Vector(int container_size, const U *arr); // Конструктор по размеру и массиву заполнения
 
-    template <ConvertAssignable <T> U>
-    Vector(int  size, U elem, ...); // По длине и параметрам, для заполнения
+    template <ConvertAssignable<T> U>
+    Vector(int container_size, U elem, ...); // По длине и параметрам, для заполнения
+
+    template <ForwardIterator U>
+    Vector(U begin, U end);
 
 #pragma endregion Constructors
+
+    // Функция возвращает математическую длину вектора
+    decltype(auto) len();
+
+    /**
+     * @brief Функция нормализует вектор
+     * @return Новый, нормализованный вектор
+     */
+    decltype(auto) normalization(void) const;
 
     // Возвращает иттератор на начало вектора
     VectorIterator<T> begin(void) noexcept;
@@ -57,10 +71,13 @@ public:
     ~Vector() = default;
 
 protected:
-    void memory_allocation(const int &size, int line);
+    void memory_allocation(const int &container_size, int line);
 
-    void check_vector_size(const int &size, int line);
-    void check_arr_null(const T *arr, int line);
+    void check_vector_size(const int &container_size, int line) const;
+    void check_arr_null(const T *arr, int line) const;
+
+    template <typename U>
+    void check_division_zero(const U &num, int line) const;
 
 private:
     std::shared_ptr<T[]> container;

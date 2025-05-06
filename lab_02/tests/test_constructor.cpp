@@ -1,6 +1,8 @@
 #include "vector.h"
 #include "gtest/gtest.h"
 
+// ТЕСТИРОВАНИЕ КОНСТРУКТОРА
+
 template <typename T, typename = void>
 struct is_vector_constructible : std::false_type
 {
@@ -11,21 +13,6 @@ struct is_vector_constructible<T,
                                std::void_t<decltype(Vector<T>{})>> : std::true_type
 {
 };
-
-// int add(int a, int b)
-// {
-//     return a + b;
-// }
-
-// TEST(MyCodeTest, BasicTest)
-// {
-//     EXPECT_EQ(2, add(1, 1));
-// }
-
-// TEST(MyCodeTest, NegativeTest)
-// {
-//     EXPECT_EQ(-1, add(-2, 1));
-// }
 
 TEST(CreationTest, test_creation_pos_1)
 {
@@ -123,46 +110,19 @@ TEST(CreationTest, constructs_from_size_and_nargs)
     }
 }
 
-TEST(CreationTest, ConstructsFromConvertibleTypes)
+TEST(CreationTest, constructs_from_iterator)
 {
-    // 2. Проверка с типами, конвертируемыми в T (например, double -> int)
-    // Vector<int> vec = {1.5, 2.7, 3.0};  // T1 = double (должно сработать, если ConvertAssignable<double, int>)
+    // Проверка на инициализацию от списка инициализации целых чисел
+    int size = 5;
+    std::vector<int> a = {1, 2, 3, 4, 5};
 
-    // // Проверяем, что значения сконвертировались (отбрасывается дробная часть)
-    // EXPECT_EQ(vec.size(), 3);
-    // EXPECT_EQ(vec[0], 1);  // 1.5 -> 1
-    // EXPECT_EQ(vec[1], 2);  // 2.7 -> 2
-    // EXPECT_EQ(vec[2], 3);  // 3.0 -> 3
+    Vector<int> my(a.begin(), a.end());
+
+    EXPECT_EQ(my.size(), 5); // check size
+
+    int i = 0;
+    for (const auto el : my)
+    {
+        EXPECT_EQ(el, a[i++]);
+    }
 }
-
-TEST(CreationTest, HandlesEmptyList)
-{
-    // 3. Проверка пустого списка
-    // Vector<int> vec = {};
-
-    // EXPECT_EQ(vec.size(), 0);
-    // EXPECT_TRUE(vec.empty());
-}
-
-TEST(MyCodeTest, test_pos)
-{
-
-    // Vector<int> a = { -100, -4, 5 };
-    std::vector<float> vec = {1, 2.5, 3U, 4.2f, 5LL};
-    // Vector<int> b = { 2, 2, 2 };
-
-    // Vector<int> res(a + b);
-
-    // int expect[3] = { -98, -2, 7 };
-    // int i = 0;
-    // for (auto el : res)
-    // {
-    //     EXPECT_EQ(el, expect[i++]);
-    // }
-}
-
-// int main(int argc, char **argv)
-// {
-//     ::testing::InitGoogleTest(&argc, argv);
-//     return RUN_ALL_TESTS();
-// }

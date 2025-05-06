@@ -42,7 +42,7 @@ public:
                int line,
                const char *class_name,
                const char *time,
-               const char *err_msg = "Ошибка, отрицательный размер")
+               const char *err_msg = "Ошибка, неверный размер вектора")
         : BaseContainerError(filename, line, class_name, time, err_msg) {};
 };
 
@@ -54,5 +54,16 @@ public:
                const char *class_name,
                const char *time,
                const char *err_msg = "Ошибка, указатель на массив = NULL, в конструктор нужно передать валидный массив.")
+        : BaseContainerError(filename, line, class_name, time, err_msg) {};
+};
+
+class errDivisionZero : public BaseContainerError
+{
+public:
+    errDivisionZero(const char *filename,
+                    int line,
+                    const char *class_name,
+                    const char *time,
+                    const char *err_msg = "Ошибка, деление на ноль")
         : BaseContainerError(filename, line, class_name, time, err_msg) {};
 };

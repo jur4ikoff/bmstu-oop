@@ -12,6 +12,7 @@ project(MyProject)
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
+
 # Указываем пути к заголовочным файлам
 include_directories(
     ${GTEST_INCLUDE_DIRS}

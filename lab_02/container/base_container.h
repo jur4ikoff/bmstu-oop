@@ -14,7 +14,7 @@ public:
     virtual ~baseContainer() = 0;
 
 protected:
-    int len = 0;
+    int container_size = 0;
 };
 
-#include "base_container.hpp"
+// #include "base_container.hpp"
