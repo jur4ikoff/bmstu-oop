@@ -59,8 +59,8 @@ TEST(CreationTest, test_creation_neg_1)
 TEST(CreationTest, ConstructsFromInitializerList)
 {
     // Проверка на инициализацию от списка инициализации целых чисел
-    Vector<int> vec({ 1, 2, 3, 4, 5 });
-    int excepected[5] = { 1, 2, 3, 4, 5 };
+    Vector<int> vec({1, 2, 3, 4, 5});
+    int excepected[5] = {1, 2, 3, 4, 5};
 
     EXPECT_EQ(vec.size(), 5); // Проверяем размер
 
@@ -75,8 +75,8 @@ TEST(CreationTest, ConstructsFromInitializerList)
 TEST(CreationTest, ConstructsFromInitializerListFloat)
 {
     // Проверка на инициализацию от списка инициализации целых чисел
-    Vector<float> vec({ 1.0f, 2.f, 3.0f, 4.23232f, 5.0f });
-    float excepected[5] = { 1, 2.0, 3, 4.23232, 5 };
+    Vector<float> vec({1.0f, 2.f, 3.0f, 4.23232f, 5.0f});
+    float excepected[5] = {1, 2.0, 3, 4.23232, 5};
 
     EXPECT_EQ(vec.size(), 5); // Проверяем размер
 
@@ -92,10 +92,27 @@ TEST(CreationTest, constructs_from_arr_with_size)
 {
     // Проверка на инициализацию от списка инициализации целых чисел
     int size = 5;
-    int arr[5] = {1, 2 ,3 ,4 ,5};
+    int arr[5] = {1, 2, 3, 4, 5};
 
-    Vector <int> vec(size, arr);
+    Vector<int> vec(size, arr);
 
+    EXPECT_EQ(vec.size(), 5); // Проверяем размер
+
+    int i = 0;
+    for (auto el : vec)
+    {
+        EXPECT_EQ(el, arr[i]);
+        i++;
+    }
+}
+
+TEST(CreationTest, constructs_from_size_and_nargs)
+{
+    // Проверка на инициализацию от списка инициализации целых чисел
+    int size = 5;
+    int arr[5] = {1, 2, 3, 4, 5};
+
+    Vector<int> vec(size, 1, 2, 3, 4, 5);
     EXPECT_EQ(vec.size(), 5); // Проверяем размер
 
     int i = 0;
@@ -131,7 +148,7 @@ TEST(MyCodeTest, test_pos)
 {
 
     // Vector<int> a = { -100, -4, 5 };
-    std::vector<float> vec = { 1, 2.5, 3U, 4.2f, 5LL };
+    std::vector<float> vec = {1, 2.5, 3U, 4.2f, 5LL};
     // Vector<int> b = { 2, 2, 2 };
 
     // Vector<int> res(a + b);
