@@ -167,7 +167,15 @@ template <ContainerType T>
 decltype(auto) Vector<T>::len()
 {
     this->check_vector_size(this->container_size, __LINE__);
-    return 0;
+
+    T sum = 0;
+    VectorIterator iter = this->begin();
+    for (; iter != this->end(); iter++)
+    {
+        sum += *iter * *iter;
+    }
+
+    return std::sqrt(sum);
 }
 
 /**
