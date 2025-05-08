@@ -50,9 +50,9 @@ template <typename T, typename U>
 concept ConvertibleToT = Convertiable<U, T>;
 
 template <typename T, typename Con>
-concept ValidContainer = Container<Con> &&
-                         Convertiable<typename Con::value_type, T> &&
-                         Assignable<typename Con::value_type, T>;
+concept ValidContainer = Convertiable<typename Con::value_type, T> &&
+                         Assignable<typename Con::value_type, T>; // Container<Con> &&
+                                                                  // Convertiable<typename Con::value_type, T> &&
 
 template <typename Iter>
 concept ForwardIterator = requires(Iter it) {

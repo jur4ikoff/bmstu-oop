@@ -47,8 +47,9 @@ Vector<T>::Vector(Vector<T> &&other) noexcept
 }
 
 template <ContainerType T>
-template <ConvertAssignable<T> T1>
-Vector<T>::Vector(const Vector<T1> &other)
+template <typename U>
+    requires ConvertAssignable<T, U>
+Vector<T>::Vector(const Vector<U> &other)
 {
     this->container_size = other.size();
     this->memory_allocation(this->container_size, __LINE__);
@@ -221,8 +222,7 @@ bool Vector<T>::is_zero() const
 
 // Функция считает угол между двумя векторами
 template <ContainerType T>
-template <typename U>
-    requires ConvertAssignable<T, U>
+template <ConvertAssignable<T> U>
 decltype(auto) Vector<T>::calc_angle(const Vector<U> &other) const
 {
     this->check_vector_size(this->container_size, __LINE__);
@@ -235,6 +235,20 @@ decltype(auto) Vector<T>::calc_angle(const Vector<U> &other) const
     auto angle = (*this & other) / mul_len;
     auto res = std::acos(angle);
     return res * 180 / M_PI;
+}
+
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+bool Vector<T>::is_colliniar(const Vector<U> &other) const
+{
+    return fabs(this->calc_angle(other)) < EPS;
+}
+
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+bool Vector<T>::is_orthogonal(const Vector<U> &other) const
+{
+    return fabs(this->calc_angle(other) - 90) < EPS;
 }
 
 template <ContainerType T>
@@ -266,6 +280,16 @@ VectorConstIterator<T> Vector<T>::cend(void) const noexcept
 {
     VectorConstIterator<T> iter(*this);
     return iter + container_size;
+}
+
+// Установить значение элемента по индексу
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+void Vector<T>::set_item(size_type index, const U &elem)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_index(index, __LINE__);
+    this->get_item(index) = elem;
 }
 
 // Получить элемент по индексу

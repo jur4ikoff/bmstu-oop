@@ -83,3 +83,15 @@ TEST(scalar_mul, double_vectors)
 
     EXPECT_NEAR(result1, 1.1 * 4.4 + 2.2 * 5.5 + 3.3 * 6.6, EPS);
 }
+
+TEST(set_item, pos)
+{
+    Vector<int> vec(3);
+    vec.set_item(0, 10);
+    vec.set_item(1, 20);
+    vec.set_item(2, 30);
+
+    EXPECT_EQ(vec[0], 10);
+    EXPECT_EQ(vec[1], 20);
+    EXPECT_EQ(vec[2], 30);
+}

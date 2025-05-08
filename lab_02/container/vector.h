@@ -29,8 +29,9 @@ public:
     explicit Vector(const Vector<T> &other); // Конструктор копирования
     Vector(Vector<T> &&other) noexcept;      // Копирование по правой ссылке на вектор этого же типа
 
-    template <ConvertAssignable<T> T1>
-    Vector(const Vector<T1> &other); // Преобразование из другого моего вектора
+    template <typename U>
+        requires ConvertAssignable<T, U>
+    Vector(const Vector<U> &other); // Преобразование из другого моего вектора
 
     template <typename Con>
         requires ValidContainer<T, Con>
@@ -65,14 +66,22 @@ public:
     bool is_zero() const;      // Функция проверяет нулевой ли вектор
 
     // Функция считает угол между двумя векторами
-    template <typename U>
-        requires ConvertAssignable<T, U>
+    template <ConvertAssignable<T> U>
     decltype(auto) calc_angle(const Vector<U> &other) const;
+
+    template <ConvertAssignable<T> U>
+    bool is_colliniar(const Vector<U> &other) const;
+
+    template <ConvertAssignable<T> U>
+    bool is_orthogonal(const Vector<U> &other) const;
+
 #pragma endregion vector_math_methods
 
+    template <ConvertAssignable<T> U>
+    void set_item(size_type index, const U &elem);
+
     // Получить элемент по индексу
-    T &
-    get_item(int ind);
+    T &get_item(int ind);
     const T &get_item(int ind) const;
 
     // Возвращает иттератор на начало вектора
