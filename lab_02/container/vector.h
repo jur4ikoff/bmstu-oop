@@ -65,13 +65,14 @@ public:
     bool is_zero() const;      // Функция проверяет нулевой ли вектор
 
     // Функция считает угол между двумя векторами
-    template <ConvertAssignable<T> U>
+    template <typename U>
+        requires ConvertAssignable<T, U>
     decltype(auto) calc_angle(const Vector<U> &other) const;
 #pragma endregion vector_math_methods
 
-        // Получить элемент по индексу
-        T &
-        get_item(int ind);
+    // Получить элемент по индексу
+    T &
+    get_item(int ind);
     const T &get_item(int ind) const;
 
     // Возвращает иттератор на начало вектора
@@ -118,7 +119,13 @@ public:
     template <Convertiable<T> U>
     Vector<T> &operator=(const Vector<U> &other);
 
-#pragma endregion equal
+#pragma endregion vector_operators
+
+#pragma region start
+    template <Convertiable<T> U>
+    decltype(auto) operator&(const Vector<U> &other) const;
+
+#pragma endregion vector_operators
 
     ~Vector() = default;
 
@@ -131,6 +138,7 @@ protected:
 
     template <typename U>
     void check_division_zero(const U &num, int line) const;
+    void check_size_equal(const size_type &size, int line) const;
 
 private:
     std::shared_ptr<T[]> container;

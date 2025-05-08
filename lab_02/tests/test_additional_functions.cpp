@@ -1,21 +1,8 @@
+#include "test_base.hpp"
 #include "vector.h"
+
 #include <gtest/gtest.h>
 #include <math.h>
-
-#define MY_EXCEPT_THROW(func, err_name) \
-    try                                 \
-    {                                   \
-        func;                           \
-        FAIL();                         \
-    }                                   \
-    catch (const err_name &)            \
-    {                                   \
-        SUCCEED();                      \
-    }                                   \
-    catch (...)                         \
-    {                                   \
-        FAIL();                         \
-    }
 
 TEST(test_len, test_empty_vector)
 {
@@ -47,105 +34,52 @@ TEST(test_len, test_many_axis_vector)
     EXPECT_EQ(static_cast<float>(vec.len()), 12.5578661f);
 }
 
-TEST(test_normalization, test_null_vec)
+TEST(scalar_mul, null_vector)
 {
-    Vector<int> vec = { 0, 0, 0 };
-    MY_EXCEPT_THROW(vec.normalization(), errDivisionZero)
+    Vector<int> vec1 = { 1, 2, 3 };
+    Vector<int> vec2;
+    MY_EXCEPT_THROW(vec1 & vec2, errNegSize)
 }
 
-TEST(test_normalization, test_one_vec)
+TEST(scalar_mul, vector_different_size)
 {
-    Vector<int> vec = { 0, 1, 0 };
-    Vector<int> res = vec;
-    vec.normalization();
-    // MY_EXCEPT_THROW(vec.normalization(), errDivisionZero)
-
-    EXPECT_EQ(vec.size(), res.size());
-    for (int i = 0; i < res.size(); i++)
-    {
-        EXPECT_EQ(vec[i], res[i]);
-    }
+    Vector<int> vec1 = { 1, 2, 3 };
+    Vector<int> vec2 = { 0, 0, 0, 0 };
+    MY_EXCEPT_THROW(vec1 & vec2, errVectorsSizeNotEqual)
 }
 
-TEST(test_normalization, test_two_axis_vec)
+TEST(scalar_mul, zero_vector)
 {
-    Vector<int> vec = { 2, 1 };
-    Vector<double> expect = { 2 / std::sqrt(5), 1 / std::sqrt(5) };
-    auto res = vec.normalization();
+    Vector<int> vec1 = { 1, 2, 3 };
+    Vector<int> vec2 = { 0, 0, 0 };
 
-    EXPECT_EQ(res.size(), expect.size());
-    for (int i = 0; i < expect.size(); i++)
-    {
-        EXPECT_EQ(res[i], expect[i]);
-    }
+    EXPECT_EQ(vec1 & vec2, 0);
 }
 
-TEST(test_normalization, test_three_axis_vec)
+TEST(scalar_mul, int_vectors)
 {
-    Vector<float> vec = { 2.0, 1.0, 8.0 };
-    Vector<float> expect = { (2 / std::sqrt(69)), 1 / std::sqrt(69), 8 / std::sqrt(69) };
-    auto res = vec.normalization();
-
-    EXPECT_EQ(res.size(), expect.size());
-    for (int i = 0; i < expect.size(); i++)
-    {
-        EXPECT_EQ(res[i], expect[i]);
-    }
+    Vector<int> v1({ 1, 2, 3 });
+    Vector<int> v2({ 4, 5, 6 });
+    EXPECT_EQ(v1 & v2, 1 * 4 + 2 * 5 + 3 * 6);
 }
 
-TEST(test_is_normalize, no_vector)
+TEST(scalar_mul, commutative_operation)
 {
-    Vector<int> vec;
-    MY_EXCEPT_THROW(vec.is_normalize(), errNegSize)
+    Vector<double> v1({ 1.1, 2.2, 3.3 });
+    Vector<double> v2({ 4.4, 5.5, 6.6 });
+
+    auto result1 = v1 & v2;
+    auto result2 = v2 & v1;
+
+    EXPECT_NEAR(result1, result2, EPS);
 }
 
-TEST(test_is_normalize, null_vector)
+TEST(scalar_mul, double_vectors)
 {
-    Vector<int> vec = { 0, 0, 0, 0 };
-    bool expected = false;
+    Vector<double> v1({ 1.1, 2.2, 3.3 });
+    Vector<double> v2({ 4.4, 5.5, 6.6 });
 
-    bool res = vec.is_normalize();
-    EXPECT_EQ(res, expected);
-}
+    auto result1 = v1 & v2;
 
-TEST(test_is_normalize, not_normalize_vector)
-{
-    Vector<int> vec = { 2, 4, 1, 3 };
-    bool expected = false;
-
-    bool res = vec.is_normalize();
-    EXPECT_EQ(res, expected);
-}
-
-TEST(test_is_normalize, normalize_vector)
-{
-    Vector<int> vec = { 1, 0, 0, 0 };
-    bool expected = true;
-
-    bool res = vec.is_normalize();
-    EXPECT_EQ(res, expected);
-}
-
-TEST(test_is_zero, none_vector)
-{
-    Vector<int> vec;
-    MY_EXCEPT_THROW(vec.is_zero(), errNegSize)
-}
-
-TEST(test_is_zero, zero_vector)
-{
-    Vector<int> vec = { 0, 0, 0, 0 };
-    bool expected = true;
-
-    bool res = vec.is_zero();
-    EXPECT_EQ(res, expected);
-}
-
-TEST(test_is_zero, not_zero_vector)
-{
-    Vector<int> vec = { 1, 2, 3, 4 };
-    bool expected = false;
-
-    bool res = vec.is_zero();
-    EXPECT_EQ(res, expected);
+    EXPECT_NEAR(result1, 1.1 * 4.4 + 2.2 * 5.5 + 3.3 * 6.6, EPS);
 }

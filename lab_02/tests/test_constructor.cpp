@@ -1,18 +1,8 @@
 #include "vector.h"
 #include "gtest/gtest.h"
+#include "test_base.hpp"
 
 // ТЕСТИРОВАНИЕ КОНСТРУКТОРА
-
-template <typename T, typename = void>
-struct is_vector_constructible : std::false_type
-{
-};
-
-template <typename T>
-struct is_vector_constructible<T,
-                               std::void_t<decltype(Vector<T>{})>> : std::true_type
-{
-};
 
 TEST(CreationTest, test_creation_pos_1)
 {

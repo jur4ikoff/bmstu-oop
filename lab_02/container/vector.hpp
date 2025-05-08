@@ -221,14 +221,20 @@ bool Vector<T>::is_zero() const
 
 // Функция считает угол между двумя векторами
 template <ContainerType T>
-template <ConvertAssignable<T> U>
-decltype(auto) calc_angle(const Vector<U> &other) const
+template <typename U>
+    requires ConvertAssignable<T, U>
+decltype(auto) Vector<T>::calc_angle(const Vector<U> &other) const
 {
-    this->check_vec_size(this->container_size, __LINE__);
-    this->check_vec_size(other.size(), __LINE__);
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
     this->check_size_equal(other.size(), __LINE__);
 
-    if ()
+    auto mul_len = this->len() * other.len();
+    this->check_division_zero(mul_len, __LINE__);
+
+    auto angle = (*this & other) / mul_len;
+    auto res = std::acos(angle);
+    return res * 180 / M_PI;
 }
 
 template <ContainerType T>
@@ -364,7 +370,6 @@ Vector<T> &Vector<T>::operator/=(const T1 &num)
     this->check_vector_size(this->container_size, __LINE__);
     this->check_division_zero(num, __LINE__);
 
-    // *this = *this / num;
     VectorIterator<T> iter = this->begin();
     for (; iter != this->end(); iter++)
     {
@@ -405,6 +410,27 @@ Vector<T> &Vector<T>::operator=(const Vector<U> &other)
         iter++;
     }
     return *this;
+}
+
+// Скалярное произведение векторов
+template <ContainerType T>
+template <Convertiable<T> U>
+decltype(auto) Vector<T>::operator&(const Vector<U> &other) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    decltype((*this)[0] * other[0]) sum = 0;
+
+    auto iter1 = other.begin();
+
+    for (VectorIterator<T> iter = this->begin(); iter != this->end(); iter++, iter1++)
+    {
+        sum += (*iter * *iter1);
+    }
+
+    return sum;
 }
 
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -471,7 +497,7 @@ void Vector<T>::check_index(const int &index, int line) const
 template <ContainerType T>
 void Vector<T>::check_size_equal(const size_type &size, int line) const
 {
-    this->check_vector_size(this->container_size);
+    this->check_vector_size(this->container_size, __LINE__);
     if (std::fabs(this->container_size - size) > EPS)
     {
         throw errVectorsSizeNotEqual(__FILE__, line, typeid(*this).name());

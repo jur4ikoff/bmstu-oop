@@ -62,8 +62,12 @@ public:
         : BaseContainerError(filename, line, class_name, err_msg) {};
 };
 
-class errVectorsSizeNotEqual(const char *filename,
-                             int line,
-                             const char *class_name,
-                             const char *err_msg = "Ошибка, векторы разного размера. Для запрашиваемой операции нужны векторы одинакового размера")
-    : BaseContainerError(filename, line, class_name, err_msg){};
+class errVectorsSizeNotEqual : public BaseContainerError
+{
+public:
+    errVectorsSizeNotEqual(const char *filename,
+                           int line,
+                           const char *class_name,
+                           const char *err_msg = "Ошибка, векторы разного размера. Для запрашиваемой операции нужны векторы одинакового размера")
+        : BaseContainerError(filename, line, class_name, err_msg) {};
+};
