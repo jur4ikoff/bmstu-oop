@@ -315,6 +315,37 @@ const T &Vector<T>::get_item(int ind) const
     return *iter;
 }
 
+// Перегрузка оператора +
+// Сложение вектора с другим вектором
+// Возвращается новый объект Vector<auto>
+template <ContainerType T>
+template <ConvertAssignableSum<T> U>
+decltype(auto) Vector<T>::operator+(const Vector<U> &other) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    Vector<decltype((*this[0]) + other[0])> result(*this);
+
+    VectorIterator iter = result.begin();
+    for (VectorIterator iter1 = other.begin(); iter1 != other.end(); iter1++)
+    {
+        *iter += *iter1;
+    }
+}
+
+// Перегрузка оператора +=
+// Сложение вектора с другим вектором
+// Изменяется текущий объект
+template <ContainerType T>
+template <ConvertAssignableSum<T> U>
+Vector<T> Vector<T>::operator+=(const Vector<U> &other)
+{
+    *this = (Vector<T>) (*this + other);
+    return *this;
+}
+
 // Перегрузка оператора []
 template <ContainerType T>
 T &Vector<T>::operator[](int ind)

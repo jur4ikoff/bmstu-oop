@@ -96,17 +96,30 @@ public:
     T &operator[](int ind);
     const T &operator[](int ind) const;
 
-#pragma region div
-    // Перегрузка оператора /
+#pragma operators div
+    // Перегрузка оператора + для векторов
+    template <ConvertAssignableSum<T> U>
+    decltype(auto) operator+(const Vector<U> &other) const;
+
+    template <ConvertAssignableSum<T> U>
+    Vector<T> operator+=(const Vector<U> &other);
+
+    // Перегрузка оператора / деление на число
     template <ConvertAssignableDiv<T> T1>
     decltype(auto) operator/(const T1 &num) const;
 
     // Перегрузка оператора /=
     template <ConvertAssignableDiv<T> T1>
     Vector<T> &operator/=(const T1 &num);
-#pragma end_region div
 
-#pragma region equal
+    // перегрузка оператора равно
+    template <Convertiable<T> U>
+    Vector<T> &operator=(const std::initializer_list<U> &arr);
+
+    // перегрузка оператора равно
+    template <Convertiable<T> U>
+    Vector<T> &operator=(const Vector<U> &other);
+
     // перегрузка равенства и неравенства
     template <typename Con>
         requires ValidContainer<T, Con>
@@ -116,25 +129,15 @@ public:
         requires ValidContainer<T, Con>
     bool operator!=(const Con &other) const;
 
-    template <typename Con>
-        requires ValidContainer<T, Con>
-    bool is_equal(const Con &other) const;
-
-    // перегрузка оператора равно
-
-    template <Convertiable<T> U>
-    Vector<T> &operator=(const std::initializer_list<U> &arr);
-
-    template <Convertiable<T> U>
-    Vector<T> &operator=(const Vector<U> &other);
-
-#pragma endregion vector_operators
-
-#pragma region start
+    // перегрузка оператора & - Скалярное умножение
     template <Convertiable<T> U>
     decltype(auto) operator&(const Vector<U> &other) const;
 
-#pragma endregion vector_operators
+#pragma operators div
+
+    template <typename Con>
+        requires ValidContainer<T, Con>
+    bool is_equal(const Con &other) const;
 
     ~Vector() = default;
 

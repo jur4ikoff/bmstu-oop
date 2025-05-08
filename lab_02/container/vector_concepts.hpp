@@ -13,6 +13,10 @@ concept Assignable = requires(From from, To to) { to = from; };
 
 template <typename T, typename U>
 concept Divisable = requires(T t, U u) { t / u; };
+
+template <typename T, typename U>
+concept Summable = requires(T t, U u) { t + u; };
+
 template <typename T>
 concept Container = requires(T t) {
     typename T::value_type;
@@ -45,6 +49,11 @@ template <typename T, typename U>
 concept ConvertAssignableDiv = Convertiable<U, T> &&
                                Assignable<U, T> &&
                                Divisable<U, T>;
+
+template <typename T, typename U>
+concept ConvertAssignableSum = Convertiable<U, T> &&
+                               Assignable<U, T> &&
+                               Summable<U, T>;
 
 template <typename T, typename U>
 concept ConvertibleToT = Convertiable<U, T>;
