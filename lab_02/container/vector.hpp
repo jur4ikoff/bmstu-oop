@@ -219,6 +219,18 @@ bool Vector<T>::is_zero() const
     return std::fabs(vector_len) < EPS;
 }
 
+// Функция считает угол между двумя векторами
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+decltype(auto) calc_angle(const Vector<U> &other) const
+{
+    this->check_vec_size(this->container_size, __LINE__);
+    this->check_vec_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    if ()
+}
+
 template <ContainerType T>
 VectorIterator<T> Vector<T>::begin(void) const noexcept
 {
@@ -449,5 +461,19 @@ void Vector<T>::check_index(const int &index, int line) const
     if (index < 0 || index >= this->container_size)
     {
         throw errIndexOutOfRange(__FILE__, line, typeid(*this).name());
+    }
+}
+
+/// @brief Функция проверяет эквивалентность размера текущего объекта и введенного значения
+/// @tparam T type
+/// @param size Размер второго вектора/ значение, с которым нужно сравнить
+/// @param line Номер строки, нужен для сообщение об ошибке
+template <ContainerType T>
+void Vector<T>::check_size_equal(const size_type &size, int line) const
+{
+    this->check_vector_size(this->container_size);
+    if (std::fabs(this->container_size - size) > EPS)
+    {
+        throw errVectorsSizeNotEqual(__FILE__, line, typeid(*this).name());
     }
 }

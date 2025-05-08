@@ -55,19 +55,23 @@ public:
     // Функция возвращает математическую длину вектора
     decltype(auto) len() const;
 
-#pragma region normalize
+#pragma region vector_math_methods
     /**
      * @brief Функция нормализует вектор
      * @return Новый, нормализованный вектор
      */
     decltype(auto) normalization(void) const;
     bool is_normalize() const; // Функция проверяет нормализован ли вектор
-    bool is_zero() const;   // Функция проверяет нулевой ли вектор
+    bool is_zero() const;      // Функция проверяет нулевой ли вектор
 
-#pragma endregion normalize
+    // Функция считает угол между двумя векторами
+    template <ConvertAssignable<T> U>
+    decltype(auto) calc_angle(const Vector<U> &other) const;
+#pragma endregion vector_math_methods
 
-    // Получить элемент по индексу
-    T &get_item(int ind);
+        // Получить элемент по индексу
+        T &
+        get_item(int ind);
     const T &get_item(int ind) const;
 
     // Возвращает иттератор на начало вектора
