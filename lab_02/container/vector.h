@@ -137,13 +137,17 @@ public:
     Vector<T> &operator*=(const U &num);
 
     // Перегрузка /
+    // Перегрузка оператора /. Поэлементное деление вектора на вектор
+    template <ConvertAssignableDiv<T> U>
+    decltype(auto) operator/(const Vector<U> &other) const;
+    template <ConvertAssignableDiv<T> U>
+    Vector<T> &operator/=(const Vector<U> &other);
+
     // Перегрузка оператора / деление на число
     template <ConvertAssignableDiv<T> U>
     decltype(auto) operator/(const U &num) const;
-
-    // Перегрузка оператора /=
-    template <ConvertAssignableDiv<T> T1>
-    Vector<T> &operator/=(const T1 &num);
+    template <ConvertAssignableDiv<T> U>
+    Vector<T> &operator/=(const U &num);
 
     // перегрузка оператора равно
     template <Convertiable<T> U>
@@ -189,6 +193,15 @@ public:
     // decltype(auto) num_sub(const T1 &num) const;
     // template <Convert_Assig_Diff<T> T1>
     // My_Vector<T> &num_sub_equate(const T1 &num);
+
+    //     template <Convert_Assig_Mul<T> T1>
+    // decltype(auto) elem_mul(const My_Vector<T1> &other) const;
+    // template <Convert_Assig_Mul<T> T1>
+    // My_Vector<T>& elem_mul_equate(const My_Vector<T1> &other);
+    //     template <Convert_Assig_Mul<T> T1>
+    // decltype(auto) num_mul(const T1 &num) const;
+    // template <Convert_Assig_Mul<T> T1>
+    // My_Vector<T>& num_mul_equate(const T1 &num);
 
     // TODO
     // APPEND

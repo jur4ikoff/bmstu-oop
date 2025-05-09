@@ -536,6 +536,76 @@ Vector<T> &Vector<T>::operator*=(const U &num)
     return *this;
 }
 
+// ДЕЛЕНИЕ
+template <ContainerType T>
+template <ConvertAssignableDiv<T> U>
+decltype(auto) Vector<T>::operator/(const Vector<U> &other) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    Vector<decltype((*this)[0] - other[0])> result(*this);
+    VectorIterator<decltype((*this)[0] - other[0])> iter = result.begin();
+
+    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
+    {
+        *iter /= *iter1;
+    }
+
+    return result;
+}
+
+template <ContainerType T>
+template <ConvertAssignableDiv<T> U>
+Vector<T> &Vector<T>::operator/=(const Vector<U> &other)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    VectorIterator<T> iter = (*this).begin();
+
+    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
+    {
+        *iter /= *iter1;
+    }
+
+    return *this;
+}
+
+// Перегрузка оператора /
+template <ContainerType T>
+template <ConvertAssignableDiv<T> T1>
+decltype(auto) Vector<T>::operator/(const T1 &num) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+
+    Vector<decltype((*this)[0] - num)> result(*this);
+
+    for (auto iter = result.begin(); iter != result.end(); iter++)
+    {
+        *iter /= num;
+    }
+
+    return result;
+}
+
+// Перегрузка оператора /=
+template <ContainerType T>
+template <ConvertAssignableDiv<T> U>
+Vector<T> &Vector<T>::operator/=(const U &num)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+
+    for (auto iter = (*this).begin(); iter != (*this).end(); iter++)
+    {
+        *iter /= num;
+    }
+
+    return *this;
+}
+
 // Перегрузка оператора []
 template <ContainerType T>
 T &Vector<T>::operator[](int ind)
@@ -590,37 +660,6 @@ template <typename Con>
 bool Vector<T>::is_equal(const Con &other) const
 {
     return *this == other;
-}
-
-// Перегрузка оператора /
-template <ContainerType T>
-template <ConvertAssignableDiv<T> T1>
-decltype(auto) Vector<T>::operator/(const T1 &num) const
-{
-    this->check_vector_size(this->container_size, __LINE__);
-    this->check_division_zero(num, __LINE__);
-
-    Vector<decltype((*this)[0] / num)> res_vector(*this);
-    VectorIterator<T> iter = res_vector.begin();
-    for (; iter != res_vector.end(); iter++)
-        *iter /= num;
-    return res_vector;
-}
-
-// Перегрузка оператора /=
-template <ContainerType T>
-template <ConvertAssignableDiv<T> T1>
-Vector<T> &Vector<T>::operator/=(const T1 &num)
-{
-    this->check_vector_size(this->container_size, __LINE__);
-    this->check_division_zero(num, __LINE__);
-
-    VectorIterator<T> iter = this->begin();
-    for (; iter != this->end(); iter++)
-    {
-        *iter = *iter / num;
-    }
-    return *this;
 }
 
 // перегрузка оператора равно
