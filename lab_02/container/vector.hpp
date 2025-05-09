@@ -671,6 +671,55 @@ decltype(auto) Vector<T>::operator&(const Vector<U> &other) const
     return sum;
 }
 
+// перегрузка оператора равно
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+Vector<T> &Vector<T>::operator=(const std::initializer_list<U> &arr)
+{
+    this->container_size = arr.size();
+    this->memory_allocation(this->container_size, __LINE__);
+
+    VectorIterator<T> iter = this->begin();
+    for (const auto &elem : arr)
+    {
+        *iter = elem;
+        iter++;
+    }
+
+    return *this;
+}
+
+// перегрузка оператора равно
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+Vector<T> &Vector<T>::operator=(const Vector<U> &other)
+{
+    this->check_vector_size(other.size(), __LINE__);
+
+    this->container_size = other.size();
+    this->memory_allocation(this->container_size, __LINE__);
+    VectorIterator<T> iter = this->begin();
+    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++)
+    {
+        *iter = *iter1;
+        iter++;
+    }
+    return *this;
+}
+
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+Vector<T> &Vector<T>::operator=(const Vector<U> &&other)
+{
+    this->check_vector_size(other.size(), __LINE__);
+
+    this->container_size = other.size();
+    this->memory_allocation(this->container_size, __LINE__);
+
+    this->container = other.container;
+    return *this;
+}
+
 // Перегрузка оператора ==
 template <ContainerType T>
 template <typename Con>
@@ -736,6 +785,88 @@ Vector<T> Vector<T>::operator-(void)
 // | Математические функции для вектора. Эквивалентные перегруженным операторам |
 // ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
+// Векторная сумма
+template <ContainerType T>
+template <ConvertAssignableSum<T> U>
+decltype(auto) Vector<T>::vec_sum(const Vector<U> &other) const
+{
+    return *this + other;
+}
+
+// Векторная сумма
+template <ContainerType T>
+template <ConvertAssignableSum<T> U>
+Vector<T> &Vector<T>::vec_sum_eq(const Vector<U> &other)
+{
+    *this = static_cast<Vector<T>>(*this + other);
+    return *this;
+}
+
+// Сложение вектора с числом
+template <ContainerType T>
+template <ConvertAssignableSum<T> U>
+decltype(auto) Vector<T>::plus(const U &num)
+{
+    return *this + num;
+}
+
+// Сложение вектора с числом
+template <ContainerType T>
+template <ConvertAssignableSum<T> U>
+Vector<T> &Vector<T>::plus_eq(const U &num)
+{
+    *this = static_cast<Vector<T>>(*this + num);
+    return *this;
+}
+
+// Вычитание вектора из вектора
+template <ContainerType T>
+template <ConvertAssignableSub<T> U>
+decltype(auto) Vector<T>::vec_sub(const Vector<U> &other) const
+{
+    return *this - other;
+}
+
+// Вычитание вектора из вектора
+template <ContainerType T>
+template <ConvertAssignableSub<T> U>
+Vector<T> &Vector<T>::vec_sub_eq(const Vector<U> &other)
+{
+    *this = static_cast<Vector<T>>(*this - other);
+    return *this;
+}
+
+// Вычитание числа из вектора
+template <ContainerType T>
+template <ConvertAssignableSub<T> U>
+decltype(auto) Vector<T>::minus(const U &num) const
+{
+    return *this - num;
+}
+
+// Вычитание числа из вектора
+template <ContainerType T>
+template <ConvertAssignableSub<T> U>
+Vector<T> &Vector<T>::minus_eq(const U &num)
+{
+    *this = static_cast<Vector<T>>(*this - num);
+    return *this;
+}
+
+// Поэлементное умножение
+// template <ContainerType T>
+// template <ConvertAssignableMul<T> U>
+// decltype(auto) Vector<T>::vec_el_mul(const Vector<U> &other) const
+// {
+// }
+
+// // Поэлементное умножение
+// template <ContainerType T>
+// template <ConvertAssignableMul<T> U>
+// Vector<T> &Vector<T>::vec_el_mul_eq(const Vector<U> &other)
+// {
+// }
+
 // Метод
 template <ContainerType T>
 template <typename Con>
@@ -743,40 +874,6 @@ template <typename Con>
 bool Vector<T>::is_equal(const Con &other) const
 {
     return *this == other;
-}
-
-// перегрузка оператора равно
-template <ContainerType T>
-template <ConvertAssignable<T> U>
-Vector<T> &Vector<T>::operator=(const std::initializer_list<U> &arr)
-{
-    this->container_size = arr.size();
-    this->memory_allocation(this->container_size, __LINE__);
-
-    VectorIterator<T> iter = this->begin();
-    for (const auto &elem : arr)
-    {
-        *iter = elem;
-        iter++;
-    }
-
-    return *this;
-}
-
-// перегрузка оператора равно
-template <ContainerType T>
-template <ConvertAssignable<T> U>
-Vector<T> &Vector<T>::operator=(const Vector<U> &other)
-{
-    this->container_size = other.size();
-    this->memory_allocation(this->container_size, __LINE__);
-    VectorIterator<T> iter = this->begin();
-    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++)
-    {
-        *iter = *iter1;
-        iter++;
-    }
-    return *this;
 }
 
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––

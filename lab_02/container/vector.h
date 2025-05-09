@@ -162,6 +162,8 @@ public:
     Vector<T> &operator=(const std::initializer_list<U> &arr);
     template <ConvertAssignable<T> U>
     Vector<T> &operator=(const Vector<U> &other);
+    template <ConvertAssignable<T> U>
+    Vector<T> &operator=(const Vector<U> &&other);
 
     // перегрузка равенства и неравенства
     template <typename Con>
@@ -176,44 +178,48 @@ public:
     T &operator[](int ind);
     const T &operator[](int ind) const;
 
-    Vector<T> operator - (void);
+    Vector<T> operator-(void);
 #pragma endregion operators
 
-
 #pragma region vector_methods
+    // Векторная сумма
+    template <ConvertAssignableSum<T> U>
+    decltype(auto) vec_sum(const Vector<U> &other) const;
+    template <ConvertAssignableSum<T> U>
+    Vector<T> &vec_sum_eq(const Vector<U> &other);
 
-    // template <ConvertAssignableSum<T> U>
-    // decltype(auto) operator+(const Vector<U> &other) const;
-    // template <ConvertAssignableSum<T> U>
-    // Vector<T> &operator+=(const Vector<U> &other);
+    // Сложение вектора с числом
+    template <ConvertAssignableSum<T> U>
+    decltype(auto) plus(const U &num);
+    template <ConvertAssignableSum<T> U>
+    Vector<T> &plus_eq(const U &num);
 
+    // Векторное вычитание
+    template <ConvertAssignableSub<T> U>
+    decltype(auto) vec_sub(const Vector<U> &other) const;
+    template <ConvertAssignableSub<T> U>
+    Vector<T> &vec_sub_eq(const Vector<U> &other);
+
+    // Вычитание числа из вектора
+    template <ConvertAssignableSub<T> U>
+    decltype(auto) minus(const U &num) const;
+    template <ConvertAssignableSub<T> U>
+    Vector<T> &minus_eq(const U &num);
+
+    // Поэлементное умножение
+    // template <ConvertAssignableMul<T> U>
+    // decltype(auto) vec_el_mul(const Vector<U> &other) const;
+    // template <ConvertAssignableMul<T> U>
+    // Vector<T> &vec_el_mul_eq(const Vector<U> &other);
 
     template <typename Con>
         requires ValidContainer<T, Con>
     bool is_equal(const Con &other) const;
 
-
 #pragma endregion vector_methods
 
     // отрицание вектора
     // My_Vector<T> neg(void);
-    //  template <Convert_Assig_Sum<T> T1>
-    // decltype(auto) vec_sum(const My_Vector<T1> &other) const;
-    // template <Convert_Assig_Sum<T> T1>
-    // My_Vector<T>& vec_sum_equate(const My_Vector<T1> &other);
-    //   template <Convert_Assig_Sum<T> T1>
-    // decltype(auto) num_sum(const T1 &num) const;
-    // template <Convert_Assig_Sum<T> T1>
-    // My_Vector<T>& num_sum_equate(const T1 &num);
-
-    // template <Convert_Assig_Diff<T> T1>
-    // decltype(auto) vec_sub(const My_Vector<T1> &other) const;
-    // template <Convert_Assig_Diff<T> T1>
-    // My_Vector<T> &vec_sub_equate(const My_Vector<T1> &other);
-
-    // decltype(auto) num_sub(const T1 &num) const;
-    // template <Convert_Assig_Diff<T> T1>
-    // My_Vector<T> &num_sub_equate(const T1 &num);
 
     //     template <Convert_Assig_Mul<T> T1>
     // decltype(auto) elem_mul(const My_Vector<T1> &other) const;
