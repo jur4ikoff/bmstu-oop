@@ -15,7 +15,13 @@ template <typename T, typename U>
 concept Divisable = requires(T t, U u) { t / u; };
 
 template <typename T, typename U>
+concept Multipy = requires(T t, U u) { t *u; };
+
+template <typename T, typename U>
 concept Summable = requires(T t, U u) { t + u; };
+
+template <typename T, typename U>
+concept Substationable = requires(T t, U u) { t - u; };
 
 template <typename T>
 concept Container = requires(T t) {
@@ -46,14 +52,24 @@ concept ConvertAssignable = Convertiable<U, T> &&
                             Assignable<U, T>;
 
 template <typename T, typename U>
+concept ConvertAssignableSum = Convertiable<U, T> &&
+                               Assignable<U, T> &&
+                               Summable<U, T>;
+
+template <typename T, typename U>
+concept ConvertAssignableSub = Convertiable<U, T> &&
+                               Assignable<U, T> &&
+                               Substationable<U, T>;
+
+template <typename T, typename U>
 concept ConvertAssignableDiv = Convertiable<U, T> &&
                                Assignable<U, T> &&
                                Divisable<U, T>;
 
 template <typename T, typename U>
-concept ConvertAssignableSum = Convertiable<U, T> &&
+concept ConvertAssignableMul = Convertiable<U, T> &&
                                Assignable<U, T> &&
-                               Summable<U, T>;
+                               Multipy<U, T>;
 
 template <typename T, typename U>
 concept ConvertibleToT = Convertiable<U, T>;

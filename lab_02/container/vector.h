@@ -97,16 +97,49 @@ public:
     const T &operator[](int ind) const;
 
 #pragma operators div
-    // Перегрузка оператора + для векторов
+    // Перегрузка +
+    // Перегрузка оператора + для вектора
     template <ConvertAssignableSum<T> U>
     decltype(auto) operator+(const Vector<U> &other) const;
-
     template <ConvertAssignableSum<T> U>
-    Vector<T> operator+=(const Vector<U> &other);
+    Vector<T> &operator+=(const Vector<U> &other);
 
+    // Сложение вектора и числа
+    template <ConvertAssignableSum<T> U>
+    decltype(auto) operator+(const U &num) const;
+    template <ConvertAssignableSum<T> U>
+    Vector<T> &operator+=(const U &num);
+
+    // Перегрузка -
+    // Перегрузка оператора - для вектора
+    template <ConvertAssignableSub<T> U>
+    decltype(auto) operator-(const Vector<U> &other) const;
+    template <ConvertAssignableSub<T> U>
+    Vector<T> &operator-=(const Vector<U> &other);
+
+    // Перегрзука оператора - для числа
+    template <ConvertAssignableSub<T> U>
+    decltype(auto) operator-(const U &num) const;
+    template <ConvertAssignableSub<T> U>
+    Vector<T> &operator-=(const U &num);
+
+    // Перегрузка *
+    // Перегрузка оператора умножения для вектора
+    template <ConvertAssignableMul<T> U>
+    decltype(auto) operator*(const Vector<U> &other) const;
+    template <ConvertAssignableMul<T> U>
+    Vector<T> &operator*=(const Vector<U> &other);
+
+    // Перегрзука оператора * для числа
+    template <ConvertAssignableMul<T> U>
+    decltype(auto) operator*(const U &num) const;
+    template <ConvertAssignableMul<T> U>
+    Vector<T> &operator*=(const U &num);
+
+    // Перегрузка /
     // Перегрузка оператора / деление на число
-    template <ConvertAssignableDiv<T> T1>
-    decltype(auto) operator/(const T1 &num) const;
+    template <ConvertAssignableDiv<T> U>
+    decltype(auto) operator/(const U &num) const;
 
     // Перегрузка оператора /=
     template <ConvertAssignableDiv<T> T1>
@@ -138,6 +171,30 @@ public:
     template <typename Con>
         requires ValidContainer<T, Con>
     bool is_equal(const Con &other) const;
+
+    //  template <Convert_Assig_Sum<T> T1>
+    // decltype(auto) vec_sum(const My_Vector<T1> &other) const;
+    // template <Convert_Assig_Sum<T> T1>
+    // My_Vector<T>& vec_sum_equate(const My_Vector<T1> &other);
+    //   template <Convert_Assig_Sum<T> T1>
+    // decltype(auto) num_sum(const T1 &num) const;
+    // template <Convert_Assig_Sum<T> T1>
+    // My_Vector<T>& num_sum_equate(const T1 &num);
+
+    // template <Convert_Assig_Diff<T> T1>
+    // decltype(auto) vec_sub(const My_Vector<T1> &other) const;
+    // template <Convert_Assig_Diff<T> T1>
+    // My_Vector<T> &vec_sub_equate(const My_Vector<T1> &other);
+
+    // decltype(auto) num_sub(const T1 &num) const;
+    // template <Convert_Assig_Diff<T> T1>
+    // My_Vector<T> &num_sub_equate(const T1 &num);
+
+    // TODO
+    // APPEND
+    // EXTEND
+    // RANDOM ACCESS ITERATOR
+    // RANGES
 
     ~Vector() = default;
 

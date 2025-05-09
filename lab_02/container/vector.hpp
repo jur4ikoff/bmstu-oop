@@ -326,13 +326,15 @@ decltype(auto) Vector<T>::operator+(const Vector<U> &other) const
     this->check_vector_size(other.size(), __LINE__);
     this->check_size_equal(other.size(), __LINE__);
 
-    Vector<decltype((*this[0]) + other[0])> result(*this);
+    Vector<decltype(((*this)[0]) + other[0])> result(*this);
 
-    VectorIterator iter = result.begin();
-    for (VectorIterator iter1 = other.begin(); iter1 != other.end(); iter1++)
+    VectorIterator<decltype(((*this)[0]) + other[0])> iter = result.begin();
+    for (VectorIterator iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
     {
         *iter += *iter1;
     }
+
+    return result;
 }
 
 // Перегрузка оператора +=
@@ -340,9 +342,197 @@ decltype(auto) Vector<T>::operator+(const Vector<U> &other) const
 // Изменяется текущий объект
 template <ContainerType T>
 template <ConvertAssignableSum<T> U>
-Vector<T> Vector<T>::operator+=(const Vector<U> &other)
+Vector<T> &Vector<T>::operator+=(const Vector<U> &other)
 {
-    *this = (Vector<T>) (*this + other);
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    VectorIterator<T> iter = this->begin();
+    for (VectorIterator iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
+    {
+        *iter += *iter1;
+    }
+    return *this;
+}
+
+/// @brief  Перегрузка оператора + для сложение вектора с числом
+/// @tparam T
+/// @param Число для сложение
+/// @return
+template <ContainerType T>
+template <ConvertAssignableSum<T> U>
+decltype(auto) Vector<T>::operator+(const U &num) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+
+    Vector<decltype(((*this)[0]) + num)> result(*this);
+
+    for (auto iter = result.begin(); iter != result.end(); iter++)
+    {
+        *iter += num;
+    }
+
+    return result;
+}
+
+/// @brief  Перегрузка оператора += для сложение вектора с числом
+/// @tparam T
+/// @param Число для сложение
+/// @return
+template <ContainerType T>
+template <ConvertAssignableSum<T> U>
+Vector<T> &Vector<T>::operator+=(const U &num)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+
+    for (auto iter = (*this).begin(); iter != (*this).end(); iter++)
+    {
+        *iter += num;
+    }
+
+    return *this;
+}
+
+/// @brief Перегрузка оператора - для Вектора. Функция вычитает один вектор из другого
+/// @tparam T
+/// @param other
+/// @return
+template <ContainerType T>
+template <ConvertAssignableSub<T> U>
+decltype(auto) Vector<T>::operator-(const Vector<U> &other) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    Vector<decltype((*this)[0] - other[0])> result(*this);
+    VectorIterator<decltype((*this)[0] - other[0])> iter = result.begin();
+
+    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
+    {
+        *iter -= *iter1;
+    }
+
+    return result;
+}
+
+template <ContainerType T>
+template <ConvertAssignableSub<T> U>
+Vector<T> &Vector<T>::operator-=(const Vector<U> &other)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    VectorIterator<T> iter = (*this).begin();
+
+    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
+    {
+        *iter -= *iter1;
+    }
+
+    return *this;
+}
+
+// Перегрзука оператора - для числа
+template <ContainerType T>
+template <ConvertAssignableSub<T> U>
+decltype(auto) Vector<T>::operator-(const U &num) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+
+    Vector<decltype((*this)[0] - num)> result(*this);
+
+    for (auto iter = result.begin(); iter != result.end(); iter++)
+    {
+        *iter -= num;
+    }
+
+    return result;
+}
+
+template <ContainerType T>
+template <ConvertAssignableSub<T> U>
+Vector<T> &Vector<T>::operator-=(const U &num)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+
+    for (auto iter = (*this).begin(); iter != (*this).end(); iter++)
+    {
+        *iter -= num;
+    }
+
+    return *this;
+}
+
+// Перегрузка *
+// Перегрузка оператора умножения для вектора
+template <ContainerType T>
+template <ConvertAssignableMul<T> U>
+decltype(auto) Vector<T>::operator*(const Vector<U> &other) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    Vector<decltype((*this)[0] - other[0])> result(*this);
+    VectorIterator<decltype((*this)[0] - other[0])> iter = result.begin();
+
+    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
+    {
+        *iter *= *iter1;
+    }
+
+    return result;
+}
+
+template <ContainerType T>
+template <ConvertAssignableMul<T> U>
+Vector<T> &Vector<T>::operator*=(const Vector<U> &other)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    VectorIterator<T> iter = (*this).begin();
+
+    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
+    {
+        *iter *= *iter1;
+    }
+
+    return *this;
+}
+
+// Перегрзука оператора * для числа
+template <ContainerType T>
+template <ConvertAssignableMul<T> U>
+decltype(auto) Vector<T>::operator*(const U &num) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+
+    Vector<decltype((*this)[0] - num)> result(*this);
+
+    for (auto iter = result.begin(); iter != result.end(); iter++)
+    {
+        *iter *= num;
+    }
+
+    return result;
+}
+
+template <ContainerType T>
+template <ConvertAssignableMul<T> U>
+Vector<T> &Vector<T>::operator*=(const U &num)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+
+    for (auto iter = (*this).begin(); iter != (*this).end(); iter++)
+    {
+        *iter *= num;
+    }
+
     return *this;
 }
 
@@ -428,7 +618,7 @@ Vector<T> &Vector<T>::operator/=(const T1 &num)
     VectorIterator<T> iter = this->begin();
     for (; iter != this->end(); iter++)
     {
-        *iter = static_cast<T>(*iter / num);
+        *iter = *iter / num;
     }
     return *this;
 }
@@ -444,7 +634,7 @@ Vector<T> &Vector<T>::operator=(const std::initializer_list<U> &arr)
     VectorIterator<T> iter = this->begin();
     for (const auto &elem : arr)
     {
-        *iter = static_cast<T>(elem);
+        *iter = elem;
         iter++;
     }
 

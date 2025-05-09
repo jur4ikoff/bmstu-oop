@@ -5,7 +5,7 @@
 #include <type_traits>
 
 
-#define MY_EXCEPT_THROW(func, err_name) \
+#define MY_EXPECT_THROW(func, err_name) \
     try                                 \
     {                                   \
         func;                           \

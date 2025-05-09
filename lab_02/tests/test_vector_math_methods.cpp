@@ -7,7 +7,7 @@
 TEST(test_normalization, test_null_vec)
 {
     Vector<int> vec = { 0, 0, 0 };
-    MY_EXCEPT_THROW(vec.normalization(), errDivisionZero)
+    MY_EXPECT_THROW(vec.normalization(), errDivisionZero)
 }
 
 TEST(test_normalization, test_one_vec)
@@ -15,7 +15,7 @@ TEST(test_normalization, test_one_vec)
     Vector<int> vec = { 0, 1, 0 };
     Vector<int> res = vec;
     vec.normalization();
-    // MY_EXCEPT_THROW(vec.normalization(), errDivisionZero)
+    // MY_EXPECT_THROW(vec.normalization(), errDivisionZero)
 
     EXPECT_EQ(vec.size(), res.size());
     for (int i = 0; i < res.size(); i++)
@@ -53,7 +53,7 @@ TEST(test_normalization, test_three_axis_vec)
 TEST(test_is_normalize, no_vector)
 {
     Vector<int> vec;
-    MY_EXCEPT_THROW(vec.is_normalize(), errNegSize)
+    MY_EXPECT_THROW(vec.is_normalize(), errNegSize)
 }
 
 TEST(test_is_normalize, null_vector)
@@ -86,7 +86,7 @@ TEST(test_is_normalize, normalize_vector)
 TEST(test_is_zero, none_vector)
 {
     Vector<int> vec;
-    MY_EXCEPT_THROW(vec.is_zero(), errNegSize)
+    MY_EXPECT_THROW(vec.is_zero(), errNegSize)
 }
 
 TEST(test_is_zero, zero_vector)
@@ -111,7 +111,7 @@ TEST(test_calc_angle, null_vector)
 {
     Vector<double> v1({ 1.0, 0.0 });
     Vector<double> v2({ 0.0, 0.0 });
-    MY_EXCEPT_THROW(v1.calc_angle(v2), errDivisionZero)
+    MY_EXPECT_THROW(v1.calc_angle(v2), errDivisionZero)
 }
 
 TEST(test_calc_angle, calc_angle_90)
