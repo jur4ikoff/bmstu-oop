@@ -207,41 +207,45 @@ public:
     Vector<T> &minus_eq(const U &num);
 
     // Поэлементное умножение
-    // template <ConvertAssignableMul<T> U>
-    // decltype(auto) vec_el_mul(const Vector<U> &other) const;
-    // template <ConvertAssignableMul<T> U>
-    // Vector<T> &vec_el_mul_eq(const Vector<U> &other);
+    template <ConvertAssignableMul<T> U>
+    decltype(auto) vec_el_mul(const Vector<U> &other) const;
+    template <ConvertAssignableMul<T> U>
+    Vector<T> &vec_el_mul_eq(const Vector<U> &other);
+
+    // Умножение вектора на число
+    template <ConvertAssignableMul<T> U>
+    decltype(auto) mul(const U &num) const;
+    template <ConvertAssignableMul<T> U>
+    Vector<T> &mul_eq(const U &num);
+
+    // Поэлементное Деление
+    template <ConvertAssignableDiv<T> U>
+    decltype(auto) vec_el_div(const Vector<U> &other) const;
+    template <ConvertAssignableDiv<T> U>
+    Vector<T> &vec_el_div_eq(const Vector<U> &other);
+
+    // Деление вектора на число
+    template <ConvertAssignableDiv<T> U>
+    decltype(auto) div(const U &num) const;
+    template <ConvertAssignableDiv<T> U>
+    Vector<T> &div_eq(const U &num);
+
+    template <ConvertAssignableOperationable<T> U>
+    decltype(auto) vec_mul(const Vector<U> &other) const;
+    template <ConvertAssignableOperationable<T> U>
+    Vector<T> &vec_mul_eq(const Vector<U> &other);
+
+    template <ConvertAssignableOperationable<T> U>
+    decltype(auto) scal_mul(const Vector<U> &other);
 
     template <typename Con>
         requires ValidContainer<T, Con>
     bool is_equal(const Con &other) const;
 
-#pragma endregion vector_methods
-
     // отрицание вектора
     // My_Vector<T> neg(void);
 
-    //     template <Convert_Assig_Mul<T> T1>
-    // decltype(auto) elem_mul(const My_Vector<T1> &other) const;
-    // template <Convert_Assig_Mul<T> T1>
-    // My_Vector<T>& elem_mul_equate(const My_Vector<T1> &other);
-    //     template <Convert_Assig_Mul<T> T1>
-    // decltype(auto) num_mul(const T1 &num) const;
-    // template <Convert_Assig_Mul<T> T1>
-    // My_Vector<T>& num_mul_equate(const T1 &num);
-    //  decltype(auto) elem_div(const My_Vector<T1> &other) const;
-    // template <Convert_Assig_Div<T> T1>
-    // My_Vector<T>& elem_div_equate(const My_Vector<T1> &other);
-    //     template <Convert_Assig_Div<T> T1>
-    // decltype(auto) num_div(const T1 &num) const;
-    // template <Convert_Assig_Div<T> T1>
-    //     template <Convert_Assig_Mul_Sum<T> T1>
-    // decltype(auto) scal_mul(const My_Vector<T1> &other);
-    // My_Vector<T>& num_div_equate(const T1 &num);
-    //     template <Convert_Assig_Mul_Diff<T> T1>
-    // decltype(auto) vec_mul(const My_Vector<T1> &other) const;
-    // template <Convert_Assig_Mul_Diff<T> T1>
-    // My_Vector<T>& vec_mul_equate(const My_Vector<T1> &other);
+#pragma endregion vector_methods
 
     // TODO
     // APPEND

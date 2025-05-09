@@ -20,7 +20,7 @@ class VectorSumOperator : public BaseVectors, public ::testing::Test
 {
 };
 
-class VectorPlusNum : public BaseVectors, public ::testing::Test
+class VectorPlusNumOperator : public BaseVectors, public ::testing::Test
 {
 };
 
@@ -157,7 +157,7 @@ TEST_F(VectorSumOperator, PlusEqChainOperation)
  **********************************************/
 
 // Тесты для plus(const U& num)
-TEST_F(VectorPlusNum, PlusScalarBasic)
+TEST_F(VectorPlusNumOperator, PlusScalarBasic)
 {
     auto result = int_vec.plus(5);
     ASSERT_EQ(result.size(), 3);
@@ -166,20 +166,20 @@ TEST_F(VectorPlusNum, PlusScalarBasic)
     EXPECT_EQ(result[2], 9); // 4+5
 }
 
-TEST_F(VectorPlusNum, PlusScalarTypeConversion)
+TEST_F(VectorPlusNumOperator, PlusScalarTypeConversion)
 {
     auto result = int_vec.plus(1.5);
     ASSERT_EQ(result.size(), 3);
     EXPECT_DOUBLE_EQ(result[0], 3.5); // 2+1.5
 }
 
-TEST_F(VectorPlusNum, PlusScalarEmpty)
+TEST_F(VectorPlusNumOperator, PlusScalarEmpty)
 {
     MY_EXPECT_THROW(empty_vec.plus(1), errNegSize);
 }
 
 // Тесты для plus_eq(const U& num)
-TEST_F(VectorPlusNum, PlusEqScalarBasic)
+TEST_F(VectorPlusNumOperator, PlusEqScalarBasic)
 {
     int_vec.plus_eq(2);
     ASSERT_EQ(int_vec.size(), 3);
@@ -188,13 +188,13 @@ TEST_F(VectorPlusNum, PlusEqScalarBasic)
     EXPECT_EQ(int_vec[2], 6); // 4+2
 }
 
-TEST_F(VectorPlusNum, PlusEqScalarChain)
+TEST_F(VectorPlusNumOperator, PlusEqScalarChain)
 {
     int_vec.plus_eq(1).plus_eq(2);
     EXPECT_EQ(int_vec[0], 5); // (2+1)+2
 }
 
-TEST_F(VectorPlusNum, PlusEqScalarEmpty)
+TEST_F(VectorPlusNumOperator, PlusEqScalarEmpty)
 {
     MY_EXPECT_THROW(empty_vec.plus_eq(1), errNegSize);
 }

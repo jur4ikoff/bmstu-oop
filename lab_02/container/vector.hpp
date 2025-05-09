@@ -854,18 +854,95 @@ Vector<T> &Vector<T>::minus_eq(const U &num)
 }
 
 // Поэлементное умножение
-// template <ContainerType T>
-// template <ConvertAssignableMul<T> U>
-// decltype(auto) Vector<T>::vec_el_mul(const Vector<U> &other) const
-// {
-// }
+template <ContainerType T>
+template <ConvertAssignableMul<T> U>
+decltype(auto) Vector<T>::vec_el_mul(const Vector<U> &other) const
+{
+    return *this * other;
+}
 
 // // Поэлементное умножение
-// template <ContainerType T>
-// template <ConvertAssignableMul<T> U>
-// Vector<T> &Vector<T>::vec_el_mul_eq(const Vector<U> &other)
-// {
-// }
+template <ContainerType T>
+template <ConvertAssignableMul<T> U>
+Vector<T> &Vector<T>::vec_el_mul_eq(const Vector<U> &other)
+{
+    *this = static_cast<Vector<T>>(*this * other);
+    return *this;
+}
+
+template <ContainerType T>
+template <ConvertAssignableMul<T> U>
+decltype(auto) Vector<T>::mul(const U &num) const
+{
+    return *this * num;
+}
+
+// Поэлементное умножение
+template <ContainerType T>
+template <ConvertAssignableMul<T> U>
+Vector<T> &Vector<T>::mul_eq(const U &num)
+{
+    *this = static_cast<Vector<T>>(*this * num);
+    return *this;
+}
+
+// Поэлементное Деление
+template <ContainerType T>
+template <ConvertAssignableDiv<T> U>
+decltype(auto) Vector<T>::vec_el_div(const Vector<U> &other) const
+{
+    return *this / other;
+}
+
+// Поэлементное Деление
+template <ContainerType T>
+template <ConvertAssignableDiv<T> U>
+Vector<T> &Vector<T>::vec_el_div_eq(const Vector<U> &other)
+{
+    *this = static_cast<Vector<T>>(*this / other);
+}
+
+// Деление вектора на число
+template <ContainerType T>
+template <ConvertAssignableDiv<T> U>
+decltype(auto) Vector<T>::div(const U &num) const
+{
+    return *this / num;
+}
+
+// Деление вектора на число
+template <ContainerType T>
+template <ConvertAssignableDiv<T> U>
+Vector<T> &Vector<T>::div_eq(const U &num)
+{
+    *this = static_cast<Vector<T>>(*this / num);
+    return *this;
+}
+
+// Векторное умножение
+template <ContainerType T>
+template <ConvertAssignableOperationable<T> U>
+decltype(auto) Vector<T>::vec_mul(const Vector<U> &other) const
+{
+    return *this ^ other;
+}
+
+// Векторное умножение
+template <ContainerType T>
+template <ConvertAssignableOperationable<T> U>
+Vector<T> &Vector<T>::vec_mul_eq(const Vector<U> &other)
+{
+    *this = static_cast<Vector<T>>(*this ^ other);
+    return *this;
+}
+
+// Скалярное умножение
+template <ContainerType T>
+template <ConvertAssignableOperationable<T> U>
+decltype(auto) Vector<T>::scal_mul(const Vector<U> &other)
+{
+    return *this & other;
+}
 
 // Метод
 template <ContainerType T>
