@@ -384,7 +384,7 @@ TEST_F(VectorSubNum, NegativeScalarSubtraction)
 // _____________________________________________
 
 // Базовый класс с тестовыми данными
-class VectorMultiplicationTestBase
+class VectorMultiplicationBase
 {
 protected:
     Vector<int> int_vec{ 2, 3, 4 };
@@ -394,12 +394,12 @@ protected:
 };
 
 // Тесты для умножения векторов
-class VectorVectorMultiplicationTest : public ::testing::Test, protected VectorMultiplicationTestBase
+class VectorMultVector : public ::testing::Test, protected VectorMultiplicationBase
 {
 };
 
 // Тесты для умножения на скаляр
-class VectorScalarMultiplicationTest : public ::testing::Test, protected VectorMultiplicationTestBase
+class VectorMultNumber : public ::testing::Test, protected VectorMultiplicationBase
 {
 };
 
@@ -407,7 +407,7 @@ class VectorScalarMultiplicationTest : public ::testing::Test, protected VectorM
  * ТЕСТЫ УМНОЖЕНИЯ ВЕКТОРОВ (operator* и operator*=)
  ****************************************************/
 
-TEST_F(VectorVectorMultiplicationTest, MultiplySameType)
+TEST_F(VectorMultVector, MultiplySameType)
 {
     Vector<int> other{ 5, 6, 7 };
     auto result = int_vec * other;
@@ -418,7 +418,7 @@ TEST_F(VectorVectorMultiplicationTest, MultiplySameType)
     EXPECT_EQ(result[2], 28); // 4*7
 }
 
-TEST_F(VectorVectorMultiplicationTest, MultiplyDifferentTypes)
+TEST_F(VectorMultVector, MultiplyDifferentTypes)
 {
     auto result = int_vec * double_vec;
 
@@ -428,7 +428,7 @@ TEST_F(VectorVectorMultiplicationTest, MultiplyDifferentTypes)
     EXPECT_DOUBLE_EQ(result[2], 14.0); // 4*3.5
 }
 
-TEST_F(VectorVectorMultiplicationTest, MultiplyReturnsNewVector)
+TEST_F(VectorMultVector, MultiplyReturnsNewVector)
 {
     Vector<int> other{ 1, 1, 1 };
     auto result = int_vec * other;
@@ -436,18 +436,18 @@ TEST_F(VectorVectorMultiplicationTest, MultiplyReturnsNewVector)
     EXPECT_EQ(result[0], 2);
 }
 
-TEST_F(VectorVectorMultiplicationTest, MultiplyEmptyVector)
+TEST_F(VectorMultVector, MultiplyEmptyVector)
 {
     MY_EXPECT_THROW(int_vec * empty_vec, errNegSize);
     MY_EXPECT_THROW(empty_vec * int_vec, errNegSize);
 }
 
-TEST_F(VectorVectorMultiplicationTest, MultiplyDifferentSizes)
+TEST_F(VectorMultVector, MultiplyDifferentSizes)
 {
     MY_EXPECT_THROW(int_vec * short_vec, errVectorsSizeNotEqual);
 }
 
-TEST_F(VectorVectorMultiplicationTest, InplaceMultiplySameType)
+TEST_F(VectorMultVector, InplaceMultiplySameType)
 {
     Vector<int> other{ 2, 3, 4 };
     int_vec *= other;
@@ -458,7 +458,7 @@ TEST_F(VectorVectorMultiplicationTest, InplaceMultiplySameType)
     EXPECT_EQ(int_vec[2], 16); // 4*4
 }
 
-TEST_F(VectorVectorMultiplicationTest, InplaceMultiplyDifferentTypes)
+TEST_F(VectorMultVector, InplaceMultiplyDifferentTypes)
 {
     int_vec *= double_vec;
 
@@ -468,14 +468,14 @@ TEST_F(VectorVectorMultiplicationTest, InplaceMultiplyDifferentTypes)
     EXPECT_EQ(int_vec[2], 14); // 4*3.5 → 14.0 → 14
 }
 
-TEST_F(VectorVectorMultiplicationTest, InplaceMultiplyReturnsReference)
+TEST_F(VectorMultVector, InplaceMultiplyReturnsReference)
 {
     Vector<int> other{ 1, 1, 1 };
     Vector<int> &result = (int_vec *= other);
     EXPECT_EQ(&result, &int_vec);
 }
 
-TEST_F(VectorVectorMultiplicationTest, InplaceMultiplySelf)
+TEST_F(VectorMultVector, InplaceMultiplySelf)
 {
     int_vec *= int_vec;
     EXPECT_EQ(int_vec[0], 4);  // 2*2
@@ -484,10 +484,10 @@ TEST_F(VectorVectorMultiplicationTest, InplaceMultiplySelf)
 }
 
 /****************************************************
- * ТЕСТЫ УМНОЖЕНИЯ НА СКАЛЯР (operator* и operator*=)
+ * ТЕСТЫ УМНОЖЕНИЯ НА ЧИСЛО (operator* и operator*=)
  ****************************************************/
 
-TEST_F(VectorScalarMultiplicationTest, MultiplyScalarSameType)
+TEST_F(VectorMultNumber, MultiplyScalarSameType)
 {
     auto result = int_vec * 3;
 
@@ -497,7 +497,7 @@ TEST_F(VectorScalarMultiplicationTest, MultiplyScalarSameType)
     EXPECT_EQ(result[2], 12); // 4*3
 }
 
-TEST_F(VectorScalarMultiplicationTest, MultiplyScalarDifferentType)
+TEST_F(VectorMultNumber, MultiplyScalarDifferentType)
 {
     auto result = int_vec * 1.5;
 
@@ -507,14 +507,14 @@ TEST_F(VectorScalarMultiplicationTest, MultiplyScalarDifferentType)
     EXPECT_DOUBLE_EQ(result[2], 6.0); // 4*1.5
 }
 
-TEST_F(VectorScalarMultiplicationTest, MultiplyScalarReturnsNewVector)
+TEST_F(VectorMultNumber, MultiplyScalarReturnsNewVector)
 {
     auto result = int_vec * 2;
     EXPECT_EQ(int_vec[0], 2); // Исходный вектор не изменился
     EXPECT_EQ(result[0], 4);
 }
 
-TEST_F(VectorScalarMultiplicationTest, MultiplyScalarByZero)
+TEST_F(VectorMultNumber, MultiplyScalarByZero)
 {
     auto result = int_vec * 0;
     EXPECT_EQ(result[0], 0);
@@ -522,7 +522,7 @@ TEST_F(VectorScalarMultiplicationTest, MultiplyScalarByZero)
     EXPECT_EQ(result[2], 0);
 }
 
-TEST_F(VectorScalarMultiplicationTest, InplaceMultiplyScalarSameType)
+TEST_F(VectorMultNumber, InplaceMultiplyScalarSameType)
 {
     int_vec *= 3;
 
@@ -532,7 +532,7 @@ TEST_F(VectorScalarMultiplicationTest, InplaceMultiplyScalarSameType)
     EXPECT_EQ(int_vec[2], 12); // 4*3
 }
 
-TEST_F(VectorScalarMultiplicationTest, InplaceMultiplyScalarDifferentType)
+TEST_F(VectorMultNumber, InplaceMultiplyScalarDifferentType)
 {
     int_vec *= 1.5;
 
@@ -542,13 +542,13 @@ TEST_F(VectorScalarMultiplicationTest, InplaceMultiplyScalarDifferentType)
     EXPECT_EQ(int_vec[2], 6); // 4*1.5 → 6
 }
 
-TEST_F(VectorScalarMultiplicationTest, InplaceMultiplyScalarReturnsReference)
+TEST_F(VectorMultNumber, InplaceMultiplyScalarReturnsReference)
 {
     Vector<int> &result = (int_vec *= 2);
     EXPECT_EQ(&result, &int_vec);
 }
 
-TEST_F(VectorScalarMultiplicationTest, InplaceMultiplyScalarChain)
+TEST_F(VectorMultNumber, InplaceMultiplyScalarChain)
 {
     (int_vec *= 2) *= 3;
     EXPECT_EQ(int_vec[0], 12); // (2*2)*3
@@ -556,7 +556,7 @@ TEST_F(VectorScalarMultiplicationTest, InplaceMultiplyScalarChain)
     EXPECT_EQ(int_vec[2], 24); // (4*2)*3
 }
 
-TEST_F(VectorScalarMultiplicationTest, MultiplyEmptyVectorByScalar)
+TEST_F(VectorMultNumber, MultiplyEmptyVectorByScalar)
 {
     MY_EXPECT_THROW(empty_vec * 5, errNegSize);
     MY_EXPECT_THROW(empty_vec *= 5, errNegSize);
@@ -617,4 +617,206 @@ TEST(scalar_mul, double_vectors)
     auto result1 = v1 & v2;
 
     EXPECT_NEAR(result1, 1.1 * 4.4 + 2.2 * 5.5 + 3.3 * 6.6, EPS);
+}
+
+// ТЕСТИРОВАНИЕ ВЕКТОРНОГО ПРОИЗВЕДЕНИЯ
+class VectorCrossVector : public ::testing::Test
+{
+protected:
+    Vector<int> vec3d_int = { 1, 0, 0 }, vec3d_int2 = { 0, 1, 0 }, vec2d = { 1, 2 }, empty_vec = {};
+    Vector<double> vec3d_double{ 1.5, 2.5, 3.5 };
+};
+
+// Основные тесты для 3D векторов
+TEST_F(VectorCrossVector, Basic3DCrossProduct)
+{
+    auto result = vec3d_int ^ vec3d_int2;
+
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_EQ(result[0], 0);
+    EXPECT_EQ(result[1], 0);
+    EXPECT_EQ(result[2], 1);
+}
+
+TEST_F(VectorCrossVector, CrossProductDifferentTypes)
+{
+    auto result = vec3d_int ^ vec3d_double;
+
+    ASSERT_EQ(result.size(), 3);
+
+    EXPECT_DOUBLE_EQ(result[0], 0);
+    EXPECT_DOUBLE_EQ(result[1], -3.5);
+    EXPECT_DOUBLE_EQ(result[2], 2.5);
+}
+
+TEST_F(VectorCrossVector, AntiCommutativeProperty)
+{
+    auto result1 = vec3d_int ^ vec3d_int2;
+    auto result2 = vec3d_int2 ^ vec3d_int;
+
+    ASSERT_EQ(result1.size(), 3);
+    EXPECT_EQ(result1[0], -result2[0]);
+    EXPECT_EQ(result1[1], -result2[1]);
+    EXPECT_EQ(result1[2], -result2[2]);
+}
+
+TEST_F(VectorCrossVector, SelfCrossProductIsZero)
+{
+    auto result = vec3d_int ^ vec3d_int;
+
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_EQ(result[0], 0);
+    EXPECT_EQ(result[1], 0);
+    EXPECT_EQ(result[2], 0);
+}
+
+// Тесты обработки ошибок
+TEST_F(VectorCrossVector, Non3DVectorsThrowException)
+{
+    MY_EXPECT_THROW(vec2d ^ vec3d_int, errVectorsSizeNotEqual);
+    MY_EXPECT_THROW(vec3d_int ^ vec2d, errVectorsSizeNotEqual);
+    MY_EXPECT_THROW(vec2d ^ vec2d, errSizeNotCompatible);
+}
+
+TEST_F(VectorCrossVector, DifferentSizesThrowException)
+{
+    Vector<int> vec4d{ 1, 2, 3, 4 };
+    MY_EXPECT_THROW(vec3d_int ^ vec4d, errVectorsSizeNotEqual);
+}
+
+TEST_F(VectorCrossVector, EmptyVectorThrowsException)
+{
+    MY_EXPECT_THROW(empty_vec ^ vec3d_int, errNegSize);
+    MY_EXPECT_THROW(vec3d_int ^ empty_vec, errNegSize);
+    MY_EXPECT_THROW(empty_vec ^ empty_vec, errNegSize);
+}
+
+// Тесты специальных случаев
+TEST_F(VectorCrossVector, CrossProductWithZeroVector)
+{
+    Vector<int> zero_vec{ 0, 0, 0 };
+    auto result = vec3d_int ^ zero_vec;
+
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_EQ(result[0], 0);
+    EXPECT_EQ(result[1], 0);
+    EXPECT_EQ(result[2], 0);
+}
+
+TEST_F(VectorCrossVector, CrossProductOrthogonalVectors)
+{
+    Vector<int> vec1{ 1, 0, 0 };
+    Vector<int> vec2{ 0, 1, 0 };
+    Vector<int> vec3{ 0, 0, 1 };
+
+    auto result1 = vec1 ^ vec2;
+    EXPECT_EQ(result1[0], 0);
+    EXPECT_EQ(result1[1], 0);
+    EXPECT_EQ(result1[2], 1);
+
+    auto result2 = vec2 ^ vec3;
+    EXPECT_EQ(result2[0], 1);
+    EXPECT_EQ(result2[1], 0);
+    EXPECT_EQ(result2[2], 0);
+
+    auto result3 = vec3 ^ vec1;
+    EXPECT_EQ(result3[0], 0);
+    EXPECT_EQ(result3[1], 1);
+    EXPECT_EQ(result3[2], 0);
+}
+
+// Тест на правильность типа возвращаемого значения
+TEST_F(VectorCrossVector, ReturnTypeDeduction)
+{
+    auto result1 = vec3d_int ^ vec3d_int2;
+    static_assert(std::is_same_v<decltype(result1)::value_type, int>);
+
+    auto result2 = vec3d_int ^ vec3d_double;
+    static_assert(std::is_same_v<decltype(result2)::value_type, double>);
+}
+
+// _____________________________________________
+// _____________________________________________
+// _____________________________________________
+// _____________________________________________
+// ТЕСТИРОВАНИЕ ОПЕРАЦИИ УНАРНЫЙ МИНУС
+// _____________________________________________
+// _____________________________________________
+
+class VectorUnaryMinus : public ::testing::Test
+{
+protected:
+    Vector<int> vec_int = { 1, -2, 3 }, empty_vec = {};
+    Vector<double> vec_double = { 1.5, -2.5, 3.5 };
+};
+
+// Основные тесты для разных типов данных
+TEST_F(VectorUnaryMinus, InvertsIntegerVector)
+{
+    auto result = -vec_int;
+
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_EQ(result[0], -1);
+    EXPECT_EQ(result[1], 2); // -(-2) = 2
+    EXPECT_EQ(result[2], -3);
+}
+
+TEST_F(VectorUnaryMinus, InvertsDoubleVector)
+{
+    auto result = -vec_double;
+
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_DOUBLE_EQ(result[0], -1.5);
+    EXPECT_DOUBLE_EQ(result[1], 2.5); // -(-2.5) = 2.5
+    EXPECT_DOUBLE_EQ(result[2], -3.5);
+}
+
+// Проверка возвращаемого типа
+TEST_F(VectorUnaryMinus, ReturnsCorrectType)
+{
+    auto result1 = -vec_int;
+    static_assert(std::is_same_v<decltype(result1), Vector<int>>);
+
+    auto result2 = -vec_double;
+    static_assert(std::is_same_v<decltype(result2), Vector<double>>);
+}
+
+// Проверка, что исходный вектор не изменяется
+TEST_F(VectorUnaryMinus, OriginalVectorNotModified)
+{
+    auto original = vec_int;
+    auto result = -vec_int;
+
+    EXPECT_EQ(original[0], 1);
+    EXPECT_EQ(original[1], -2);
+    EXPECT_EQ(original[2], 3);
+}
+
+// Тест для пустого вектора
+TEST_F(VectorUnaryMinus, EmptyVector){
+    MY_EXPECT_THROW(-empty_vec, errNegSize)
+}
+
+// Тест на двойное применение
+TEST_F(VectorUnaryMinus, DoubleNegation)
+{
+    auto result = -(-vec_int);
+
+    ASSERT_EQ(result.size(), 3);
+    EXPECT_EQ(result[0], 1);  // -(-1) = 1
+    EXPECT_EQ(result[1], -2); // -(2) = -2
+    EXPECT_EQ(result[2], 3);  // -(-3) = 3
+}
+
+// Тест с нулевыми элементами
+TEST_F(VectorUnaryMinus, WithZeroElements)
+{
+    Vector<int> vec_with_zeros{ 0, -0, 1, -1 };
+    auto result = -vec_with_zeros;
+
+    ASSERT_EQ(result.size(), 4);
+    EXPECT_EQ(result[0], 0);
+    EXPECT_EQ(result[1], 0);
+    EXPECT_EQ(result[2], -1);
+    EXPECT_EQ(result[3], 1);
 }

@@ -53,10 +53,10 @@ public:
 
 #pragma endregion Constructors
 
+#pragma region vector_math_methods
     // Функция возвращает математическую длину вектора
     decltype(auto) len() const;
 
-#pragma region vector_math_methods
     /**
      * @brief Функция нормализует вектор
      * @return Новый, нормализованный вектор
@@ -84,6 +84,7 @@ public:
     T &get_item(int ind);
     const T &get_item(int ind) const;
 
+#pragma region iterators
     // Возвращает иттератор на начало вектора
     VectorIterator<T> begin(void) const noexcept;
     VectorIterator<T> end(void) const noexcept;
@@ -91,12 +92,9 @@ public:
     // Возвращает константный интератор на начало/кенец вектора
     VectorConstIterator<T> cbegin(void) const noexcept;
     VectorConstIterator<T> cend(void) const noexcept;
+#pragma endregion iterators
 
-    // Перегрузка оператора []
-    T &operator[](int ind);
-    const T &operator[](int ind) const;
-
-#pragma operators div
+#pragma region operators
     // Перегрузка +
     // Перегрузка оператора + для вектора
     template <ConvertAssignableSum<T> U>
@@ -149,12 +147,20 @@ public:
     template <ConvertAssignableDiv<T> U>
     Vector<T> &operator/=(const U &num);
 
-    // перегрузка оператора равно
-    template <Convertiable<T> U>
-    Vector<T> &operator=(const std::initializer_list<U> &arr);
+    // векторное умножение
+    template <ConvertAssignableOperationable<T> U>
+    decltype(auto) operator^(const Vector<U> &other) const;
+    template <ConvertAssignableOperationable<T> U>
+    Vector<T> &operator^=(const Vector<U> &other);
+
+    // перегрузка оператора & - Скалярное умножение
+    template <ConvertAssignableOperationable<T> U>
+    decltype(auto) operator&(const Vector<U> &other) const;
 
     // перегрузка оператора равно
-    template <Convertiable<T> U>
+    template <ConvertAssignable<T> U>
+    Vector<T> &operator=(const std::initializer_list<U> &arr);
+    template <ConvertAssignable<T> U>
     Vector<T> &operator=(const Vector<U> &other);
 
     // перегрузка равенства и неравенства
@@ -166,16 +172,31 @@ public:
         requires ValidContainer<T, Con>
     bool operator!=(const Con &other) const;
 
-    // перегрузка оператора & - Скалярное умножение
-    template <Convertiable<T> U>
-    decltype(auto) operator&(const Vector<U> &other) const;
+    // Перегрузка оператора []
+    T &operator[](int ind);
+    const T &operator[](int ind) const;
 
-#pragma operators div
+    Vector<T> operator - (void);
+#pragma endregion operators
+
+
+#pragma region vector_methods
+
+    // template <ConvertAssignableSum<T> U>
+    // decltype(auto) operator+(const Vector<U> &other) const;
+    // template <ConvertAssignableSum<T> U>
+    // Vector<T> &operator+=(const Vector<U> &other);
+
 
     template <typename Con>
         requires ValidContainer<T, Con>
     bool is_equal(const Con &other) const;
 
+
+#pragma endregion vector_methods
+
+    // отрицание вектора
+    // My_Vector<T> neg(void);
     //  template <Convert_Assig_Sum<T> T1>
     // decltype(auto) vec_sum(const My_Vector<T1> &other) const;
     // template <Convert_Assig_Sum<T> T1>
@@ -202,6 +223,19 @@ public:
     // decltype(auto) num_mul(const T1 &num) const;
     // template <Convert_Assig_Mul<T> T1>
     // My_Vector<T>& num_mul_equate(const T1 &num);
+    //  decltype(auto) elem_div(const My_Vector<T1> &other) const;
+    // template <Convert_Assig_Div<T> T1>
+    // My_Vector<T>& elem_div_equate(const My_Vector<T1> &other);
+    //     template <Convert_Assig_Div<T> T1>
+    // decltype(auto) num_div(const T1 &num) const;
+    // template <Convert_Assig_Div<T> T1>
+    //     template <Convert_Assig_Mul_Sum<T> T1>
+    // decltype(auto) scal_mul(const My_Vector<T1> &other);
+    // My_Vector<T>& num_div_equate(const T1 &num);
+    //     template <Convert_Assig_Mul_Diff<T> T1>
+    // decltype(auto) vec_mul(const My_Vector<T1> &other) const;
+    // template <Convert_Assig_Mul_Diff<T> T1>
+    // My_Vector<T>& vec_mul_equate(const My_Vector<T1> &other);
 
     // TODO
     // APPEND

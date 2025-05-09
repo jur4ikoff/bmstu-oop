@@ -163,7 +163,7 @@ Vector<T>::Vector(U begin, U end)
 }
 
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-// |                   Функции для работы с вектором                               |
+// |                  Математические Функции для работы с вектором                 |
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 template <ContainerType T>
@@ -251,6 +251,46 @@ bool Vector<T>::is_orthogonal(const Vector<U> &other) const
     return fabs(this->calc_angle(other) - 90) < EPS;
 }
 
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// |                            Геттеры и сеттеры                              |
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+// Установить значение элемента по индексу
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+void Vector<T>::set_item(size_type index, const U &elem)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_index(index, __LINE__);
+    this->get_item(index) = elem;
+}
+
+// Получить элемент по индексу
+template <ContainerType T>
+T &Vector<T>::get_item(int ind)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_index(ind, __LINE__);
+    VectorIterator<T> iter = this->begin();
+    for (int i = 0; i < ind; i++)
+        iter++;
+    return *iter;
+}
+
+template <ContainerType T>
+const T &Vector<T>::get_item(int ind) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_index(ind, __LINE__);
+    VectorIterator<T> iter = this->begin();
+    for (int i = 0; i < ind; i++)
+        iter++;
+    return *iter;
+}
+
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// |                                Итераторы                                  |
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 template <ContainerType T>
 VectorIterator<T> Vector<T>::begin(void) const noexcept
 {
@@ -282,38 +322,9 @@ VectorConstIterator<T> Vector<T>::cend(void) const noexcept
     return iter + container_size;
 }
 
-// Установить значение элемента по индексу
-template <ContainerType T>
-template <ConvertAssignable<T> U>
-void Vector<T>::set_item(size_type index, const U &elem)
-{
-    this->check_vector_size(this->container_size, __LINE__);
-    this->check_index(index, __LINE__);
-    this->get_item(index) = elem;
-}
-
-// Получить элемент по индексу
-template <ContainerType T>
-T &Vector<T>::get_item(int ind)
-{
-    this->check_vector_size(this->container_size, __LINE__);
-    this->check_index(ind, __LINE__);
-    VectorIterator<T> iter = this->begin();
-    for (int i = 0; i < ind; i++)
-        iter++;
-    return *iter;
-}
-
-template <ContainerType T>
-const T &Vector<T>::get_item(int ind) const
-{
-    this->check_vector_size(this->count_axis, __LINE__);
-    this->check_index(ind, __LINE__);
-    VectorIterator<T> iter = this->cbegin();
-    for (int i = 0; i < ind; i++)
-        iter++;
-    return *iter;
-}
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// |                          Перегрузка операторов                            |
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 // Перегрузка оператора +
 // Сложение вектора с другим вектором
@@ -576,8 +587,8 @@ Vector<T> &Vector<T>::operator/=(const Vector<U> &other)
 
 // Перегрузка оператора /
 template <ContainerType T>
-template <ConvertAssignableDiv<T> T1>
-decltype(auto) Vector<T>::operator/(const T1 &num) const
+template <ConvertAssignableDiv<T> U>
+decltype(auto) Vector<T>::operator/(const U &num) const
 {
     this->check_vector_size(this->container_size, __LINE__);
 
@@ -606,18 +617,58 @@ Vector<T> &Vector<T>::operator/=(const U &num)
     return *this;
 }
 
-// Перегрузка оператора []
+// Векторное умножение
 template <ContainerType T>
-T &Vector<T>::operator[](int ind)
+template <ConvertAssignableOperationable<T> U>
+decltype(auto) Vector<T>::operator^(const Vector<U> &other) const
 {
-    return get_item(ind);
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    if (this->container_size != 3)
+    {
+        throw errSizeNotCompatible(__FILE__, __LINE__, typeid(*this).name());
+    }
+
+    using new_type = decltype((*this)[0] * other[0]);
+    Vector<new_type> result;
+
+    new_type cx = (*this)[1] * other[2] - (*this)[2] * other[1];
+    new_type cy = (*this)[2] * other[0] - (*this)[0] * other[2];
+    new_type cz = (*this)[0] * other[1] - (*this)[1] * other[0];
+
+    result = { cx, cy, cz };
+    return result;
 }
 
-// Перегрузка оператора []
 template <ContainerType T>
-const T &Vector<T>::operator[](int ind) const
+template <ConvertAssignableOperationable<T> U>
+Vector<T> &Vector<T>::operator^=(const Vector<U> &other)
 {
-    return get_item(ind);
+    *this = *this ^ other;
+    return *this;
+}
+
+// Скалярное произведение векторов
+template <ContainerType T>
+template <ConvertAssignableOperationable<T> U>
+decltype(auto) Vector<T>::operator&(const Vector<U> &other) const
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(other.size(), __LINE__);
+    this->check_size_equal(other.size(), __LINE__);
+
+    decltype((*this)[0] * other[0]) sum = 0;
+
+    auto iter1 = other.begin();
+
+    for (VectorIterator<T> iter = this->begin(); iter != this->end(); iter++, iter1++)
+    {
+        sum += (*iter * *iter1);
+    }
+
+    return sum;
 }
 
 // Перегрузка оператора ==
@@ -653,6 +704,38 @@ bool Vector<T>::operator!=(const Con &other) const
     return !(*this == other);
 }
 
+// Перегрузка оператора []
+template <ContainerType T>
+T &Vector<T>::operator[](int ind)
+{
+    return get_item(ind);
+}
+
+// Перегрузка оператора []
+template <ContainerType T>
+const T &Vector<T>::operator[](int ind) const
+{
+    return get_item(ind);
+}
+
+template <ContainerType T>
+Vector<T> Vector<T>::operator-(void)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    Vector<T> result(*this);
+
+    for (auto iter = result.begin(); iter != result.end(); iter++)
+    {
+        *iter *= -1;
+    }
+
+    return result;
+}
+
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// | Математические функции для вектора. Эквивалентные перегруженным операторам |
+// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 // Метод
 template <ContainerType T>
 template <typename Con>
@@ -664,7 +747,7 @@ bool Vector<T>::is_equal(const Con &other) const
 
 // перегрузка оператора равно
 template <ContainerType T>
-template <Convertiable<T> U>
+template <ConvertAssignable<T> U>
 Vector<T> &Vector<T>::operator=(const std::initializer_list<U> &arr)
 {
     this->container_size = arr.size();
@@ -682,7 +765,7 @@ Vector<T> &Vector<T>::operator=(const std::initializer_list<U> &arr)
 
 // перегрузка оператора равно
 template <ContainerType T>
-template <Convertiable<T> U>
+template <ConvertAssignable<T> U>
 Vector<T> &Vector<T>::operator=(const Vector<U> &other)
 {
     this->container_size = other.size();
@@ -694,27 +777,6 @@ Vector<T> &Vector<T>::operator=(const Vector<U> &other)
         iter++;
     }
     return *this;
-}
-
-// Скалярное произведение векторов
-template <ContainerType T>
-template <Convertiable<T> U>
-decltype(auto) Vector<T>::operator&(const Vector<U> &other) const
-{
-    this->check_vector_size(this->container_size, __LINE__);
-    this->check_vector_size(other.size(), __LINE__);
-    this->check_size_equal(other.size(), __LINE__);
-
-    decltype((*this)[0] * other[0]) sum = 0;
-
-    auto iter1 = other.begin();
-
-    for (VectorIterator<T> iter = this->begin(); iter != this->end(); iter++, iter1++)
-    {
-        sum += (*iter * *iter1);
-    }
-
-    return sum;
 }
 
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––

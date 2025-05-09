@@ -72,12 +72,20 @@ concept ConvertAssignableMul = Convertiable<U, T> &&
                                Multipy<U, T>;
 
 template <typename T, typename U>
+concept ConvertAssignableOperationable = Convertiable<U, T> &&
+                                         Assignable<U, T> &&
+                                         Divisable<U, T> &&
+                                         Multipy<U, T> &&
+                                         Summable<U, T> &&
+                                         Substationable<U, T>;
+
+template <typename T, typename U>
 concept ConvertibleToT = Convertiable<U, T>;
 
 template <typename T, typename Con>
-concept ValidContainer = Convertiable<typename Con::value_type, T> &&
-                         Assignable<typename Con::value_type, T>; // Container<Con> &&
-                                                                  // Convertiable<typename Con::value_type, T> &&
+concept ValidContainer = Container<Con> &&
+                         Convertiable<typename Con::value_type, T> &&
+                         Assignable<typename Con::value_type, T>;
 
 template <typename Iter>
 concept ForwardIterator = requires(Iter it) {
