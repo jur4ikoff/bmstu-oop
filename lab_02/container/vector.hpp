@@ -953,6 +953,22 @@ bool Vector<T>::is_equal(const Con &other) const
     return *this == other;
 }
 
+template <ContainerType T>
+void Vector<T>::print(void) const
+{
+    for (auto iter = this->begin(); iter != this->end(); iter++)
+    {
+        std::cout << *iter << " ";
+    }
+    std::cout << std::endl;
+}
+
+template <ContainerType T>
+Vector<T> Vector<T>::negative(void)
+{
+    return -(*this);
+}
+
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // |                          Приватные функции                                |
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––

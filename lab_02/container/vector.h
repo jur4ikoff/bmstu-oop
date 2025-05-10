@@ -179,6 +179,7 @@ public:
     const T &operator[](int ind) const;
 
     Vector<T> operator-(void);
+
 #pragma endregion operators
 
 #pragma region vector_methods
@@ -242,14 +243,14 @@ public:
         requires ValidContainer<T, Con>
     bool is_equal(const Con &other) const;
 
+    void print(void) const;
+
     // отрицание вектора
-    // My_Vector<T> neg(void);
+    Vector<T> negative(void);
 
 #pragma endregion vector_methods
 
     // TODO
-    // APPEND
-    // EXTEND
     // RANDOM ACCESS ITERATOR
     // RANGES
 
