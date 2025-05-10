@@ -4,14 +4,14 @@
 #include <iterator>
 #include <memory>
 
-#include <vector_concepts.hpp>
+#include "vector_concepts.hpp"
 
 template <ContainerType T>
 class BaseIterator
 {
 public:
 #pragma region alias
-    using iterator_category = std::forward_iterator_tag; // std::bidirectional_iterator_tag; //  random_access_itterator
+    using iterator_category = std::random_access_iterator_tag; // random_access_itterator
     using difference_type = ptrdiff_t;
     using value_type = T;
     using pointer = T *;
