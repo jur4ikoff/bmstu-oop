@@ -35,7 +35,14 @@ bool BaseIterator<T>::operator!=(const BaseIterator<T> &other) const
     return index != other.index;
 }
 
-// Вспомогательные функции
+template <ContainerType T>
+auto BaseIterator<T>::operator<=>(const BaseIterator<T> &other) const
+{
+    check_vector(__LINE__);
+    check_same_iter_type(other, __LINE__);
+
+    return index <=> other.index;
+}
 
 template <ContainerType T>
 void BaseIterator<T>::check_vector(int line) const
@@ -54,6 +61,16 @@ void BaseIterator<T>::check_iter(int line) const
     {
         time_t now = time(NULL);
         throw errIndexOutOfRange(__FILE__, line, typeid(*this).name(), ctime(&now));
+    }
+}
+
+template <ContainerType T>
+void BaseIterator<T>::check_same_iter_type(const BaseIterator<T> &other, int line) const
+{
+    if (piter.lock() != other.piter.lock())
+    {
+        time_t now = time(NULL);
+        throw errDifferentContainers(__FILE__, line, typeid(*this).name(), ctime(&now));
     }
 }
 

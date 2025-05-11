@@ -251,6 +251,7 @@ public:
 #pragma endregion vector_methods
 
     // TODO
+    // Вернуть время
     // RANDOM ACCESS ITERATOR
     // RANGES
 

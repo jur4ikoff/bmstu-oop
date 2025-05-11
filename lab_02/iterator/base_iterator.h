@@ -11,14 +11,17 @@ class BaseIterator
 {
 public:
 #pragma region alias
-    using iterator_category = std::random_access_iterator_tag; // random_access_itterator
+    using iterator_category = std::random_access_iterator_tag;
     using difference_type = ptrdiff_t;
     using value_type = T;
     using pointer = T *;
+    using const_point = const T *;
     using reference = T &;
+
 #pragma endregion alias
 
     BaseIterator() = default;
+    virtual ~BaseIterator() = default;
 
     // Перегружаем * и ->
     const T &operator*() const;
@@ -28,8 +31,7 @@ public:
     bool operator==(const BaseIterator<T> &other) const;
     bool operator!=(const BaseIterator<T> &other) const;
 
-    virtual ~BaseIterator() = default;
-
+    auto operator<=>(const BaseIterator<T> &other) const;
 
 protected:
     size_t size = 0;
@@ -40,6 +42,9 @@ protected:
 
     // Проверка на то, что индекс в пределах размера объекта
     void check_iter(int line) const;
+
+    // Проверка, что итераторы одного типа
+    void check_same_iter_type(const BaseIterator<T> &other, int line) const;
 
     // Возвращает иттератор по индексу
     T *get_ptr_cur() const;

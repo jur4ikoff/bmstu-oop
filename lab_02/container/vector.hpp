@@ -7,6 +7,7 @@
 
 #include "constants.hpp"
 
+#include <ctime>
 #include <iostream>
 #include <math.h>
 #include <memory>
@@ -628,7 +629,8 @@ decltype(auto) Vector<T>::operator^(const Vector<U> &other) const
 
     if (this->container_size != 3)
     {
-        throw errSizeNotCompatible(__FILE__, __LINE__, typeid(*this).name());
+        time_t now = time(NULL);
+        throw errSizeNotCompatible(__FILE__, __LINE__, typeid(*this).name(), ctime(&now));
     }
 
     using new_type = decltype((*this)[0] * other[0]);
@@ -982,7 +984,8 @@ void Vector<T>::memory_allocation(const int &container_size, int line)
     }
     catch (std::bad_alloc &exc)
     {
-        throw errMemory(__FILE__, line, typeid(*this).name());
+        time_t now = time(NULL);
+        throw errMemory(__FILE__, line, typeid(*this).name(), ctime(&now));
     }
 }
 
@@ -994,7 +997,8 @@ void Vector<T>::check_vector_size(const int &container_size, int line) const
 {
     if (container_size <= 0)
     {
-        throw errNegSize(__FILE__, line, typeid(*this).name());
+        time_t now = time(NULL);
+        throw errNegSize(__FILE__, line, typeid(*this).name(), ctime(&now));
     }
 }
 
@@ -1003,7 +1007,8 @@ void Vector<T>::check_arr_null(const T *arr, int line) const
 {
     if (arr == NULL)
     {
-        throw errArrNull(__FILE__, line, typeid(*this).name());
+        time_t now = time(NULL);
+        throw errArrNull(__FILE__, line, typeid(*this).name(), ctime(&now));
     }
 }
 
@@ -1013,7 +1018,8 @@ void Vector<T>::check_division_zero(const U &num, int line) const
 {
     if (std::abs(num) < EPS)
     {
-        throw errDivisionZero(__FILE__, line, typeid(*this).name());
+        time_t now = time(NULL);
+        throw errDivisionZero(__FILE__, line, typeid(*this).name(), ctime(&now));
     }
 }
 
@@ -1022,7 +1028,8 @@ void Vector<T>::check_index(const int &index, int line) const
 {
     if (index < 0 || index >= this->container_size)
     {
-        throw errIndexOutOfRange(__FILE__, line, typeid(*this).name());
+        time_t now = time(NULL);
+        throw errIndexOutOfRange(__FILE__, line, typeid(*this).name(), ctime(&now));
     }
 }
 
@@ -1036,6 +1043,7 @@ void Vector<T>::check_size_equal(const size_type &size, int line) const
     this->check_vector_size(this->container_size, __LINE__);
     if (std::fabs(this->container_size - size) > EPS)
     {
-        throw errVectorsSizeNotEqual(__FILE__, line, typeid(*this).name());
+        time_t now = time(NULL);
+        throw errVectorsSizeNotEqual(__FILE__, line, typeid(*this).name(), ctime(&now));
     }
 }
