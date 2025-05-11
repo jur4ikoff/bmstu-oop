@@ -22,7 +22,7 @@ template <ContainerType T>
 Vector<T>::Vector()
 {
     container_size = 0;
-    memory_allocation(container_size, __LINE__);
+    this->memory_allocation(container_size, __LINE__);
 }
 
 template <ContainerType T>
@@ -35,7 +35,7 @@ Vector<T>::Vector(const Vector<T> &other)
 
     for (auto iter1 = other.cbegin(); iter1 != other.cend(); iter1++)
     {
-        *iter = static_cast<T>(*iter1);
+        *iter = *iter1;
         iter++;
     }
 }
@@ -43,7 +43,7 @@ Vector<T>::Vector(const Vector<T> &other)
 template <ContainerType T>
 Vector<T>::Vector(Vector<T> &&other) noexcept
 {
-    this->container_size = other.size();
+    this->container_size = other.container_size;
     this->container = other.container;
     other.container.reset();
 }
@@ -57,10 +57,9 @@ Vector<T>::Vector(const Vector<U> &other)
     this->memory_allocation(this->container_size, __LINE__);
 
     VectorIterator<T> iter = this->begin();
-    for (auto iter1 = other.cbegin(); iter1 != other.cend(); iter1++)
+    for (auto iter1 = other.cbegin(); iter1 != other.cend(); iter1++, iter++)
     {
         *iter = *iter1;
-        iter++;
     }
 }
 
@@ -73,10 +72,9 @@ Vector<T>::Vector(const Con &other)
     this->memory_allocation(this->container_size, __LINE__);
 
     VectorIterator<T> iter = this->begin();
-    for (auto iter1 = other.cbegin(); iter1 != other.cend(); iter1++)
+    for (auto iter1 = other.cbegin(); iter1 != other.cend(); iter1++, iter++)
     {
         *iter = *iter1;
-        iter++;
     }
 }
 
@@ -106,17 +104,17 @@ Vector<T>::Vector(std::initializer_list<U> arr)
 
 template <ContainerType T>
 template <ConvertAssignable<T> U>
-Vector<T>::Vector(int container_size, const U *arr)
+Vector<T>::Vector(int size, const U *arr)
 {
-    this->check_vector_size(container_size, __LINE__);
+    this->check_vector_size(size, __LINE__);
     this->check_arr_null(arr, __LINE__);
 
-    this->container_size = container_size;
+    this->container_size = size;
     this->memory_allocation(this->container_size, __LINE__);
 
     VectorIterator<T> iter = this->begin();
 
-    for (int i = 0; i < container_size; i++)
+    for (int i = 0; i < size; i++)
     {
         *iter = arr[i];
         iter++;
@@ -149,14 +147,13 @@ template <ForwardIterator U>
 Vector<T>::Vector(U begin, U end)
 {
     // Вычисляем размер
-    int container_size = end - begin;
-    this->check_vector_size(container_size, __LINE__);
-    this->container_size = container_size;
-
-    this->memory_allocation(container_size, __LINE__);
+    int size = end - begin;
+    this->check_vector_size(size, __LINE__);
+    
+    this->container_size = size;
+    this->memory_allocation(size, __LINE__);
 
     VectorIterator<T> iter = this->begin();
-    VectorIterator<T> test = this->begin();
     for (auto iter1 = begin; iter1 != end; iter1++)
     {
         *iter = *iter1;

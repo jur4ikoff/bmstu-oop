@@ -89,16 +89,12 @@ concept ValidContainer = Container<Con> &&
 
 template <typename Iter>
 concept ForwardIterator = requires(Iter it) {
-    // Должен удовлетворять требованиям input iterator
     requires std::input_iterator<Iter>;
 
-    // Должен быть default-конструируемым
     { Iter() } -> std::same_as<Iter>;
 
-    // Должен поддерживать multi-pass (сохраняемое состояние)
     requires std::is_lvalue_reference_v<typename std::iterator_traits<Iter>::reference>;
 
-    // Должен иметь правильный category tag
     requires std::derived_from<
         typename std::iterator_traits<Iter>::iterator_category,
         std::forward_iterator_tag>;

@@ -35,32 +35,24 @@ public:
 #pragma endregion aliases
 
 #pragma region Constructors
-    // Обычный конструктор
-    Vector();
+    Vector();                                // Обычный конструктор
     explicit Vector(const Vector<T> &other); // Конструктор копирования
     Vector(Vector<T> &&other) noexcept;      // Копирование по правой ссылке на вектор этого же типа
-
     template <typename U>
         requires ConvertAssignable<T, U>
-    Vector(const Vector<U> &other); // Преобразование из другого моего вектора
-
+    Vector(const Vector<U> &other); // Преобразование из вектора другого типа
     template <typename Con>
         requires ValidContainer<T, Con>
-    Vector(const Con &other); // Преобразование из контейнера
-
-    explicit Vector(const int &container_size); // конструктор по рамзеру
-
+    Vector(const Con &other);         // Преобразование из контейнера, подходящего под требования
+    explicit Vector(const int &size); // Конструктор по рамзеру
     template <ConvertAssignable<T> U>
     Vector(std::initializer_list<U> arr); // Конструктор по списку иницалиизации
-
     template <ConvertAssignable<T> U>
     Vector(int container_size, const U *arr); // Конструктор по размеру и массиву заполнения
-
     template <ConvertAssignable<T> U>
-    Vector(int container_size, U elem, ...); // По длине и параметрам, для заполнения
-
+    Vector(int container_size, U elem, ...); // Конструктор по длине и параметрам, для заполнения
     template <ForwardIterator U>
-    Vector(U begin, U end);
+    Vector(U begin, U end); // Конструктор по иттератору на некий контейнер, на начало и конец
 
 #pragma endregion Constructors
 
