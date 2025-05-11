@@ -80,3 +80,21 @@ T *BaseIterator<T>::get_ptr_cur() const
     std::shared_ptr<T[]> piter_to_shared_ptr = piter.lock();
     return piter_to_shared_ptr.get() + index;
 }
+
+template <ContainerType T>
+size_t BaseIterator<T>::get_size() const
+{
+    return size;
+}
+
+template <ContainerType T>
+size_t BaseIterator<T>::get_index() const
+{
+    return index;
+}
+
+template <ContainerType T>
+std::weak_ptr<T[]> BaseIterator<T>::get_piter() const
+{
+    return piter;
+}

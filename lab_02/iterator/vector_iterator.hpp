@@ -107,7 +107,7 @@ VectorIterator<T> &VectorIterator<T>::operator-=(const int i)
     return *this;
 }
 
-// Перегрузка декремента --iter
+// Перегрузка декремента iter--
 template <ContainerType T>
 VectorIterator<T> &VectorIterator<T>::operator--()
 {
@@ -117,7 +117,7 @@ VectorIterator<T> &VectorIterator<T>::operator--()
     return *this;
 }
 
-// Перегрузка декремента iter--
+// Перегрузка декремента --iter
 template <ContainerType T>
 VectorIterator<T> VectorIterator<T>::operator--(int)
 {
@@ -152,19 +152,6 @@ VectorIterator<T> operator+(typename BaseIterator<T>::difference_type n, const V
 }
 
 template <ContainerType T>
-T &VectorIterator<T>::operator[](int dist)
-{
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
-
-    VectorIterator<T> tmp(*this);
-    for (int i = 0; i < dist; ++i)
-        ++tmp;
-
-    return *tmp;
-}
-
-template <ContainerType T>
 T &VectorIterator<T>::operator[](int dist) const
 {
     this->check_iter(__LINE__);
@@ -172,7 +159,9 @@ T &VectorIterator<T>::operator[](int dist) const
 
     VectorIterator<T> tmp(*this);
     for (int i = 0; i < dist; ++i)
+    {
         ++tmp;
+    }
 
     return *tmp;
 }

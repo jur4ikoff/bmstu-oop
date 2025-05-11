@@ -14,10 +14,10 @@ class Vector : public baseContainer
 public:
 #pragma region aliases
     using value_type = T;
+    using size_type = int;
+
     using iterator = VectorIterator<T>;
     using const_iterator = VectorConstIterator<T>;
-
-    using size_type = int;
 
     friend class VectorIterator<T>;
     friend class VectorConstIterator<T>;

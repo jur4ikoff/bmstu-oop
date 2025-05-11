@@ -32,8 +32,8 @@ public:
     // Перегрузка оператроа +
     VectorIterator<T> operator+(const int i) const;
     VectorIterator<T> &operator+=(const int i);
-
     friend VectorIterator<T>(::operator+ <>)(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other);
+
     // Перегрузка инкремента
     VectorIterator<T> &operator++();   // ++iter
     VectorIterator<T> operator++(int); // iter++
@@ -46,7 +46,6 @@ public:
     VectorIterator<T> &operator--();   // --iter
     VectorIterator<T> operator--(int); // iter--
 
-    T &operator[](int);
     T &operator[](int) const;
 
     explicit operator bool() const;

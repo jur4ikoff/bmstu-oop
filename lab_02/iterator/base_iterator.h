@@ -32,6 +32,10 @@ public:
     bool operator!=(const BaseIterator<T> &other) const;
     auto operator<=>(const BaseIterator<T> &other) const;
 
+
+    size_t get_size() const;
+    size_t get_index() const;
+    std::weak_ptr<T[]> get_piter() const;
 protected:
     size_t size = 0;
     size_t index = 0;
