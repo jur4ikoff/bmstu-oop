@@ -130,8 +130,8 @@ VectorIterator<T> VectorIterator<T>::operator--(int)
 template <ContainerType T>
 typename BaseIterator<T>::difference_type VectorIterator<T>::operator-(const VectorIterator<T> &other) const
 {
-    // this->assertIterator(__LINE__);
-    // other.assertIterator(__LINE__);
+    this->check_iter(__LINE__);
+    other.check_iter(__LINE__);
 
     return this->index - other.index;
 }
@@ -143,11 +143,12 @@ VectorIterator<T>::operator bool() const
 }
 
 template <ContainerType T>
-VectorIterator<T> operator+(int i, const VectorIterator<T> &other)
+VectorIterator<T> operator+(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other)
 {
     other.check_iter(__LINE__);
+    other.check_vector(__LINE__);
 
-    return other + i;
+    return other + n;
 }
 
 template <ContainerType T>

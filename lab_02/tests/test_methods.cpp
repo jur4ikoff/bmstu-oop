@@ -6,14 +6,6 @@
 #include <gtest/gtest.h>
 #include <math.h>
 
-class BaseVectors
-{
-protected:
-    Vector<int> int_vec{ 2, 3, 4 };
-    Vector<double> double_vec{ 1.5, 2.5, 3.5 };
-    Vector<int> empty_vec{};
-    Vector<int> short_vec{ 1, 2 };
-};
 
 // Класс для тестирования vec_sum()
 class VectorSumOperator : public BaseVectors, public ::testing::Test
