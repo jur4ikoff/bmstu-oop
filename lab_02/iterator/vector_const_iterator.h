@@ -44,11 +44,11 @@ public:
     VectorConstIterator<T> &operator--();
     VectorConstIterator<T> operator--(int);
 
-    T &operator[](int) const;
+    const T &operator[](int index) const;
 
     explicit operator bool() const;
 };
 
-// static_assert(std::random_access_iterator<VectorConstIterator<int>>);
+static_assert(std::random_access_iterator<VectorConstIterator<int>>);
 
 #include "vector_const_iterator.hpp"

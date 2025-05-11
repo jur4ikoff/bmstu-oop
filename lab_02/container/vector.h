@@ -3,7 +3,9 @@
 #include "base_container.h"
 #include "vector_concepts.hpp"
 #include "vector_const_iterator.h"
+#include "vector_const_reverse_iterator.h"
 #include "vector_iterator.h"
+#include "vector_reverse_iterator.h"
 
 #include <iostream>
 #include <memory>
@@ -18,9 +20,13 @@ public:
 
     using iterator = VectorIterator<T>;
     using const_iterator = VectorConstIterator<T>;
+    using reverse_iterator = VectorReverseIterator<T>;
+    // using const_reverse_iterator = VectorConstReverseIterator<T>;
 
     friend class VectorIterator<T>;
     friend class VectorConstIterator<T>;
+    friend class VectorReverseIterator<T>;
+    // friend class  VectorConstReverseIterator<T>;
 #pragma endregion aliases
 
 #pragma region Constructors
@@ -92,6 +98,10 @@ public:
     // Возвращает константный интератор на начало/кенец вектора
     VectorConstIterator<T> cbegin(void) const noexcept;
     VectorConstIterator<T> cend(void) const noexcept;
+
+    // Возвращает реверс интератор на начало/кенец вектора
+    VectorReverseIterator<T> rbegin(void) const noexcept;
+    VectorReverseIterator<T> rend(void) const noexcept;
 #pragma endregion iterators
 
 #pragma region operators

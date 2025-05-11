@@ -137,13 +137,13 @@ typename BaseIterator<T>::difference_type VectorConstIterator<T>::operator-(cons
 }
 
 template <ContainerType T>
-T &VectorConstIterator<T>::operator[](int dist) const
+const T &VectorConstIterator<T>::operator[](int index) const
 {
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
 
     VectorConstIterator<T> tmp(*this);
-    for (int i = 0; i < dist; ++i)
+    for (int i = 0; i < index; ++i)
         ++tmp;
 
     return *tmp;

@@ -323,6 +323,20 @@ VectorConstIterator<T> Vector<T>::cend(void) const noexcept
     return iter + container_size;
 }
 
+template <ContainerType T>
+VectorReverseIterator<T> Vector<T>::rbegin(void) const noexcept
+{
+    VectorReverseIterator<T> iter(*this);
+    return iter;
+}
+
+template <ContainerType T>
+VectorReverseIterator<T> Vector<T>::rend(void) const noexcept
+{
+    VectorReverseIterator<T> iter(*this);
+    return iter + container_size;
+}
+
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // |                          Перегрузка операторов                            |
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
