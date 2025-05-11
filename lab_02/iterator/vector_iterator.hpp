@@ -24,7 +24,7 @@ VectorIterator<T>::VectorIterator(const Vector<T> &vec)
 }
 
 template <ContainerType T>
-T &VectorIterator<T>::operator*()
+T &VectorIterator<T>::operator*() const
 {
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
@@ -32,7 +32,7 @@ T &VectorIterator<T>::operator*()
 }
 
 template <ContainerType T>
-T *VectorIterator<T>::operator->()
+T *VectorIterator<T>::operator->() const
 {
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
@@ -64,7 +64,7 @@ VectorIterator<T> VectorIterator<T>::operator+(const int i) const
 template <ContainerType T>
 VectorIterator<T> &VectorIterator<T>::operator+=(const int i)
 {
-   this-> check_vector(__LINE__);
+    this->check_vector(__LINE__);
     this->index += i;
     return *this;
 }
@@ -86,4 +86,92 @@ VectorIterator<T> VectorIterator<T>::operator++(int)
     this->check_vector(__LINE__);
     ++(this->index);
     return *this;
+}
+
+// Перегрузка -
+template <ContainerType T>
+VectorIterator<T> VectorIterator<T>::operator-(const int i) const
+{
+    this->check_vector(__LINE__);
+    VectorIterator<T> new_iter(*this);
+    new_iter.index -= i;
+    return new_iter;
+}
+
+// Перегрузка -=
+template <ContainerType T>
+VectorIterator<T> &VectorIterator<T>::operator-=(const int i)
+{
+    this->check_vector(__LINE__);
+    this->index -= i;
+    return *this;
+}
+
+// Перегрузка декремента --iter
+template <ContainerType T>
+VectorIterator<T> &VectorIterator<T>::operator--()
+{
+    this->check_iter(__LINE__);
+    this->check_vector(__LINE__);
+    (this->index)--;
+    return *this;
+}
+
+// Перегрузка декремента iter--
+template <ContainerType T>
+VectorIterator<T> VectorIterator<T>::operator--(int)
+{
+    this->check_iter(__LINE__);
+    this->check_vector(__LINE__);
+    --(this->index);
+    return *this;
+}
+
+template <ContainerType T>
+typename BaseIterator<T>::difference_type VectorIterator<T>::operator-(const VectorIterator<T> &other) const
+{
+    // this->assertIterator(__LINE__);
+    // other.assertIterator(__LINE__);
+
+    return this->index - other.index;
+}
+
+template <ContainerType T>
+VectorIterator<T>::operator bool() const
+{
+    return this->piter.lock() != nullptr && this->index >= 0 && this->index < this->size;
+}
+
+template <ContainerType T>
+VectorIterator<T> operator+(int i, const VectorIterator<T> &other)
+{
+    other.check_iter(__LINE__);
+
+    return other + i;
+}
+
+template <ContainerType T>
+T &VectorIterator<T>::operator[](int dist)
+{
+    this->check_iter(__LINE__);
+    this->check_vector(__LINE__);
+
+    VectorIterator<T> tmp(*this);
+    for (int i = 0; i < dist; ++i)
+        ++tmp;
+
+    return *tmp;
+}
+
+template <ContainerType T>
+T &VectorIterator<T>::operator[](int dist) const
+{
+    this->check_iter(__LINE__);
+    this->check_vector(__LINE__);
+
+    VectorIterator<T> tmp(*this);
+    for (int i = 0; i < dist; ++i)
+        ++tmp;
+
+    return *tmp;
 }

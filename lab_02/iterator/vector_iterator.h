@@ -8,7 +8,13 @@ template <ContainerType T>
 class Vector;
 
 template <ContainerType T>
-class VectorIterator : public BaseIterator<T>
+class VectorIterator;
+
+template <ContainerType T>
+VectorIterator<T> operator+(int i, const VectorIterator<T> &other);
+
+template <ContainerType T>
+class VectorIterator final : public BaseIterator<T>
 {
 public:
     VectorIterator() = default;                    // Пустой конструктор
@@ -16,12 +22,12 @@ public:
     VectorIterator(const Vector<T> &vec);          // Коструктор по контейнеру
     ~VectorIterator() = default;                   // Деструктор
 
+    // Перегруза операторов * и ->
+    T &operator*() const;
+    T *operator->() const;
+
     // Перегрузка оператора =
     VectorIterator<T> &operator=(const VectorIterator<T> &other);
-
-    // Перегруза операторов * и ->
-    T &operator*();
-    T *operator->();
 
     // Перегрузка оператроа +
     VectorIterator<T> operator+(const int i) const;
@@ -31,8 +37,22 @@ public:
     VectorIterator<T> &operator++();   // ++iter
     VectorIterator<T> operator++(int); // iter++
 
-    // VectorIterator<T> &operator -- ();
-    // VectorIterator<T> operator -- (int);
+    // Перегрузка оператора -
+    VectorIterator<T> operator-(const int i) const;
+    VectorIterator<T> &operator-=(const int i);
+
+    // Перегрузка декремента
+    VectorIterator<T> &operator--();   // --iter
+    VectorIterator<T> operator--(int); // iter--
+
+    T &operator[](int);
+    T &operator[](int) const;
+
+    explicit operator bool() const;
+
+    typename BaseIterator<T>::difference_type operator-(const VectorIterator<T> &other) const;
 };
+
+static_assert(std::random_access_iterator<VectorIterator<int>>);
 
 #include "vector_iterator.hpp"

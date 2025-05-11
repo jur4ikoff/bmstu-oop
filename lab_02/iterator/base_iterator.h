@@ -30,7 +30,6 @@ public:
     // Перегружаем операторы == и !=
     bool operator==(const BaseIterator<T> &other) const;
     bool operator!=(const BaseIterator<T> &other) const;
-
     auto operator<=>(const BaseIterator<T> &other) const;
 
 protected:
