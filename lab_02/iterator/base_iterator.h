@@ -15,7 +15,7 @@ public:
     using difference_type = ptrdiff_t;
     using value_type = T;
     using pointer = T *;
-    using const_point = const T *;
+    using const_pointer = const T *;
     using reference = T &;
 
 #pragma endregion alias

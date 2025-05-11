@@ -30,21 +30,21 @@ public:
     VectorIterator<T> &operator=(const VectorIterator<T> &other);
 
     // Перегрузка оператроа +
-    VectorIterator<T> operator+(const int i) const;
-    VectorIterator<T> &operator+=(const int i);
+    VectorIterator<T> operator+(int n) const;
+    VectorIterator<T> &operator+=(const int n);
     friend VectorIterator<T>(::operator+ <>)(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other);
 
     // Перегрузка инкремента
-    VectorIterator<T> &operator++();   // ++iter
-    VectorIterator<T> operator++(int); // iter++
+    VectorIterator<T> &operator++();  
+    VectorIterator<T> operator++(int); 
 
     // Перегрузка оператора -
-    VectorIterator<T> operator-(const int i) const;
-    VectorIterator<T> &operator-=(const int i);
+    VectorIterator<T> operator-(const int n) const;
+    VectorIterator<T> &operator-=(const int n);
 
     // Перегрузка декремента
-    VectorIterator<T> &operator--();   // --iter
-    VectorIterator<T> operator--(int); // iter--
+    VectorIterator<T> &operator--();   
+    VectorIterator<T> operator--(int); 
 
     T &operator[](int) const;
 

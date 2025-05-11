@@ -21,6 +21,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/container  # Добавляем папку с вашими заголовками
     ${CMAKE_CURRENT_SOURCE_DIR}/exceptions
     ${CMAKE_CURRENT_SOURCE_DIR}/iterator
+    ${CMAKE_CURRENT_SOURCE_DIR}/reverse_iterator
     ${CMAKE_CURRENT_SOURCE_DIR}          # Добавляем текущую директорию (если заголовки там)
 )
 

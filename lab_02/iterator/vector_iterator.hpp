@@ -53,11 +53,11 @@ VectorIterator<T> &VectorIterator<T>::operator=(const VectorIterator<T> &other)
 
 // Перегрузка +
 template <ContainerType T>
-VectorIterator<T> VectorIterator<T>::operator+(const int i) const
+VectorIterator<T> VectorIterator<T>::operator+(const int n) const
 {
     this->check_vector(__LINE__);
     VectorIterator<T> new_iter(*this);
-    new_iter.index += i;
+    new_iter.index += n;
     return new_iter;
 }
 
@@ -133,7 +133,7 @@ typename BaseIterator<T>::difference_type VectorIterator<T>::operator-(const Vec
     this->check_iter(__LINE__);
     other.check_iter(__LINE__);
 
-    return this->index - other.index;
+    return other.index - this->index;
 }
 
 template <ContainerType T>

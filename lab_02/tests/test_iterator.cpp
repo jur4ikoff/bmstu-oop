@@ -39,10 +39,24 @@ TEST_F(TestIterator, test_eq)
     std::cout << std::endl;
 }
 
-TEST_F(TestIterator, test_add)
+TEST_F(TestIterator, test_add_commutative)
 {
     auto iter = int_vec.begin();
     auto iter_1 = 2 + iter;
+
+    while (iter_1 != int_vec.end())
+    {
+        std::cout << *iter_1 << " ";
+        iter_1++;
+    }
+
+    std::cout << std::endl;
+}
+
+TEST_F(TestIterator, test_add_default)
+{
+    auto iter = int_vec.begin();
+    auto iter_1 = iter + 2;
 
     while (iter_1 != int_vec.end())
     {
