@@ -17,6 +17,10 @@ public:
 #pragma region aliases
     using value_type = T;
     using size_type = int;
+    using pointer = T *;
+    using const_pointer = const T *;
+    using reference = T &;
+    using const_reference = const T &;
 
     using iterator = VectorIterator<T>;
     using const_iterator = VectorConstIterator<T>;

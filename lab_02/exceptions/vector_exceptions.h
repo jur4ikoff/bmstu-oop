@@ -31,7 +31,7 @@ public:
                        int line,
                        const char *class_name,
                        const char *time,
-                       const char *err_msg = "Ошибка, индекс иттератора вышел за пределы контейнера")
+                       const char *err_msg = "Ошибка, индекс итератора вышел за пределы контейнера")
         : BaseContainerError(filename, line, class_name, time, err_msg) {};
 };
 

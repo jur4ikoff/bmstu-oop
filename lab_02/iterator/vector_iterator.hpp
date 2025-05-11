@@ -130,9 +130,6 @@ VectorIterator<T> VectorIterator<T>::operator--(int)
 template <ContainerType T>
 typename BaseIterator<T>::difference_type VectorIterator<T>::operator-(const VectorIterator<T> &other) const
 {
-    this->check_iter(__LINE__);
-    other.check_iter(__LINE__);
-
     return this->index - other.index;
 }
 
