@@ -21,12 +21,13 @@ public:
     using iterator = VectorIterator<T>;
     using const_iterator = VectorConstIterator<T>;
     using reverse_iterator = VectorReverseIterator<T>;
-    // using const_reverse_iterator = VectorConstReverseIterator<T>;
+    using const_reverse_iterator = VectorConstReverseIterator<T>;
 
     friend class VectorIterator<T>;
     friend class VectorConstIterator<T>;
     friend class VectorReverseIterator<T>;
-    // friend class  VectorConstReverseIterator<T>;
+    friend class VectorConstReverseIterator<T>;
+
 #pragma endregion aliases
 
 #pragma region Constructors
@@ -102,6 +103,10 @@ public:
     // Возвращает реверс интератор на начало/кенец вектора
     VectorReverseIterator<T> rbegin(void) const noexcept;
     VectorReverseIterator<T> rend(void) const noexcept;
+
+    // Возвращает константный реверс интератор на начало/кенец вектора
+    VectorConstReverseIterator<T> crbegin(void) const noexcept;
+    VectorConstReverseIterator<T> crend(void) const noexcept;
 #pragma endregion iterators
 
 #pragma region operators
@@ -261,8 +266,6 @@ public:
 #pragma endregion vector_methods
 
     // TODO
-    // Вернуть время
-    // RANDOM ACCESS ITERATOR
     // RANGES
 
     ~Vector() = default;

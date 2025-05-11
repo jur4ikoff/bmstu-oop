@@ -2,6 +2,7 @@
 
 #include "vector.h"
 #include "vector_const_iterator.h"
+#include "vector_const_reverse_iterator.h"
 #include "vector_exceptions.h"
 #include "vector_iterator.h"
 
@@ -320,7 +321,7 @@ template <ContainerType T>
 VectorConstIterator<T> Vector<T>::cend(void) const noexcept
 {
     VectorConstIterator<T> iter(*this);
-    return iter + container_size;
+    return iter + this->container_size;
 }
 
 template <ContainerType T>
@@ -334,7 +335,21 @@ template <ContainerType T>
 VectorReverseIterator<T> Vector<T>::rend(void) const noexcept
 {
     VectorReverseIterator<T> iter(*this);
-    return iter + container_size;
+    return iter + this->container_size;
+}
+
+template <ContainerType T>
+VectorConstReverseIterator<T> Vector<T>::crbegin(void) const noexcept
+{
+    VectorConstReverseIterator<T> iter(*this);
+    return iter;
+}
+
+template <ContainerType T>
+VectorConstReverseIterator<T> Vector<T>::crend(void) const noexcept
+{
+    VectorConstReverseIterator<T> iter(*this);
+    return iter + this->container_size;
 }
 
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––

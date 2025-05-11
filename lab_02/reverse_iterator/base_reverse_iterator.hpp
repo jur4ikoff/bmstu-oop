@@ -57,7 +57,7 @@ void BaseReverseIterator<T>::check_vector(int line) const
 template <ContainerType T>
 void BaseReverseIterator<T>::check_iter(int line) const
 {
-    if (index >= size || index <= 0)
+    if (index >= size || index < 0)
     {
         time_t now = time(NULL);
         throw errIndexOutOfRange(__FILE__, line, typeid(*this).name(), ctime(&now));

@@ -2,53 +2,59 @@
 
 #include <memory>
 
-// #include "base_reverse_iterator.h"
-// #include "vector_iterator.h"
+#include "base_reverse_iterator.h"
+#include "vector_reverse_iterator.h"
 
-// template <ContainerType T>
-// class Vector;
+template <ContainerType T>
+class Vector;
 
-// template <ContainerType T>
-// class VectorConstIterator;
+template <ContainerType T>
+class VectorConstReverseIterator;
 
-// template <ContainerType T>
-// VectorConstIterator<T> operator+(typename BaseIterator<T>::difference_type n, const VectorConstIterator<T> &other);
+template <ContainerType T>
+VectorConstReverseIterator<T> operator+(typename BaseReverseIterator<T>::difference_type n, const VectorConstReverseIterator<T> &other);
 
-// template <ContainerType T>
-// class VectorConstIterator final : public BaseIterator<T>
-// {
-// public:
-//     VectorConstIterator() = default;                         // Пустой конструктор
-//     VectorConstIterator(const VectorConstIterator<T> &iter); // Конструктор по итератору
-//     VectorConstIterator(const VectorIterator<T> &iter);      // Конструктор от обычного итератора
-//     VectorConstIterator(const Vector<T> &vec);               // Коструктор по контейнеру
-//     ~VectorConstIterator() = default;                        // Деструктор
+template <ContainerType T>
+class VectorConstReverseIterator final : public BaseReverseIterator<T>
+{
+public:
+    VectorConstReverseIterator() = default;                    // Пустой конструктор
+    VectorConstReverseIterator(const VectorConstReverseIterator<T> &iter); // Конструктор по иттератору
+    VectorConstReverseIterator(const VectorReverseIterator<T> &iter);
+    VectorConstReverseIterator(const Vector<T> &vec);          // Коструктор по контейнеру
+    ~VectorConstReverseIterator() = default;                   // Деструктор
 
-//     VectorConstIterator<T> &operator=(const VectorConstIterator<T> &other); // Перегрузка оператора =
+    // Перегруза операторов * и ->
+    T &operator*() const;
+    T *operator->() const;
 
-//     VectorConstIterator<T> operator+(const int n) const; // Перегрузка оператора +
-//     VectorConstIterator<T> &operator+=(const int n);     // Перегрузка оператора +=
-//     friend VectorConstIterator<T>(::operator+ <>)(typename BaseIterator<T>::difference_type n, const VectorConstIterator<T> &other);
+    // Перегрузка оператора =
+    VectorConstReverseIterator<T> &operator=(const VectorConstReverseIterator<T> &other);
 
-//     // Перегрузка инкремента
-//     VectorConstIterator<T> &operator++();
-//     VectorConstIterator<T> operator++(int); // ++iter
+    // Перегрузка оператроа +
+    VectorConstReverseIterator<T> operator+(const int i) const;
+    VectorConstReverseIterator<T> &operator+=(const int i);
+    friend VectorConstReverseIterator<T>(::operator+ <>)(typename BaseReverseIterator<T>::difference_type n, const VectorConstReverseIterator<T> &other);
 
-//     // Перегрузка оператора -
-//     VectorConstIterator<T> operator-(const int n) const;
-//     VectorConstIterator<T> &operator-=(const int n);
+    // Перегрузка инкремента
+    VectorConstReverseIterator<T> &operator++();  
+    VectorConstReverseIterator<T> operator++(int);
 
-//     typename BaseIterator<T>::difference_type operator-(const VectorConstIterator<T> &other) const;
+    // Перегрузка оператора -
+    VectorConstReverseIterator<T> operator-(const int i) const;
+    VectorConstReverseIterator<T> &operator-=(const int i);
 
-//     // Перегрузка декремента
-//     VectorConstIterator<T> &operator--();
-//     VectorConstIterator<T> operator--(int);
+    // Перегрузка декремента
+    VectorConstReverseIterator<T> &operator--(); 
+    VectorConstReverseIterator<T> operator--(int); 
 
-//     T &operator[](int) const;
+    T &operator[](int) const;
 
-//     explicit operator bool() const;
-// };
+    explicit operator bool() const;
 
-// // static_assert(std::random_access_iterator<VectorConstIterator<int>>);
+    typename BaseReverseIterator<T>::difference_type operator-(const VectorConstReverseIterator<T> &other) const;
+};
 
-// #include "vector_const_reverse_iterator.hpp"
+static_assert(std::random_access_iterator<VectorConstReverseIterator<int>>);
+
+#include "vector_const_reverse_iterator.hpp"

@@ -133,7 +133,7 @@ typename BaseReverseIterator<T>::difference_type VectorReverseIterator<T>::opera
     this->check_iter(__LINE__);
     other.check_iter(__LINE__);
 
-    return this->index + other.index; // CHECK
+    return other.index - this->index; // CHECK
 }
 
 template <ContainerType T>
@@ -148,12 +148,13 @@ VectorReverseIterator<T> operator+(typename BaseReverseIterator<T>::difference_t
     other.check_iter(__LINE__);
     other.check_vector(__LINE__);
 
-    return other - n;
+    return other + n;
 }
 
 template <ContainerType T>
 T &VectorReverseIterator<T>::operator[](int dist) const
 {
+    // Проверить
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
 

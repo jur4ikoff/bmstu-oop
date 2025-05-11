@@ -133,7 +133,7 @@ typename BaseIterator<T>::difference_type VectorConstIterator<T>::operator-(cons
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
 
-    return other.index - this->index;
+    return this->index - other.index;
 }
 
 template <ContainerType T>
