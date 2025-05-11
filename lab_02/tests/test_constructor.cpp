@@ -47,20 +47,16 @@ TEST(CreationTest, ConstructsFromInitializerList)
         EXPECT_EQ(el, excepected[i]);
         i++;
     }
-}
 
-TEST(CreationTest, ConstructsFromInitializerListFloat)
-{
-    // Проверка на инициализацию от списка инициализации целых чисел
-    Vector<float> vec({1.0f, 2.f, 3.0f, 4.23232f, 5.0f});
-    float excepected[5] = {1, 2.0, 3, 4.23232, 5};
+    Vector<float> vec_2({1.0f, 2.f, 3.0f, 4.23232f, 5.0f});
+    float excepected_2[5] = {1, 2.0, 3, 4.23232, 5};
 
-    EXPECT_EQ(vec.size(), 5); // Проверяем размер
+    EXPECT_EQ(vec_2.size(), 5); // Проверяем размер
 
-    int i = 0;
-    for (auto el : vec)
+    i = 0;
+    for (auto el : vec_2)
     {
-        EXPECT_EQ(el, excepected[i]);
+        EXPECT_EQ(el, excepected_2[i]);
         i++;
     }
 }

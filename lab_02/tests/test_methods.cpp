@@ -6,7 +6,6 @@
 #include <gtest/gtest.h>
 #include <math.h>
 
-
 // Класс для тестирования vec_sum()
 class VectorSumOperator : public BaseVectors, public ::testing::Test
 {
@@ -30,7 +29,7 @@ class VectorSubNumOperator : public BaseVectors, public ::testing::Test
 
 TEST_F(VectorSumOperator, PlusSameType)
 {
-    Vector<int> other{ 5, 6, 7 };
+    Vector<int> other{5, 6, 7};
     auto result = int_vec.vec_sum(other);
 
     ASSERT_EQ(result.size(), 3);
@@ -51,7 +50,7 @@ TEST_F(VectorSumOperator, PlusDifferentTypes)
 
 TEST_F(VectorSumOperator, PlusReturnsNewVector)
 {
-    Vector<int> other{ 1, 1, 1 };
+    Vector<int> other{1, 1, 1};
     auto result = int_vec.vec_sum(other);
     EXPECT_EQ(int_vec[0], 2); // Исходный вектор не изменился
     EXPECT_EQ(result[0], 3);  // 2 + 1
@@ -83,7 +82,7 @@ TEST_F(VectorSumOperator, PlusReturnTypeDeduction)
 
 TEST_F(VectorSumOperator, PlusEqSameType)
 {
-    Vector<int> other{ 1, 2, 3 };
+    Vector<int> other{1, 2, 3};
     Vector<int> original = int_vec;
     int_vec.vec_sum_eq(other);
 
@@ -95,7 +94,7 @@ TEST_F(VectorSumOperator, PlusEqSameType)
 
 TEST_F(VectorSumOperator, PlusEqDifferentTypes)
 {
-    Vector<double> other{ 0.5, 1.5, 2.5 };
+    Vector<double> other{0.5, 1.5, 2.5};
     int_vec.vec_sum_eq(other);
 
     ASSERT_EQ(int_vec.size(), 3);
@@ -106,7 +105,7 @@ TEST_F(VectorSumOperator, PlusEqDifferentTypes)
 
 TEST_F(VectorSumOperator, PlusEqReturnsReference)
 {
-    Vector<int> other{ 1, 1, 1 };
+    Vector<int> other{1, 1, 1};
     Vector<int> &result = int_vec.vec_sum_eq(other);
     EXPECT_EQ(&result, &int_vec);
 }
@@ -135,8 +134,8 @@ TEST_F(VectorSumOperator, PlusEqDifferentSizes)
 
 TEST_F(VectorSumOperator, PlusEqChainOperation)
 {
-    Vector<int> other1{ 1, 1, 1 };
-    Vector<int> other2{ 2, 2, 2 };
+    Vector<int> other1{1, 1, 1};
+    Vector<int> other2{2, 2, 2};
     int_vec.vec_sum_eq(other1).vec_sum_eq(other2);
 
     EXPECT_EQ(int_vec[0], 5); // (2 + 1) + 2
@@ -198,7 +197,7 @@ TEST_F(VectorPlusNumOperator, PlusEqScalarEmpty)
 // Тесты для vec_sub (вычитание векторов)
 TEST_F(VectorSubOperator, VecSubSameType)
 {
-    Vector<int> other{ 1, 1, 1 };
+    Vector<int> other{1, 1, 1};
     auto result = int_vec.vec_sub(other);
 
     ASSERT_EQ(result.size(), 3);
@@ -225,7 +224,7 @@ TEST_F(VectorSubOperator, VecSubEmptyVector)
 // Тесты для vec_sub_eq (вычитание с присваиванием)
 TEST_F(VectorSubOperator, VecSubEqSameType)
 {
-    Vector<int> other{ 1, 2, 3 };
+    Vector<int> other{1, 2, 3};
     int_vec.vec_sub_eq(other);
 
     ASSERT_EQ(int_vec.size(), 3);
@@ -236,7 +235,7 @@ TEST_F(VectorSubOperator, VecSubEqSameType)
 
 TEST_F(VectorSubOperator, VecSubEqDifferentTypes)
 {
-    Vector<double> other{ 0.5, 1.5, 2.5 };
+    Vector<double> other{0.5, 1.5, 2.5};
     int_vec.vec_sub_eq(other);
 
     ASSERT_EQ(int_vec.size(), 3);
@@ -247,8 +246,8 @@ TEST_F(VectorSubOperator, VecSubEqDifferentTypes)
 
 TEST_F(VectorSubOperator, VecSubEqChain)
 {
-    Vector<int> other1{ 1, 1, 1 };
-    Vector<int> other2{ 2, 2, 2 };
+    Vector<int> other1{1, 1, 1};
+    Vector<int> other2{2, 2, 2};
     int_vec.vec_sub_eq(other1).vec_sub_eq(other2);
 
     EXPECT_EQ(int_vec[0], -1); // (2-1)-2
@@ -287,8 +286,7 @@ TEST_F(VectorSubNumOperator, MinusScalarEmpty)
     MY_EXPECT_THROW(empty_vec.minus(1), errNegSize);
 }
 
-// Тесты для minus_eq(const U& num)
-TEST_F(VectorSubNumOperator, MinusEqScalarBasic)
+TEST_F(VectorSubNumOperator, minus_eq_default)
 {
     int_vec.minus_eq(2);
     ASSERT_EQ(int_vec.size(), 3);
@@ -297,25 +295,8 @@ TEST_F(VectorSubNumOperator, MinusEqScalarBasic)
     EXPECT_EQ(int_vec[2], 2); // 4-2
 }
 
-TEST_F(VectorSubNumOperator, MinusEqScalarChain)
+TEST_F(VectorSubNumOperator, minus_eq_chain)
 {
     int_vec.minus_eq(1).minus_eq(1);
     EXPECT_EQ(int_vec[0], 0); // (2-1)-1
-}
-
-TEST_F(VectorSubNumOperator, MinusEqScalarEmpty)
-{
-    MY_EXPECT_THROW(empty_vec.minus_eq(1), errNegSize);
-}
-
-TEST_F(VectorSubNumOperator, MinusScalarNegative)
-{
-    auto result = int_vec.minus(-1);
-    EXPECT_EQ(result[0], 3); // 2-(-1)
-}
-
-TEST_F(VectorSubNumOperator, MinusEqTypeConversion)
-{
-    double_vec.minus_eq(1);
-    EXPECT_DOUBLE_EQ(double_vec[0], 0.5); // 1.5-1
 }

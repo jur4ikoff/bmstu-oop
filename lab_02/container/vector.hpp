@@ -68,7 +68,7 @@ template <typename Con>
     requires ValidContainer<T, Con>
 Vector<T>::Vector(const Con &other)
 {
-    container_size = other.container_size;
+    this->container_size = other.container_size;
     this->memory_allocation(this->container_size, __LINE__);
 
     VectorIterator<T> iter = this->begin();
@@ -79,11 +79,11 @@ Vector<T>::Vector(const Con &other)
 }
 
 template <ContainerType T>
-Vector<T>::Vector(const int &container_size)
+Vector<T>::Vector(const int &size)
 {
-    this->check_vector_size(container_size, __LINE__);
-    this->container_size = container_size;
-    this->memory_allocation(container_size, __LINE__);
+    this->check_vector_size(size, __LINE__);
+    this->container_size = size;
+    this->memory_allocation(size, __LINE__);
 }
 
 template <ContainerType T>
@@ -91,11 +91,10 @@ template <ConvertAssignable<T> U>
 Vector<T>::Vector(std::initializer_list<U> arr)
 {
     this->container_size = arr.size();
-    this->memory_allocation(container_size, __LINE__);
+    this->memory_allocation(this->container_size, __LINE__);
 
-    VectorIterator<T> iter = this->begin();
-
-    for (auto elem : arr)
+    auto iter = this->begin();
+    for (const U &elem : arr)
     {
         *iter = elem;
         iter++;
@@ -112,29 +111,27 @@ Vector<T>::Vector(int size, const U *arr)
     this->container_size = size;
     this->memory_allocation(this->container_size, __LINE__);
 
-    VectorIterator<T> iter = this->begin();
-
-    for (int i = 0; i < size; i++)
+    auto iter = this->begin();
+    for (int i = 0; i < size; i++, iter++)
     {
         *iter = arr[i];
-        iter++;
     }
 }
 
 template <ContainerType T>
 template <ConvertAssignable<T> U>
-Vector<T>::Vector(int container_size, U elem, ...)
+Vector<T>::Vector(int size, U elem, ...)
 {
-    this->check_vector_size(container_size, __LINE__);
-    this->container_size = container_size;
+    this->check_vector_size(size, __LINE__);
+    this->container_size = size;
 
-    this->memory_allocation(container_size, __LINE__);
+    this->memory_allocation(size, __LINE__);
     VectorIterator<T> iter = this->begin();
 
     va_list args;
     va_start(args, elem);
 
-    for (int i = 0; i < container_size; i++)
+    for (int i = 0; i < size; i++)
     {
         *iter = elem;
         elem = va_arg(args, U);
@@ -149,7 +146,7 @@ Vector<T>::Vector(U begin, U end)
     // Вычисляем размер
     int size = end - begin;
     this->check_vector_size(size, __LINE__);
-    
+
     this->container_size = size;
     this->memory_allocation(size, __LINE__);
 
@@ -171,8 +168,7 @@ decltype(auto) Vector<T>::len() const
     this->check_vector_size(this->container_size, __LINE__);
 
     T sum = 0;
-    VectorIterator iter = this->begin();
-    for (; iter != this->end(); iter++)
+    for (auto iter = this->begin(); iter != this->end(); iter++)
     {
         sum += *iter * *iter;
     }
@@ -180,15 +176,15 @@ decltype(auto) Vector<T>::len() const
     return std::sqrt(sum);
 }
 
-/**
- * @brief Функция нормализует вектор, тоесть приводит его к единичному
- */
+/// @brief Функция нормализует вектор, тоесть приводит его к единичному
+/// @tparam T
+/// @return Новый объект - нормализованный вектор
 template <ContainerType T>
-decltype(auto) Vector<T>::normalization(void) const
+decltype(auto) Vector<T>::normalization() const
 {
-    this->check_vector_size(this->container_size, __LINE__); // Проверяем размер вектора
+    this->check_vector_size(this->container_size, __LINE__);
 
-    auto vector_len = this->len(); // Узнаем математическую длину вектора
+    auto vector_len = this->len();
     this->check_division_zero(vector_len, __LINE__);
 
     Vector<decltype((*this)[0] / vector_len)> res_vector(*this);
@@ -196,16 +192,14 @@ decltype(auto) Vector<T>::normalization(void) const
     return res_vector;
 }
 
-// Функция проверяет нормализован ли вектор
+/// @brief Функция проверяет нормализован ли вектор
+/// @tparam T
+/// @return true если нормализовано, false если нет
 template <ContainerType T>
 bool Vector<T>::is_normalize() const
 {
-    this->check_vector_size(this->container_size, __LINE__); // Проверяем размер вектора
-
+    this->check_vector_size(this->container_size, __LINE__);
     auto vector_len = this->len();
-    if (std::fabs(vector_len) < EPS)
-        return false;
-
     return std::fabs(vector_len - 1) < EPS;
 }
 
@@ -213,24 +207,27 @@ bool Vector<T>::is_normalize() const
 template <ContainerType T>
 bool Vector<T>::is_zero() const
 {
-    this->check_vector_size(this->container_size, __LINE__); // Проверяем размер вектора
+    this->check_vector_size(this->container_size, __LINE__);
 
     auto vector_len = this->len();
     return std::fabs(vector_len) < EPS;
 }
 
-// Функция считает угол между двумя векторами
+/// @brief Ищет угол между двумя векторами
+/// @tparam T
+/// @param other Второй вектор
+/// @return Угол в градусах
 template <ContainerType T>
 template <ConvertAssignable<T> U>
 decltype(auto) Vector<T>::calc_angle(const Vector<U> &other) const
 {
     this->check_vector_size(this->container_size, __LINE__);
-    this->check_vector_size(other.size(), __LINE__);
     this->check_size_equal(other.size(), __LINE__);
 
     auto mul_len = this->len() * other.len();
     this->check_division_zero(mul_len, __LINE__);
 
+    // Скалярное произведение поделить на произведение длинн
     auto angle = (*this & other) / mul_len;
     auto res = std::acos(angle);
     return res * 180 / M_PI;
@@ -257,7 +254,7 @@ bool Vector<T>::is_orthogonal(const Vector<U> &other) const
 // Установить значение элемента по индексу
 template <ContainerType T>
 template <ConvertAssignable<T> U>
-void Vector<T>::set_item(size_type index, const U &elem)
+void Vector<T>::set_item(int index, const U &elem)
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_index(index, __LINE__);
@@ -266,30 +263,37 @@ void Vector<T>::set_item(size_type index, const U &elem)
 
 // Получить элемент по индексу
 template <ContainerType T>
-T &Vector<T>::get_item(int ind)
+T &Vector<T>::get_item(int index)
 {
     this->check_vector_size(this->container_size, __LINE__);
-    this->check_index(ind, __LINE__);
-    VectorIterator<T> iter = this->begin();
-    for (int i = 0; i < ind; i++)
+    this->check_index(index, __LINE__);
+
+    auto iter = this->begin();
+    for (int i = 0; i < index; i++)
+    {
         iter++;
+    }
     return *iter;
 }
 
 template <ContainerType T>
-const T &Vector<T>::get_item(int ind) const
+const T &Vector<T>::get_item(int index) const
 {
     this->check_vector_size(this->container_size, __LINE__);
-    this->check_index(ind, __LINE__);
-    VectorIterator<T> iter = this->begin();
-    for (int i = 0; i < ind; i++)
+    this->check_index(index, __LINE__);
+
+    auto iter = this->begin();
+    for (int i = 0; i < index; i++)
+    {
         iter++;
+    }
     return *iter;
 }
 
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // |                                Итераторы                                  |
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 template <ContainerType T>
 VectorIterator<T> Vector<T>::begin(void) const noexcept
 {
@@ -365,8 +369,8 @@ decltype(auto) Vector<T>::operator+(const Vector<U> &other) const
     this->check_size_equal(other.size(), __LINE__);
 
     Vector<decltype(((*this)[0]) + other[0])> result(*this);
+    auto iter = result.begin();
 
-    VectorIterator<decltype(((*this)[0]) + other[0])> iter = result.begin();
     for (VectorIterator iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
     {
         *iter += *iter1;
@@ -382,15 +386,7 @@ template <ContainerType T>
 template <ConvertAssignableSum<T> U>
 Vector<T> &Vector<T>::operator+=(const Vector<U> &other)
 {
-    this->check_vector_size(this->container_size, __LINE__);
-    this->check_vector_size(other.size(), __LINE__);
-    this->check_size_equal(other.size(), __LINE__);
-
-    VectorIterator<T> iter = this->begin();
-    for (VectorIterator iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
-    {
-        *iter += *iter1;
-    }
+    *this = static_cast<Vector<T>>(*this + other);
     return *this;
 }
 
@@ -422,13 +418,7 @@ template <ContainerType T>
 template <ConvertAssignableSum<T> U>
 Vector<T> &Vector<T>::operator+=(const U &num)
 {
-    this->check_vector_size(this->container_size, __LINE__);
-
-    for (auto iter = (*this).begin(); iter != (*this).end(); iter++)
-    {
-        *iter += num;
-    }
-
+    *this = static_cast<Vector<T>>(*this + num);
     return *this;
 }
 
@@ -445,7 +435,7 @@ decltype(auto) Vector<T>::operator-(const Vector<U> &other) const
     this->check_size_equal(other.size(), __LINE__);
 
     Vector<decltype((*this)[0] - other[0])> result(*this);
-    VectorIterator<decltype((*this)[0] - other[0])> iter = result.begin();
+    auto iter = result.begin();
 
     for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
     {
@@ -459,17 +449,7 @@ template <ContainerType T>
 template <ConvertAssignableSub<T> U>
 Vector<T> &Vector<T>::operator-=(const Vector<U> &other)
 {
-    this->check_vector_size(this->container_size, __LINE__);
-    this->check_vector_size(other.size(), __LINE__);
-    this->check_size_equal(other.size(), __LINE__);
-
-    VectorIterator<T> iter = (*this).begin();
-
-    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
-    {
-        *iter -= *iter1;
-    }
-
+    *this = static_cast<Vector<T>>(*this - other);
     return *this;
 }
 
@@ -481,7 +461,6 @@ decltype(auto) Vector<T>::operator-(const U &num) const
     this->check_vector_size(this->container_size, __LINE__);
 
     Vector<decltype((*this)[0] - num)> result(*this);
-
     for (auto iter = result.begin(); iter != result.end(); iter++)
     {
         *iter -= num;
@@ -494,13 +473,7 @@ template <ContainerType T>
 template <ConvertAssignableSub<T> U>
 Vector<T> &Vector<T>::operator-=(const U &num)
 {
-    this->check_vector_size(this->container_size, __LINE__);
-
-    for (auto iter = (*this).begin(); iter != (*this).end(); iter++)
-    {
-        *iter -= num;
-    }
-
+    *this = static_cast<Vector<T>>(*this - num);
     return *this;
 }
 
@@ -515,7 +488,7 @@ decltype(auto) Vector<T>::operator*(const Vector<U> &other) const
     this->check_size_equal(other.size(), __LINE__);
 
     Vector<decltype((*this)[0] - other[0])> result(*this);
-    VectorIterator<decltype((*this)[0] - other[0])> iter = result.begin();
+    auto iter = result.begin();
 
     for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
     {
@@ -529,17 +502,7 @@ template <ContainerType T>
 template <ConvertAssignableMul<T> U>
 Vector<T> &Vector<T>::operator*=(const Vector<U> &other)
 {
-    this->check_vector_size(this->container_size, __LINE__);
-    this->check_vector_size(other.size(), __LINE__);
-    this->check_size_equal(other.size(), __LINE__);
-
-    VectorIterator<T> iter = (*this).begin();
-
-    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
-    {
-        *iter *= *iter1;
-    }
-
+    *this = static_cast<Vector<T>>(*this * other);
     return *this;
 }
 
@@ -564,13 +527,7 @@ template <ContainerType T>
 template <ConvertAssignableMul<T> U>
 Vector<T> &Vector<T>::operator*=(const U &num)
 {
-    this->check_vector_size(this->container_size, __LINE__);
-
-    for (auto iter = (*this).begin(); iter != (*this).end(); iter++)
-    {
-        *iter *= num;
-    }
-
+    *this = static_cast<Vector<T>>(*this * num);
     return *this;
 }
 
@@ -584,7 +541,7 @@ decltype(auto) Vector<T>::operator/(const Vector<U> &other) const
     this->check_size_equal(other.size(), __LINE__);
 
     Vector<decltype((*this)[0] - other[0])> result(*this);
-    VectorIterator<decltype((*this)[0] - other[0])> iter = result.begin();
+    auto iter = result.begin();
 
     for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
     {
@@ -598,17 +555,7 @@ template <ContainerType T>
 template <ConvertAssignableDiv<T> U>
 Vector<T> &Vector<T>::operator/=(const Vector<U> &other)
 {
-    this->check_vector_size(this->container_size, __LINE__);
-    this->check_vector_size(other.size(), __LINE__);
-    this->check_size_equal(other.size(), __LINE__);
-
-    VectorIterator<T> iter = (*this).begin();
-
-    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
-    {
-        *iter /= *iter1;
-    }
-
+    *this = static_cast<Vector<T>>(*this / other);
     return *this;
 }
 
@@ -634,13 +581,7 @@ template <ContainerType T>
 template <ConvertAssignableDiv<T> U>
 Vector<T> &Vector<T>::operator/=(const U &num)
 {
-    this->check_vector_size(this->container_size, __LINE__);
-
-    for (auto iter = (*this).begin(); iter != (*this).end(); iter++)
-    {
-        *iter /= num;
-    }
-
+    *this = static_cast<Vector<T>>(*this / num);
     return *this;
 }
 
@@ -666,7 +607,7 @@ decltype(auto) Vector<T>::operator^(const Vector<U> &other) const
     new_type cy = (*this)[2] * other[0] - (*this)[0] * other[2];
     new_type cz = (*this)[0] * other[1] - (*this)[1] * other[0];
 
-    result = { cx, cy, cz };
+    result = {cx, cy, cz};
     return result;
 }
 
@@ -689,9 +630,8 @@ decltype(auto) Vector<T>::operator&(const Vector<U> &other) const
 
     decltype((*this)[0] * other[0]) sum = 0;
 
-    auto iter1 = other.begin();
-
-    for (VectorIterator<T> iter = this->begin(); iter != this->end(); iter++, iter1++)
+    auto iter1 = other.cbegin();
+    for (auto iter = this->cbegin(); iter != this->cend(); iter++, iter1++)
     {
         sum += (*iter * *iter1);
     }
@@ -758,9 +698,8 @@ bool Vector<T>::operator==(const Con &other) const
 
     if (rc)
     {
-        VectorIterator<T> iter = this->begin();
-
-        for (auto iter1 = other.begin(); iter1 != other.end() && rc; iter++)
+        auto iter = this->begin();
+        for (auto iter1 = other.begin(); iter1 != other.end() && rc; iter1++)
         {
             if (std::fabs(*iter - *iter1) > EPS)
                 rc = false;
@@ -783,18 +722,19 @@ bool Vector<T>::operator!=(const Con &other) const
 
 // Перегрузка оператора []
 template <ContainerType T>
-T &Vector<T>::operator[](int ind)
+T &Vector<T>::operator[](int index)
 {
-    return get_item(ind);
+    return get_item(index);
 }
 
 // Перегрузка оператора []
 template <ContainerType T>
-const T &Vector<T>::operator[](int ind) const
+const T &Vector<T>::operator[](int index) const
 {
-    return get_item(ind);
+    return get_item(index);
 }
 
+// Оператор отрицание
 template <ContainerType T>
 Vector<T> Vector<T>::operator-(void)
 {
@@ -1006,7 +946,7 @@ void Vector<T>::memory_allocation(const int &container_size, int line)
 {
     try
     {
-        container.reset(new T[container_size], std::default_delete<T[]>());
+        container.reset(new T[this->container_size], std::default_delete<T[]>());
     }
     catch (std::bad_alloc &exc)
     {

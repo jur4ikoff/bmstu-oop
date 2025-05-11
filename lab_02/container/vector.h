@@ -48,47 +48,40 @@ public:
     template <ConvertAssignable<T> U>
     Vector(std::initializer_list<U> arr); // Конструктор по списку иницалиизации
     template <ConvertAssignable<T> U>
-    Vector(int container_size, const U *arr); // Конструктор по размеру и массиву заполнения
+    Vector(int size, const U *arr); // Конструктор по размеру и массиву заполнения
     template <ConvertAssignable<T> U>
-    Vector(int container_size, U elem, ...); // Конструктор по длине и параметрам, для заполнения
+    Vector(int size, U elem, ...); // Конструктор по длине и параметрам, для заполнения
     template <ForwardIterator U>
     Vector(U begin, U end); // Конструктор по иттератору на некий контейнер, на начало и конец
+
+    ~Vector() = default;
 
 #pragma endregion Constructors
 
 #pragma region vector_math_methods
-    // Функция возвращает математическую длину вектора
-    decltype(auto) len() const;
-
-    /**
-     * @brief Функция нормализует вектор
-     * @return Новый, нормализованный вектор
-     */
-    decltype(auto) normalization(void) const;
-    bool is_normalize() const; // Функция проверяет нормализован ли вектор
-    bool is_zero() const;      // Функция проверяет нулевой ли вектор
-
-    // Функция считает угол между двумя векторами
-    template <ConvertAssignable<T> U>
-    decltype(auto) calc_angle(const Vector<U> &other) const;
+    decltype(auto) len() const;           // Функция возвращает математическую длину вектора
+    decltype(auto) normalization() const; // Функция нормализует вектор
+    bool is_normalize() const;            // Функция проверяет нормализован ли вектор
+    bool is_zero() const;                 // Функция проверяет нулевой ли вектор
 
     template <ConvertAssignable<T> U>
-    bool is_colliniar(const Vector<U> &other) const;
-
+    decltype(auto) calc_angle(const Vector<U> &other) const; // Функция считает угол между двумя векторами
     template <ConvertAssignable<T> U>
-    bool is_orthogonal(const Vector<U> &other) const;
+    bool is_colliniar(const Vector<U> &other) const; // Проверка на коллинеарность векторов
+    template <ConvertAssignable<T> U>
+    bool is_orthogonal(const Vector<U> &other) const; // Проверка на ортогональность векторов
 
 #pragma endregion vector_math_methods
 
+#pragma region setters_and_getters
     template <ConvertAssignable<T> U>
-    void set_item(size_type index, const U &elem);
-
-    // Получить элемент по индексу
-    T &get_item(int ind);
-    const T &get_item(int ind) const;
+    void set_item(int index, const U &elem); // Поставить элемент по индексу
+    T &get_item(int index);                  // Получить элемент по индексу
+    const T &get_item(int index) const;      // Получить элемент по индексу
+#pragma endregion setters_and_getters
 
 #pragma region iterators
-    // Возвращает иттератор на начало вектора
+    // Возвращает обычный итератор на начало/конец вектораы
     VectorIterator<T> begin(void) const noexcept;
     VectorIterator<T> end(void) const noexcept;
 
@@ -189,6 +182,7 @@ public:
     T &operator[](int ind);
     const T &operator[](int ind) const;
 
+    // Оператор отрицание
     Vector<T> operator-(void);
 
 #pragma endregion operators
@@ -252,30 +246,21 @@ public:
 
     template <typename Con>
         requires ValidContainer<T, Con>
-    bool is_equal(const Con &other) const;
-
-    void print(void) const;
-
-    // отрицание вектора
-    Vector<T> negative(void);
+    bool is_equal(const Con &other) const; // Равны ли два вектора между собой
+    void print(void) const;                // Вывод вектора в консоль
+    Vector<T> negative(void);              // отрицание вектора
 
 #pragma endregion vector_methods
-
-    // TODO
-    // RANGES
-
-    ~Vector() = default;
 
 protected:
     void memory_allocation(const int &container_size, int line);
 
-    void check_vector_size(const int &container_size, int line) const;
-    void check_arr_null(const T *arr, int line) const;
-    void check_index(const int &index, int line) const;
-
     template <typename U>
-    void check_division_zero(const U &num, int line) const;
-    void check_size_equal(const size_type &size, int line) const;
+    void check_division_zero(const U &num, int line) const;            // Проверка деления num / 0
+    void check_vector_size(const int &container_size, int line) const; // Проверка размера массива
+    void check_arr_null(const T *arr, int line) const;                 // Проверка указателя на валидность
+    void check_index(const int &index, int line) const;                // Проверка индекса
+    void check_size_equal(const size_type &size, int line) const;      // Проверка равенства двух размеров
 
 private:
     std::shared_ptr<T[]> container;

@@ -130,16 +130,13 @@ VectorReverseIterator<T> VectorReverseIterator<T>::operator--(int)
 template <ContainerType T>
 typename BaseReverseIterator<T>::difference_type VectorReverseIterator<T>::operator-(const VectorReverseIterator<T> &other) const
 {
-    this->check_iter(__LINE__);
-    other.check_iter(__LINE__);
-
-    return other.index - this->index; // CHECK
+    return other.index - this->index;
 }
 
 template <ContainerType T>
 VectorReverseIterator<T>::operator bool() const
 {
-    return this->piter.lock() != nullptr && this->index >= 0 && this->index < this->size;
+    return this->piter.lock() && this->index >= 0 && this->index < this->size;
 }
 
 template <ContainerType T>

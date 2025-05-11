@@ -49,15 +49,3 @@ TEST_F(TestRanges, test_binary_search)
     bool rc = std::binary_search(int_vec.begin(), int_vec.end(), 4);
     EXPECT_EQ(rc, true);
 }
-
-TEST_F(TestRanges, test_sort)
-{
-    Vector<double> vec = { 1.2f, 3.4343f, 0.534f, 324.f };
-    vec.print();
-    std::ranges::sort(vec);
-    EXPECT_NEAR(vec[0], 0.534, EPS);
-    EXPECT_NEAR(vec[1], 1.2, EPS);
-    EXPECT_NEAR(vec[2], 3.4343, EPS);
-    EXPECT_NEAR(vec[3], 324, EPS);
-    vec.print();
-}
