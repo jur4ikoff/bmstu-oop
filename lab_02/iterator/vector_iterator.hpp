@@ -53,46 +53,39 @@ VectorIterator<T> &VectorIterator<T>::operator=(const VectorIterator<T> &other)
 
 // Перегрузка +
 template <ContainerType T>
-VectorIterator<T> VectorIterator<T>::operator+(const int n) const
+VectorIterator<T> VectorIterator<T>::operator+(const int n) const noexcept
 {
-    this->check_vector(__LINE__);
     VectorIterator<T> new_iter(*this);
     new_iter.index += n;
     return new_iter;
 }
 
 template <ContainerType T>
-VectorIterator<T> &VectorIterator<T>::operator+=(const int i)
+VectorIterator<T> &VectorIterator<T>::operator+=(const int i) noexcept
 {
-    this->check_vector(__LINE__);
     this->index += i;
     return *this;
 }
 
 // Перегрузка инкримента
 template <ContainerType T>
-VectorIterator<T> &VectorIterator<T>::operator++()
+VectorIterator<T> &VectorIterator<T>::operator++() noexcept
 {
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
     (this->index)++;
     return *this;
 }
 
 template <ContainerType T>
-VectorIterator<T> VectorIterator<T>::operator++(int)
+VectorIterator<T> VectorIterator<T>::operator++(int) noexcept
 {
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
     ++(this->index);
     return *this;
 }
 
 // Перегрузка -
 template <ContainerType T>
-VectorIterator<T> VectorIterator<T>::operator-(const int i) const
+VectorIterator<T> VectorIterator<T>::operator-(const int i) const noexcept
 {
-    this->check_vector(__LINE__);
     VectorIterator<T> new_iter(*this);
     new_iter.index -= i;
     return new_iter;
@@ -100,66 +93,54 @@ VectorIterator<T> VectorIterator<T>::operator-(const int i) const
 
 // Перегрузка -=
 template <ContainerType T>
-VectorIterator<T> &VectorIterator<T>::operator-=(const int i)
+VectorIterator<T> &VectorIterator<T>::operator-=(const int i) noexcept
 {
-    this->check_vector(__LINE__);
     this->index -= i;
     return *this;
 }
 
 // Перегрузка декремента iter--
 template <ContainerType T>
-VectorIterator<T> &VectorIterator<T>::operator--()
+VectorIterator<T> &VectorIterator<T>::operator--() noexcept
 {
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
     (this->index)--;
     return *this;
 }
 
 // Перегрузка декремента --iter
 template <ContainerType T>
-VectorIterator<T> VectorIterator<T>::operator--(int)
+VectorIterator<T> VectorIterator<T>::operator--(int) noexcept
 {
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
     --(this->index);
     return *this;
 }
 
 template <ContainerType T>
-typename BaseIterator<T>::difference_type VectorIterator<T>::operator-(const VectorIterator<T> &other) const
+typename BaseIterator<T>::difference_type VectorIterator<T>::operator-(const VectorIterator<T> &other) const noexcept
 {
     return this->index - other.index;
 }
 
 template <ContainerType T>
-VectorIterator<T>::operator bool() const
+VectorIterator<T>::operator bool() const noexcept
 {
     return this->piter.lock() != nullptr && this->index >= 0 && this->index < this->size;
 }
 
 template <ContainerType T>
-VectorIterator<T> operator+(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other)
+VectorIterator<T> operator+(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other) noexcept
 {
-    other.check_iter(__LINE__);
-    other.check_vector(__LINE__);
-
     return other + n;
 }
 
 template <ContainerType T>
-T &VectorIterator<T>::operator[](int index) const
+T &VectorIterator<T>::operator[](int index) const 
 {
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
 
     VectorIterator<T> iter(*this);
     iter += index;
-    // for (int i = 0; i < dist; ++i)
-    // {
-    //     ++tmp;
-    // }
 
     return *iter;
 }

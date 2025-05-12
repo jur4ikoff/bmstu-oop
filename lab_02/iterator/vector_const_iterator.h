@@ -12,7 +12,7 @@ template <ContainerType T>
 class VectorConstIterator;
 
 template <ContainerType T>
-VectorConstIterator<T> operator+(typename BaseIterator<T>::difference_type n, const VectorConstIterator<T> &other);
+VectorConstIterator<T> operator+(typename BaseIterator<T>::difference_type n, const VectorConstIterator<T> &other) noexcept;
 
 template <ContainerType T>
 class VectorConstIterator final : public BaseIterator<T>
@@ -26,27 +26,27 @@ public:
 
     VectorConstIterator<T> &operator=(const VectorConstIterator<T> &other); // Перегрузка оператора =
 
-    VectorConstIterator<T> operator+(const int n) const; // Перегрузка оператора +
-    VectorConstIterator<T> &operator+=(const int n);     // Перегрузка оператора +=
-    friend VectorConstIterator<T>(::operator+ <>)(typename BaseIterator<T>::difference_type n, const VectorConstIterator<T> &other);
+    VectorConstIterator<T> operator+(const int n) const noexcept; // Перегрузка оператора +
+    VectorConstIterator<T> &operator+=(const int n) noexcept;     // Перегрузка оператора +=
+    friend VectorConstIterator<T>(::operator+ <>)(typename BaseIterator<T>::difference_type n, const VectorConstIterator<T> &other) noexcept;
 
     // Перегрузка инкремента
-    VectorConstIterator<T> &operator++();
-    VectorConstIterator<T> operator++(int); // ++iter
+    VectorConstIterator<T> &operator++() noexcept;
+    VectorConstIterator<T> operator++(int) noexcept; // ++iter
 
     // Перегрузка оператора -
-    VectorConstIterator<T> operator-(const int n) const;
-    VectorConstIterator<T> &operator-=(const int n);
+    VectorConstIterator<T> operator-(const int n) const noexcept;
+    VectorConstIterator<T> &operator-=(const int n) noexcept;
 
-    typename BaseIterator<T>::difference_type operator-(const VectorConstIterator<T> &other) const;
+    typename BaseIterator<T>::difference_type operator-(const VectorConstIterator<T> &other) const noexcept;
 
     // Перегрузка декремента
-    VectorConstIterator<T> &operator--();
-    VectorConstIterator<T> operator--(int);
+    VectorConstIterator<T> &operator--() noexcept;
+    VectorConstIterator<T> operator--(int) noexcept;
 
     const T &operator[](int index) const;
 
-    explicit operator bool() const;
+    explicit operator bool() const noexcept;
 };
 
 static_assert(std::random_access_iterator<VectorConstIterator<int>>);

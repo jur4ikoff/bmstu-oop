@@ -11,7 +11,7 @@ template <ContainerType T>
 class VectorIterator;
 
 template <ContainerType T>
-VectorIterator<T> operator+(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other);
+VectorIterator<T> operator+(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other) noexcept;
 
 template <ContainerType T>
 class VectorIterator final : public BaseIterator<T>
@@ -30,27 +30,27 @@ public:
     VectorIterator<T> &operator=(const VectorIterator<T> &other);
 
     // Перегрузка оператроа +
-    VectorIterator<T> operator+(int n) const;
-    VectorIterator<T> &operator+=(const int n);
-    friend VectorIterator<T>(::operator+ <>)(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other);
+    VectorIterator<T> operator+(int n) const noexcept;
+    VectorIterator<T> &operator+=(const int n) noexcept;
+    friend VectorIterator<T>(::operator+ <>)(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other) noexcept;
 
     // Перегрузка инкремента
-    VectorIterator<T> &operator++();  
-    VectorIterator<T> operator++(int); 
+    VectorIterator<T> &operator++() noexcept;  
+    VectorIterator<T> operator++(int) noexcept; 
 
     // Перегрузка оператора -
-    VectorIterator<T> operator-(const int n) const;
-    VectorIterator<T> &operator-=(const int n);
+    VectorIterator<T> operator-(const int n) const noexcept;
+    VectorIterator<T> &operator-=(const int n) noexcept;
 
     // Перегрузка декремента
-    VectorIterator<T> &operator--();   
-    VectorIterator<T> operator--(int); 
+    VectorIterator<T> &operator--() noexcept;   
+    VectorIterator<T> operator--(int) noexcept; 
 
     T &operator[](int index) const;
 
-    explicit operator bool() const;
+    explicit operator bool() const noexcept;
 
-    typename BaseIterator<T>::difference_type operator-(const VectorIterator<T> &other) const;
+    typename BaseIterator<T>::difference_type operator-(const VectorIterator<T> &other) const noexcept;
 };
 
 static_assert(std::random_access_iterator<VectorIterator<int>>);
