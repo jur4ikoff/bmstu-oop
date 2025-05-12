@@ -1,6 +1,6 @@
 #include "constants.hpp"
 #include "test_base.hpp"
-#include "vector.hpp"
+#include "vector.h"
 
 #include <algorithm>
 #include <cassert>
