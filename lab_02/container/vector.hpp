@@ -163,7 +163,8 @@ Vector<T>::Vector(U begin, U end)
 }
 
 template <ContainerType T>
-template <CompatibleIterator<T> I, SentinelIter<T> S>
+template <typename I, typename S>
+    requires CompatibleIterator<I, T> && SentinelIter<S, I>
 Vector<T>::Vector(I begin, S end)
 {
     int size = 0;

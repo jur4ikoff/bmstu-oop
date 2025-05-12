@@ -56,11 +56,11 @@ concept Container = requires(T t) {
 template <typename T>
 concept ContainerType = requires(T a, T b) {
     std::default_initializable<T>;
-    { a = b };
+    { a = b } -> std::same_as<T &>;
 };
 
-template <typename T, class U>
-concept SentinelIter = std::sentinel_for<U, T>;
+template <typename S, typename I>
+concept SentinelIter = std::sentinel_for<I, S>;
 
 // Концепт, что тип данных U может быть преобразован в тип данных T
 template <typename T, typename U>

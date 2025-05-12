@@ -52,7 +52,9 @@ public:
     Vector(int size, const U &elem, ...); // Конструктор по длине и параметрам, для заполнения
     template <CompatibleIterator<T> U>
     Vector(U begin, U end); // Конструктор по иттератору на некий контейнер, на начало и конец
-    template <CompatibleIterator<T> I, SentinelIter<T> S>
+
+    template <typename I, typename S>
+        requires CompatibleIterator<I, T> && SentinelIter<S, I>
     Vector(I beg, S end);
 
     ~Vector() = default;
@@ -298,8 +300,8 @@ public:
     bool is_equal(const Con &other) const; // Равны ли два вектора между собой
     template <ConvertAssignable<T> U>
     bool is_equal(const Vector<U> &other) const;
-    void print(void) const;                // Вывод вектора в консоль
-    Vector<T> negative(void);              // отрицание вектора
+    void print(void) const;   // Вывод вектора в консоль
+    Vector<T> negative(void); // отрицание вектора
 
 #pragma endregion vector_methods
 
