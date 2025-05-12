@@ -386,8 +386,8 @@ VectorConstReverseIterator<T> Vector<T>::crend(void) const noexcept
 // Сложение вектора с другим вектором
 // Возвращается новый объект Vector<auto>
 template <ContainerType T>
-template <ConvertAssignableSum<T> U>
-decltype(auto) Vector<T>::operator+(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::operator+(const Con &other) const
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_vector_size(other.size(), __LINE__);
@@ -396,7 +396,7 @@ decltype(auto) Vector<T>::operator+(const Vector<U> &other) const
     Vector<decltype(((*this)[0]) + other[0])> result(*this);
     auto iter = result.begin();
 
-    for (VectorIterator iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
+    for (auto iter1 = other.cbegin(); iter1 != other.cend(); iter1++, iter++)
     {
         *iter += *iter1;
     }
@@ -408,8 +408,8 @@ decltype(auto) Vector<T>::operator+(const Vector<U> &other) const
 // Сложение вектора с другим вектором
 // Изменяется текущий объект
 template <ContainerType T>
-template <ConvertAssignableSum<T> U>
-Vector<T> &Vector<T>::operator+=(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::operator+=(const Con &other)
 {
     *this = static_cast<Vector<T>>(*this + other);
     return *this;
@@ -452,8 +452,8 @@ Vector<T> &Vector<T>::operator+=(const U &num)
 /// @param other
 /// @return
 template <ContainerType T>
-template <ConvertAssignableSub<T> U>
-decltype(auto) Vector<T>::operator-(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::operator-(const Con &other) const
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_vector_size(other.size(), __LINE__);
@@ -462,7 +462,7 @@ decltype(auto) Vector<T>::operator-(const Vector<U> &other) const
     Vector<decltype((*this)[0] - other[0])> result(*this);
     auto iter = result.begin();
 
-    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
+    for (auto iter1 = other.cbegin(); iter1 != other.cend(); iter1++, iter++)
     {
         *iter -= *iter1;
     }
@@ -471,8 +471,8 @@ decltype(auto) Vector<T>::operator-(const Vector<U> &other) const
 }
 
 template <ContainerType T>
-template <ConvertAssignableSub<T> U>
-Vector<T> &Vector<T>::operator-=(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::operator-=(const Con &other)
 {
     *this = static_cast<Vector<T>>(*this - other);
     return *this;
@@ -505,8 +505,8 @@ Vector<T> &Vector<T>::operator-=(const U &num)
 // Перегрузка *
 // Перегрузка оператора умножения для вектора
 template <ContainerType T>
-template <ConvertAssignableMul<T> U>
-decltype(auto) Vector<T>::operator*(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::operator*(const Con &other) const
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_vector_size(other.size(), __LINE__);
@@ -515,7 +515,7 @@ decltype(auto) Vector<T>::operator*(const Vector<U> &other) const
     Vector<decltype((*this)[0] - other[0])> result(*this);
     auto iter = result.begin();
 
-    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++, iter++)
+    for (auto iter1 = other.cbegin(); iter1 != other.cend(); iter1++, iter++)
     {
         *iter *= *iter1;
     }
@@ -524,8 +524,8 @@ decltype(auto) Vector<T>::operator*(const Vector<U> &other) const
 }
 
 template <ContainerType T>
-template <ConvertAssignableMul<T> U>
-Vector<T> &Vector<T>::operator*=(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::operator*=(const Con &other)
 {
     *this = static_cast<Vector<T>>(*this * other);
     return *this;
@@ -558,8 +558,8 @@ Vector<T> &Vector<T>::operator*=(const U &num)
 
 // ДЕЛЕНИЕ
 template <ContainerType T>
-template <ConvertAssignableDiv<T> U>
-decltype(auto) Vector<T>::operator/(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::operator/(const Con &other) const
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_vector_size(other.size(), __LINE__);
@@ -577,8 +577,8 @@ decltype(auto) Vector<T>::operator/(const Vector<U> &other) const
 }
 
 template <ContainerType T>
-template <ConvertAssignableDiv<T> U>
-Vector<T> &Vector<T>::operator/=(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::operator/=(const Con &other)
 {
     *this = static_cast<Vector<T>>(*this / other);
     return *this;
@@ -612,8 +612,8 @@ Vector<T> &Vector<T>::operator/=(const U &num)
 
 // Векторное умножение
 template <ContainerType T>
-template <ConvertAssignableOperationable<T> U>
-decltype(auto) Vector<T>::operator^(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::operator^(const Con &other) const
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_vector_size(other.size(), __LINE__);
@@ -637,8 +637,8 @@ decltype(auto) Vector<T>::operator^(const Vector<U> &other) const
 }
 
 template <ContainerType T>
-template <ConvertAssignableOperationable<T> U>
-Vector<T> &Vector<T>::operator^=(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::operator^=(const Con &other)
 {
     *this = *this ^ other;
     return *this;
@@ -646,8 +646,8 @@ Vector<T> &Vector<T>::operator^=(const Vector<U> &other)
 
 // Скалярное произведение векторов
 template <ContainerType T>
-template <ConvertAssignableOperationable<T> U>
-decltype(auto) Vector<T>::operator&(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::operator&(const Con &other) const
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_vector_size(other.size(), __LINE__);
@@ -684,15 +684,15 @@ Vector<T> &Vector<T>::operator=(const std::initializer_list<U> &arr)
 
 // перегрузка оператора равно
 template <ContainerType T>
-template <ConvertAssignable<T> U>
-Vector<T> &Vector<T>::operator=(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::operator=(const Con &other)
 {
     this->check_vector_size(other.size(), __LINE__);
 
     this->container_size = other.size();
     this->memory_allocation(this->container_size, __LINE__);
     VectorIterator<T> iter = this->begin();
-    for (auto iter1 = other.begin(); iter1 != other.end(); iter1++)
+    for (auto iter1 = other.cbegin(); iter1 != other.cend(); iter1++)
     {
         *iter = *iter1;
         iter++;
@@ -701,8 +701,8 @@ Vector<T> &Vector<T>::operator=(const Vector<U> &other)
 }
 
 template <ContainerType T>
-template <ConvertAssignable<T> U>
-Vector<T> &Vector<T>::operator=(const Vector<U> &&other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::operator=(const Con &&other)
 {
     this->check_vector_size(other.size(), __LINE__);
 
@@ -715,8 +715,7 @@ Vector<T> &Vector<T>::operator=(const Vector<U> &&other)
 
 // Перегрузка оператора ==
 template <ContainerType T>
-template <typename Con>
-    requires ValidContainer<T, Con>
+template <ValidContainer<T> Con>
 bool Vector<T>::operator==(const Con &other) const
 {
     bool rc = this->container_size == other.size();
@@ -738,8 +737,7 @@ bool Vector<T>::operator==(const Con &other) const
 
 // Перегрузка оператора !=
 template <ContainerType T>
-template <typename Con>
-    requires ValidContainer<T, Con>
+template <ValidContainer<T> Con>
 bool Vector<T>::operator!=(const Con &other) const
 {
     return !(*this == other);
@@ -774,22 +772,22 @@ Vector<T> Vector<T>::operator-(void)
     return result;
 }
 
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-// | Математические функции для вектора. Эквивалентные перегруженным операторам |
-// ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+// | Методы для вектора. Эквивалентные перегруженным операторам |
+// –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 // Векторная сумма
 template <ContainerType T>
-template <ConvertAssignableSum<T> U>
-decltype(auto) Vector<T>::vec_sum(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::vec_sum(const Con &other) const
 {
     return *this + other;
 }
 
 // Векторная сумма
 template <ContainerType T>
-template <ConvertAssignableSum<T> U>
-Vector<T> &Vector<T>::vec_sum_eq(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::vec_sum_eq(const Con &other)
 {
     *this = static_cast<Vector<T>>(*this + other);
     return *this;
@@ -814,16 +812,16 @@ Vector<T> &Vector<T>::plus_eq(const U &num)
 
 // Вычитание вектора из вектора
 template <ContainerType T>
-template <ConvertAssignableSub<T> U>
-decltype(auto) Vector<T>::vec_sub(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::vec_sub(const Con &other) const
 {
     return *this - other;
 }
 
 // Вычитание вектора из вектора
 template <ContainerType T>
-template <ConvertAssignableSub<T> U>
-Vector<T> &Vector<T>::vec_sub_eq(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::vec_sub_eq(const Con &other)
 {
     *this = static_cast<Vector<T>>(*this - other);
     return *this;
@@ -848,16 +846,16 @@ Vector<T> &Vector<T>::minus_eq(const U &num)
 
 // Поэлементное умножение
 template <ContainerType T>
-template <ConvertAssignableMul<T> U>
-decltype(auto) Vector<T>::vec_el_mul(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::vec_el_mul(const Con &other) const
 {
     return *this * other;
 }
 
 // // Поэлементное умножение
 template <ContainerType T>
-template <ConvertAssignableMul<T> U>
-Vector<T> &Vector<T>::vec_el_mul_eq(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::vec_el_mul_eq(const Con &other)
 {
     *this = static_cast<Vector<T>>(*this * other);
     return *this;
@@ -881,16 +879,16 @@ Vector<T> &Vector<T>::mul_eq(const U &num)
 
 // Поэлементное Деление
 template <ContainerType T>
-template <ConvertAssignableDiv<T> U>
-decltype(auto) Vector<T>::vec_el_div(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::vec_el_div(const Con &other) const
 {
     return *this / other;
 }
 
 // Поэлементное Деление
 template <ContainerType T>
-template <ConvertAssignableDiv<T> U>
-Vector<T> &Vector<T>::vec_el_div_eq(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::vec_el_div_eq(const Con &other)
 {
     *this = static_cast<Vector<T>>(*this / other);
 }
@@ -914,16 +912,16 @@ Vector<T> &Vector<T>::div_eq(const U &num)
 
 // Векторное умножение
 template <ContainerType T>
-template <ConvertAssignableOperationable<T> U>
-decltype(auto) Vector<T>::vec_mul(const Vector<U> &other) const
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::vec_mul(const Con &other) const
 {
     return *this ^ other;
 }
 
 // Векторное умножение
 template <ContainerType T>
-template <ConvertAssignableOperationable<T> U>
-Vector<T> &Vector<T>::vec_mul_eq(const Vector<U> &other)
+template <ValidContainer<T> Con>
+Vector<T> &Vector<T>::vec_mul_eq(const Con &other)
 {
     *this = static_cast<Vector<T>>(*this ^ other);
     return *this;
@@ -931,16 +929,15 @@ Vector<T> &Vector<T>::vec_mul_eq(const Vector<U> &other)
 
 // Скалярное умножение
 template <ContainerType T>
-template <ConvertAssignableOperationable<T> U>
-decltype(auto) Vector<T>::scal_mul(const Vector<U> &other)
+template <ValidContainer<T> Con>
+decltype(auto) Vector<T>::scal_mul(const Con &other)
 {
     return *this & other;
 }
 
 // Метод
 template <ContainerType T>
-template <typename Con>
-    requires ValidContainer<T, Con>
+template <ValidContainer<T> Con>
 bool Vector<T>::is_equal(const Con &other) const
 {
     return *this == other;
@@ -949,7 +946,7 @@ bool Vector<T>::is_equal(const Con &other) const
 template <ContainerType T>
 void Vector<T>::print(void) const
 {
-    for (auto iter = this->begin(); iter != this->end(); iter++)
+    for (auto iter = this->cbegin(); iter != this->cend(); iter++)
     {
         std::cout << *iter << " ";
     }
