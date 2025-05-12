@@ -7,7 +7,7 @@
 
 // Конструктор по иттератору
 template <ContainerType T>
-VectorIterator<T>::VectorIterator(const VectorIterator<T> &iter)
+VectorIterator<T>::VectorIterator(const VectorIterator<T> &iter) noexcept
 {
     this->size = iter.size;
     this->index = iter.index;
@@ -16,7 +16,7 @@ VectorIterator<T>::VectorIterator(const VectorIterator<T> &iter)
 
 // Конструктор по контейнеру
 template <ContainerType T>
-VectorIterator<T>::VectorIterator(const Vector<T> &vec)
+VectorIterator<T>::VectorIterator(const Vector<T> &vec) noexcept
 {
     this->size = vec.size();
     this->index = 0;

@@ -17,10 +17,10 @@ template <ContainerType T>
 class VectorIterator final : public BaseIterator<T>
 {
 public:
-    VectorIterator() = default;                    // Пустой конструктор
-    VectorIterator(const VectorIterator<T> &iter); // Конструктор по иттератору
-    VectorIterator(const Vector<T> &vec);          // Коструктор по контейнеру
-    ~VectorIterator() = default;                   // Деструктор
+    VectorIterator() = default;                             // Пустой конструктор
+    VectorIterator(const VectorIterator<T> &iter) noexcept; // Конструктор по иттератору
+    VectorIterator(const Vector<T> &vec) noexcept;          // Коструктор по контейнеру
+    ~VectorIterator() = default;                            // Деструктор
 
     // Перегруза операторов * и ->
     T &operator*() const;
@@ -35,16 +35,16 @@ public:
     friend VectorIterator<T>(::operator+ <>)(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other) noexcept;
 
     // Перегрузка инкремента
-    VectorIterator<T> &operator++() noexcept;  
-    VectorIterator<T> operator++(int) noexcept; 
+    VectorIterator<T> &operator++() noexcept;
+    VectorIterator<T> operator++(int) noexcept;
 
     // Перегрузка оператора -
     VectorIterator<T> operator-(const int n) const noexcept;
     VectorIterator<T> &operator-=(const int n) noexcept;
 
     // Перегрузка декремента
-    VectorIterator<T> &operator--() noexcept;   
-    VectorIterator<T> operator--(int) noexcept; 
+    VectorIterator<T> &operator--() noexcept;
+    VectorIterator<T> operator--(int) noexcept;
 
     T &operator[](int index) const;
 

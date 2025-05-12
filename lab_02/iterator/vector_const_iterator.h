@@ -18,11 +18,11 @@ template <ContainerType T>
 class VectorConstIterator final : public BaseIterator<T>
 {
 public:
-    VectorConstIterator() = default;                         // Пустой конструктор
-    VectorConstIterator(const VectorConstIterator<T> &iter); // Конструктор по итератору
-    VectorConstIterator(const VectorIterator<T> &iter);      // Конструктор от обычного итератора
-    VectorConstIterator(const Vector<T> &vec);               // Коструктор по контейнеру
-    ~VectorConstIterator() = default;                        // Деструктор
+    VectorConstIterator() = default;                                  // Пустой конструктор
+    VectorConstIterator(const VectorConstIterator<T> &iter) noexcept; // Конструктор по итератору
+    VectorConstIterator(const VectorIterator<T> &iter) noexcept;      // Конструктор от обычного итератора
+    VectorConstIterator(const Vector<T> &vec) noexcept;               // Коструктор по контейнеру
+    ~VectorConstIterator() = default;                                 // Деструктор
 
     VectorConstIterator<T> &operator=(const VectorConstIterator<T> &other); // Перегрузка оператора =
 

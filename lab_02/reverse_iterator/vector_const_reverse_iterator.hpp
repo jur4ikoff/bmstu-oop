@@ -7,7 +7,7 @@
 
 // Конструктор по иттератору
 template <ContainerType T>
-VectorConstReverseIterator<T>::VectorConstReverseIterator(const VectorConstReverseIterator<T> &iter)
+VectorConstReverseIterator<T>::VectorConstReverseIterator(const VectorConstReverseIterator<T> &iter) noexcept
 {
     this->size = iter.size;
     this->index = iter.index;
@@ -15,7 +15,7 @@ VectorConstReverseIterator<T>::VectorConstReverseIterator(const VectorConstRever
 }
 
 template <ContainerType T>
-VectorConstReverseIterator<T>::VectorConstReverseIterator(const VectorReverseIterator<T> &iter)
+VectorConstReverseIterator<T>::VectorConstReverseIterator(const VectorReverseIterator<T> &iter) noexcept
 {
     this->size = iter.get_size();
     this->index = iter.get_index();
@@ -24,19 +24,17 @@ VectorConstReverseIterator<T>::VectorConstReverseIterator(const VectorReverseIte
 
 // Конструктор по контейнеру
 template <ContainerType T>
-VectorConstReverseIterator<T>::VectorConstReverseIterator(const Vector<T> &vec)
+VectorConstReverseIterator<T>::VectorConstReverseIterator(const Vector<T> &vec) noexcept
 {
     this->size = vec.size();
     this->index = vec.size() - 1;
     this->piter = vec.container;
 }
 
-
 template <ContainerType T>
 VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator=(const VectorConstReverseIterator<T> &other)
 {
     this->check_vector(__LINE__);
-
     this->size = other.size;
     this->index = other.index;
     this->piter = other.piter;
@@ -46,46 +44,39 @@ VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator=(const Ve
 
 // Перегрузка +
 template <ContainerType T>
-VectorConstReverseIterator<T> VectorConstReverseIterator<T>::operator+(const int i) const
+VectorConstReverseIterator<T> VectorConstReverseIterator<T>::operator+(const int i) const noexcept
 {
-    this->check_vector(__LINE__);
     VectorConstReverseIterator<T> new_iter(*this);
     new_iter.index -= i;
     return new_iter;
 }
 
 template <ContainerType T>
-VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator+=(const int i)
+VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator+=(const int i) noexcept
 {
-    this->check_vector(__LINE__);
     this->index -= i;
     return *this;
 }
 
 // Перегрузка инкримента
 template <ContainerType T>
-VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator++()
+VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator++() noexcept
 {
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
     (this->index)--;
     return *this;
 }
 
 template <ContainerType T>
-VectorConstReverseIterator<T> VectorConstReverseIterator<T>::operator++(int)
+VectorConstReverseIterator<T> VectorConstReverseIterator<T>::operator++(int) noexcept
 {
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
     --(this->index);
     return *this;
 }
 
 // Перегрузка -
 template <ContainerType T>
-VectorConstReverseIterator<T> VectorConstReverseIterator<T>::operator-(const int i) const
+VectorConstReverseIterator<T> VectorConstReverseIterator<T>::operator-(const int i) const noexcept
 {
-    this->check_vector(__LINE__);
     VectorConstReverseIterator<T> new_iter(*this);
     new_iter.index += i;
     return new_iter;
@@ -93,58 +84,49 @@ VectorConstReverseIterator<T> VectorConstReverseIterator<T>::operator-(const int
 
 // Перегрузка -=
 template <ContainerType T>
-VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator-=(const int i)
+VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator-=(const int i) noexcept
 {
-    this->check_vector(__LINE__);
     this->index += i;
     return *this;
 }
 
 // Перегрузка декремента iter--
 template <ContainerType T>
-VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator--()
+VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator--() noexcept
 {
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
     (this->index)++;
     return *this;
 }
 
 // Перегрузка декремента --iter
 template <ContainerType T>
-VectorConstReverseIterator<T> VectorConstReverseIterator<T>::operator--(int)
+VectorConstReverseIterator<T> VectorConstReverseIterator<T>::operator--(int) noexcept
 {
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
     ++(this->index);
     return *this;
 }
 
 template <ContainerType T>
-typename BaseReverseIterator<T>::difference_type VectorConstReverseIterator<T>::operator-(const VectorConstReverseIterator<T> &other) const
+typename BaseReverseIterator<T>::difference_type VectorConstReverseIterator<T>::operator-(const VectorConstReverseIterator<T> &other) const noexcept
 {
     return other.index - this->index;
 }
 
 template <ContainerType T>
-VectorConstReverseIterator<T>::operator bool() const
+VectorConstReverseIterator<T>::operator bool() const noexcept
 {
     return this->piter.lock() && this->index >= 0 && this->index < this->size;
 }
 
 template <ContainerType T>
-VectorConstReverseIterator<T> operator+(typename BaseReverseIterator<T>::difference_type n, const VectorConstReverseIterator<T> &other)
+VectorConstReverseIterator<T> operator+(typename BaseReverseIterator<T>::difference_type n, const VectorConstReverseIterator<T> &other) noexcept
 {
-    other.check_iter(__LINE__);
-    other.check_vector(__LINE__);
-
     return other + n;
 }
 
 template <ContainerType T>
 const T &VectorConstReverseIterator<T>::operator[](int index) const
 {
-    // Проверить
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
 

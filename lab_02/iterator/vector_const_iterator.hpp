@@ -7,7 +7,7 @@
 
 // Конструктор по костантному итератору
 template <ContainerType T>
-VectorConstIterator<T>::VectorConstIterator(const VectorConstIterator<T> &iter)
+VectorConstIterator<T>::VectorConstIterator(const VectorConstIterator<T> &iter) noexcept
 {
     this->size = iter.size;
     this->index = iter.index;
@@ -16,7 +16,7 @@ VectorConstIterator<T>::VectorConstIterator(const VectorConstIterator<T> &iter)
 
 // Конструктор по обычному итератору
 template <ContainerType T>
-VectorConstIterator<T>::VectorConstIterator(const VectorIterator<T> &iter)
+VectorConstIterator<T>::VectorConstIterator(const VectorIterator<T> &iter) noexcept
 {
     this->size = iter.get_size();
     this->index = iter.get_index();
@@ -24,7 +24,7 @@ VectorConstIterator<T>::VectorConstIterator(const VectorIterator<T> &iter)
 }
 
 template <ContainerType T>
-VectorConstIterator<T>::VectorConstIterator(const Vector<T> &vec)
+VectorConstIterator<T>::VectorConstIterator(const Vector<T> &vec) noexcept
 {
     this->size = vec.size();
     this->index = 0;
