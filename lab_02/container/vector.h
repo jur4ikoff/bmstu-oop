@@ -40,8 +40,8 @@ public:
     explicit Vector(const Vector<U> &other); // Преобразование из вектора другого типа
     template <typename Con>
         requires ValidContainer<T, Con>
-    explicit Vector(const Con &other); // Преобразование из контейнера, подходящего под требования
-    explicit Vector(baseContainer::size_type size);         // Конструктор по рамзеру
+    explicit Vector(const Con &other);              // Преобразование из контейнера, подходящего под требования
+    explicit Vector(baseContainer::size_type size); // Конструктор по рамзеру
     template <ConvertAssignable<T> U>
     Vector(std::initializer_list<U> arr); // Конструктор по списку иницалиизации
     template <ConvertAssignable<T> U>
@@ -88,6 +88,8 @@ public:
     Vector<T> &operator+=(const Con &other);
     template <ConvertAssignableSum<T> U>
     Vector<T> &operator+=(const Vector<U> &other);
+    template <ConvertAssignable<T> U>
+    Vector<T> &operator+=(std::initializer_list<U> arr);
 
     // Сложение вектора и числа
     template <ConvertAssignableSum<T> U>
@@ -122,6 +124,8 @@ public:
     Vector<T> &operator-=(const Con &other);
     template <ConvertAssignableSub<T> U>
     Vector<T> &operator-=(const Vector<U> &other);
+    template <ConvertAssignable<T> U>
+    Vector<T> &operator-=(std::initializer_list<U> arr);
 
     // Перегрзука оператора - для числа
     template <ConvertAssignableSub<T> U>
@@ -159,6 +163,8 @@ public:
     Vector<T> &operator*=(const Con &other);
     template <ConvertAssignableMul<T> U>
     Vector<T> &operator*=(const Vector<U> &other);
+    template <ConvertAssignable<T> U>
+    Vector<T> &operator*=(std::initializer_list<U> arr);
 
     // Перегрзука оператора * для числа
     template <ConvertAssignableMul<T> U>
@@ -194,6 +200,8 @@ public:
     Vector<T> &operator/=(const Con &other);
     template <ConvertAssignableDiv<T> U>
     Vector<T> &operator/=(const Vector<U> &other);
+    template <ConvertAssignable<T> U>
+    Vector<T> &operator/=(std::initializer_list<U> arr);
 
     // Перегрузка оператора / деление на число
     template <ConvertAssignableDiv<T> U>
@@ -228,6 +236,8 @@ public:
     Vector<T> &operator^=(const Con &other);
     template <ConvertAssignableOperationable<T> U>
     Vector<T> &operator^=(const Vector<U> &other);
+    template <ConvertAssignable<T> U>
+    Vector<T> &operator^=(std::initializer_list<U> arr);
 
     // перегрузка оператора & - Скалярное умножение
     template <ValidContainer<T> Con>
@@ -319,11 +329,11 @@ protected:
     void memory_allocation(const int &container_size, int line);
 
     template <typename U>
-    void check_division_zero(const U &num, int line) const;            // Проверка деления num / 0
+    void check_division_zero(const U &num, int line) const;                // Проверка деления num / 0
     void check_vector_size(baseContainer::size_type size, int line) const; // Проверка размера массива
-    void check_arr_null(const T *arr, int line) const;                 // Проверка указателя на валидность
-    void check_index(int index, int line) const;                // Проверка индекса
-    void check_size_equal(baseContainer::size_type size, int line) const;      // Проверка равенства двух размеров
+    void check_arr_null(const T *arr, int line) const;                     // Проверка указателя на валидность
+    void check_index(int index, int line) const;                           // Проверка индекса
+    void check_size_equal(baseContainer::size_type size, int line) const;  // Проверка равенства двух размеров
 
 private:
     std::shared_ptr<T[]> container;

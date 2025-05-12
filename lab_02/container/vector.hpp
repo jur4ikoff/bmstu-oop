@@ -434,6 +434,23 @@ decltype(auto) Vector<T>::operator+(const Con &other) const
     return result;
 }
 
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+Vector<T> &Vector<T>::operator+=(std::initializer_list<U> arr)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(arr.size(), __LINE__);
+    this->check_size_equal(arr.size(), __LINE__);
+
+    auto iter = this->begin();
+    for (const auto &el : arr)
+    {
+        *iter += el;
+        iter++;
+    }
+    return *this;
+}
+
 // Перегрузка оператора +=
 // Сложение вектора с другим вектором
 // Изменяется текущий объект
@@ -562,6 +579,23 @@ Vector<T> &Vector<T>::operator-=(const Vector<U> &other)
     return *this;
 }
 
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+Vector<T> &Vector<T>::operator-=(std::initializer_list<U> arr)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(arr.size(), __LINE__);
+    this->check_size_equal(arr.size(), __LINE__);
+
+    auto iter = this->begin();
+    for (const auto &el : arr)
+    {
+        *iter -= el;
+        iter++;
+    }
+    return *this;
+}
+
 // Перегрзука оператора - для числа
 template <ContainerType T>
 template <ConvertAssignableSub<T> U>
@@ -642,6 +676,23 @@ Vector<T> &Vector<T>::operator*=(const Vector<U> &other)
     return *this;
 }
 
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+Vector<T> &Vector<T>::operator*=(std::initializer_list<U> arr)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(arr.size(), __LINE__);
+    this->check_size_equal(arr.size(), __LINE__);
+
+    auto iter = this->begin();
+    for (const auto &el : arr)
+    {
+        *iter *= el;
+        iter++;
+    }
+    return *this;
+}
+
 // Перегрзука оператора * для числа
 template <ContainerType T>
 template <ConvertAssignableMul<T> U>
@@ -715,6 +766,23 @@ decltype(auto) Vector<T>::operator/(const Vector<U> &other) const
 }
 
 template <ContainerType T>
+template <ConvertAssignable<T> U>
+Vector<T> &Vector<T>::operator/=(std::initializer_list<U> arr)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(arr.size(), __LINE__);
+    this->check_size_equal(arr.size(), __LINE__);
+
+    auto iter = this->begin();
+    for (const auto &el : arr)
+    {
+        *iter /= el;
+        iter++;
+    }
+    return *this;
+}
+
+template <ContainerType T>
 template <ConvertAssignableDiv<T> U>
 Vector<T> &Vector<T>::operator/=(const Vector<U> &other)
 {
@@ -770,7 +838,7 @@ decltype(auto) Vector<T>::operator^(const Con &other) const
     new_type cy = (*this)[2] * other[0] - (*this)[0] * other[2];
     new_type cz = (*this)[0] * other[1] - (*this)[1] * other[0];
 
-    result = {cx, cy, cz};
+    result = { cx, cy, cz };
     return result;
 }
 
@@ -779,6 +847,28 @@ template <ValidContainer<T> Con>
 Vector<T> &Vector<T>::operator^=(const Con &other)
 {
     *this = *this ^ other;
+    return *this;
+}
+
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+Vector<T> &Vector<T>::operator^=(std::initializer_list<U> arr)
+{
+    this->check_vector_size(this->container_size, __LINE__);
+    this->check_vector_size(arr.size(), __LINE__);
+    this->check_size_equal(arr.size(), __LINE__);
+
+    if (this->container_size != 3)
+    {
+        time_t now = time(NULL);
+        throw errSizeNotCompatible(__FILE__, __LINE__, typeid(*this).name(), ctime(&now));
+    }
+
+    T cx = (*this)[1] * arr[2] - (*this)[2] * arr[1];
+    T cy = (*this)[2] * arr[0] - (*this)[0] * arr[2];
+    T cz = (*this)[0] * arr[1] - (*this)[1] * arr[0];
+
+    *this = { cx, cy, cz };
     return *this;
 }
 
@@ -803,7 +893,7 @@ decltype(auto) Vector<T>::operator^(const Vector<U> &other) const
     new_type cy = (*this)[2] * other[0] - (*this)[0] * other[2];
     new_type cz = (*this)[0] * other[1] - (*this)[1] * other[0];
 
-    result = {cx, cy, cz};
+    result = { cx, cy, cz };
     return result;
 }
 

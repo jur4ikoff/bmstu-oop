@@ -62,7 +62,7 @@ concept Container = requires(T t) {
 template <typename T>
 concept ContainerType = requires(T a, T b) {
     requires std::default_initializable<T>;
-    { a = b } -> std::same_as<T&>;
+    { a = b } -> std::same_as<T &>;
 };
 
 template <typename S, typename I>
@@ -112,3 +112,4 @@ template <typename Iter, typename T>
 concept CompatibleIterator =
     std::input_iterator<Iter> &&
     std::constructible_from<T, typename std::iterator_traits<Iter>::value_type>;
+
