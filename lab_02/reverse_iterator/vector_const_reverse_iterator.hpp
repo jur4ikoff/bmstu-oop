@@ -157,17 +157,14 @@ VectorConstReverseIterator<T> operator+(typename BaseReverseIterator<T>::differe
 }
 
 template <ContainerType T>
-T &VectorConstReverseIterator<T>::operator[](int dist) const
+T &VectorConstReverseIterator<T>::operator[](int index) const
 {
     // Проверить
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
 
-    VectorConstReverseIterator<T> tmp(*this);
-    for (int i = this->size; i < dist; i--)
-    {
-        ++tmp;
-    }
+    VectorConstReverseIterator<T> iter(*this);
+    iter += index;
 
-    return *tmp;
+    return *iter;
 }

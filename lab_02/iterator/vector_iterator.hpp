@@ -149,16 +149,17 @@ VectorIterator<T> operator+(typename BaseIterator<T>::difference_type n, const V
 }
 
 template <ContainerType T>
-T &VectorIterator<T>::operator[](int dist) const
+T &VectorIterator<T>::operator[](int index) const
 {
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
 
-    VectorIterator<T> tmp(*this);
-    for (int i = 0; i < dist; ++i)
-    {
-        ++tmp;
-    }
+    VectorIterator<T> iter(*this);
+    iter += index;
+    // for (int i = 0; i < dist; ++i)
+    // {
+    //     ++tmp;
+    // }
 
-    return *tmp;
+    return *iter;
 }

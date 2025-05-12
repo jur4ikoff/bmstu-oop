@@ -46,7 +46,7 @@ public:
     VectorIterator<T> &operator--();   
     VectorIterator<T> operator--(int); 
 
-    T &operator[](int) const;
+    T &operator[](int index) const;
 
     explicit operator bool() const;
 

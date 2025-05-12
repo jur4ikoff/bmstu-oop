@@ -139,11 +139,10 @@ const T &VectorConstIterator<T>::operator[](int index) const
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
 
-    VectorConstIterator<T> tmp(*this);
-    for (int i = 0; i < index; ++i)
-        ++tmp;
+    VectorConstIterator<T> iter(*this);
+    iter += index;
 
-    return *tmp;
+    return *iter;
 }
 
 template <ContainerType T>

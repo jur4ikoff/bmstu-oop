@@ -46,7 +46,7 @@ public:
     VectorReverseIterator<T> &operator--();   // --iter
     VectorReverseIterator<T> operator--(int); // iter--
 
-    T &operator[](int) const;
+    T &operator[](int index) const;
 
     explicit operator bool() const;
 
