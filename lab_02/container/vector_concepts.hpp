@@ -48,16 +48,21 @@ concept Container = requires(T t) {
 };
 
 // Концепт ограничивает используемые типы
+// template <typename T>
+// concept ContainerType = std::copy_constructible<T> &&
+//                         std::move_constructible<T> &&
+//                         std::assignable_from<T &, T> &&
+//                         std::is_arithmetic_v<T>;
+
 template <typename T>
-concept ContainerType = std::copy_constructible<T> &&
-                        std::move_constructible<T> &&
-                        std::assignable_from<T &, T> &&
-                        std::is_arithmetic_v<T>;
+concept ContainerType = requires(T a, T b) {
+    { T() };
+    { a = b };
+};
 
 // Концепт, что тип данных U может быть преобразован в тип данных T
 template <typename T, typename U>
-concept ConvertAssignable = Convertiable<U, T> &&
-                            Assignable<U, T>;
+concept ConvertAssignable = Convertiable<U, T> && Assignable<U, T>;
 
 template <typename T, typename U>
 concept ConvertAssignableSum = Convertiable<U, T> &&

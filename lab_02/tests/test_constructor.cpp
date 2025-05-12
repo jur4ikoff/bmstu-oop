@@ -27,12 +27,6 @@ TEST(CreationTest, test_copy_same_types)
     EXPECT_EQ(0, b.size());
 }
 
-TEST(CreationTest, test_creation_neg_1)
-{
-    EXPECT_FALSE(is_vector_constructible<char *>::value);
-    EXPECT_FALSE(is_vector_constructible<std::string>::value);
-}
-
 TEST(CreationTest, ConstructsFromInitializerList)
 {
     // Проверка на инициализацию от списка инициализации целых чисел

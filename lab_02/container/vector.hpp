@@ -120,21 +120,25 @@ Vector<T>::Vector(int size, const U *arr)
 
 template <ContainerType T>
 template <ConvertAssignable<T> U>
-Vector<T>::Vector(int size, U elem, ...)
+Vector<T>::Vector(int size, const U &elem, ...)
 {
     this->check_vector_size(size, __LINE__);
     this->container_size = size;
 
     this->memory_allocation(size, __LINE__);
-    VectorIterator<T> iter = this->begin();
+    auto iter = this->begin();
 
+    U elem_1;
     va_list args;
     va_start(args, elem);
 
-    for (int i = 0; i < size; i++)
+    *iter = elem;
+    iter++;
+
+    for (int i = 0; i + 1 < size; i++)
     {
-        *iter = elem;
-        elem = va_arg(args, U);
+        elem_1 = va_arg(args, U);
+        *iter = elem_1;
         iter++;
     }
 }
