@@ -26,7 +26,6 @@ concept Substationable = requires(T t, U u) { t - u; };
 template <typename T>
 concept Container = requires(T t) {
     typename T::value_type;
-    typename T::size_type;
     typename T::iterator;
     typename T::const_iterator;
     typename T::reverse_iterator;
@@ -98,7 +97,7 @@ concept ConvertAssignableOperationable = Convertiable<U, T> &&
 template <typename T, typename U>
 concept ConvertibleToT = Convertiable<U, T>;
 
-template <typename T, typename Con>
+template <typename Con, typename T>
 concept ValidContainer = Container<Con> &&
                          Convertiable<typename Con::value_type, T> &&
                          Assignable<typename Con::value_type, T>;

@@ -26,13 +26,12 @@ public:
     using const_iterator = VectorConstIterator<T>;
     using reverse_iterator = VectorReverseIterator<T>;
     using const_reverse_iterator = VectorConstReverseIterator<T>;
+#pragma endregion aliases
 
     friend class VectorIterator<T>;
     friend class VectorConstIterator<T>;
     friend class VectorReverseIterator<T>;
     friend class VectorConstReverseIterator<T>;
-
-#pragma endregion aliases
 
 #pragma region Constructors
     Vector();                                // Обычный конструктор
@@ -101,7 +100,7 @@ public:
 #pragma endregion iterators
 
 #pragma region operators
-    // Перегрузка + 
+    // Перегрузка +
     // Перегрузка оператора + для вектора
     // template <ValidContainer<T> Con>
     template <ConvertAssignableSum<T> U>

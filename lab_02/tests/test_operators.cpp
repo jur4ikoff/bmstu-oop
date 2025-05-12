@@ -818,3 +818,9 @@ TEST_F(VectorUnaryMinus, WithZeroElements)
     EXPECT_EQ(result[2], -1);
     EXPECT_EQ(result[3], 1);
 }
+
+TEST_F(VectorAddVector, static_asserts)
+{
+    static_assert(ValidContainer<Vector<int>, int>,
+                  "Vector<int> не удовлетворяет требованиям ValidContainer");
+}
