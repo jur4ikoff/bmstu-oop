@@ -18,15 +18,11 @@ template <ContainerType T>
 class VectorConstReverseIterator final : public BaseReverseIterator<T>
 {
 public:
-    VectorConstReverseIterator() = default;                    // Пустой конструктор
+    VectorConstReverseIterator() = default;                                // Пустой конструктор
     VectorConstReverseIterator(const VectorConstReverseIterator<T> &iter); // Конструктор по иттератору
     VectorConstReverseIterator(const VectorReverseIterator<T> &iter);
-    VectorConstReverseIterator(const Vector<T> &vec);          // Коструктор по контейнеру
-    ~VectorConstReverseIterator() = default;                   // Деструктор
-
-    // Перегруза операторов * и ->
-    T &operator*() const;
-    T *operator->() const;
+    VectorConstReverseIterator(const Vector<T> &vec); // Коструктор по контейнеру
+    ~VectorConstReverseIterator() = default;          // Деструктор
 
     // Перегрузка оператора =
     VectorConstReverseIterator<T> &operator=(const VectorConstReverseIterator<T> &other);
@@ -37,7 +33,7 @@ public:
     friend VectorConstReverseIterator<T>(::operator+ <>)(typename BaseReverseIterator<T>::difference_type n, const VectorConstReverseIterator<T> &other);
 
     // Перегрузка инкремента
-    VectorConstReverseIterator<T> &operator++();  
+    VectorConstReverseIterator<T> &operator++();
     VectorConstReverseIterator<T> operator++(int);
 
     // Перегрузка оператора -
@@ -45,10 +41,10 @@ public:
     VectorConstReverseIterator<T> &operator-=(const int i);
 
     // Перегрузка декремента
-    VectorConstReverseIterator<T> &operator--(); 
-    VectorConstReverseIterator<T> operator--(int); 
+    VectorConstReverseIterator<T> &operator--();
+    VectorConstReverseIterator<T> operator--(int);
 
-    T &operator[](int index) const;
+    const T &operator[](int index) const;
 
     explicit operator bool() const;
 

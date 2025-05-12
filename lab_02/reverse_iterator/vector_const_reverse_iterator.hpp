@@ -31,21 +31,6 @@ VectorConstReverseIterator<T>::VectorConstReverseIterator(const Vector<T> &vec)
     this->piter = vec.container;
 }
 
-template <ContainerType T>
-T &VectorConstReverseIterator<T>::operator*() const
-{
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
-    return *(this->get_ptr_cur());
-}
-
-template <ContainerType T>
-T *VectorConstReverseIterator<T>::operator->() const
-{
-    this->check_iter(__LINE__);
-    this->check_vector(__LINE__);
-    return (this->get_ptr_cur());
-}
 
 template <ContainerType T>
 VectorConstReverseIterator<T> &VectorConstReverseIterator<T>::operator=(const VectorConstReverseIterator<T> &other)
@@ -157,7 +142,7 @@ VectorConstReverseIterator<T> operator+(typename BaseReverseIterator<T>::differe
 }
 
 template <ContainerType T>
-T &VectorConstReverseIterator<T>::operator[](int index) const
+const T &VectorConstReverseIterator<T>::operator[](int index) const
 {
     // Проверить
     this->check_iter(__LINE__);

@@ -17,6 +17,7 @@ public:
     using pointer = T *;
     using const_pointer = const T *;
     using reference = T &;
+    using const_reference = const T &;
 
 #pragma endregion alias
 
