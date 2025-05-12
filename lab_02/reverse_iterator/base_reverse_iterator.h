@@ -14,8 +14,6 @@ public:
     using iterator_category = std::random_access_iterator_tag;
     using difference_type = ptrdiff_t;
     using value_type = T;
-    using pointer = T *;
-    using const_pointer = const T *;
     using reference = T &;
     using const_reference = const T &;
 

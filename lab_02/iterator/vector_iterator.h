@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "base_iterator.h"
+#include "vector_const_iterator.h"
 
 template <ContainerType T>
 class Vector;
@@ -16,6 +17,7 @@ VectorIterator<T> operator+(typename BaseIterator<T>::difference_type n, const V
 template <ContainerType T>
 class VectorIterator final : public BaseIterator<T>
 {
+    friend class VectorConstIterator<T>;
 public:
     VectorIterator() = default;                             // Пустой конструктор
     VectorIterator(const VectorIterator<T> &iter) noexcept; // Конструктор по иттератору

@@ -18,9 +18,9 @@ VectorConstIterator<T>::VectorConstIterator(const VectorConstIterator<T> &iter) 
 template <ContainerType T>
 VectorConstIterator<T>::VectorConstIterator(const VectorIterator<T> &iter) noexcept
 {
-    this->size = iter.get_size();
-    this->index = iter.get_index();
-    this->piter = iter.get_piter();
+    this->size = iter.size;
+    this->index = iter.index;
+    this->piter = iter.piter;
 }
 
 template <ContainerType T>
