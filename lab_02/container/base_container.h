@@ -5,8 +5,10 @@
 class baseContainer
 {
 public:
+
+using size_type = int;
     [[nodiscard]] bool is_empty() const noexcept;
-    int size() const noexcept;
+    size_type size() const noexcept;
     virtual ~baseContainer() = 0;
 
 protected:

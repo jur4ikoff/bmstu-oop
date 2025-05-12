@@ -79,7 +79,7 @@ Vector<T>::Vector(const Con &other)
 }
 
 template <ContainerType T>
-Vector<T>::Vector(const int &size)
+Vector<T>::Vector(baseContainer::size_type size)
 {
     this->check_vector_size(size, __LINE__);
     this->container_size = size;
@@ -103,7 +103,7 @@ Vector<T>::Vector(std::initializer_list<U> arr)
 
 template <ContainerType T>
 template <ConvertAssignable<T> U>
-Vector<T>::Vector(int size, const U *arr)
+Vector<T>::Vector(baseContainer::size_type size, const U *arr)
 {
     this->check_vector_size(size, __LINE__);
     this->check_arr_null(arr, __LINE__);
@@ -120,7 +120,7 @@ Vector<T>::Vector(int size, const U *arr)
 
 template <ContainerType T>
 template <ConvertAssignable<T> U>
-Vector<T>::Vector(int size, const U &elem, ...)
+Vector<T>::Vector(baseContainer::size_type size, const U &elem, ...)
 {
     this->check_vector_size(size, __LINE__);
     this->container_size = size;
@@ -289,7 +289,7 @@ void Vector<T>::set_item(int index, const U &elem)
 
 // Получить элемент по индексу
 template <ContainerType T>
-T &Vector<T>::get_item(int index)
+typename Vector<T>::reference Vector<T>::get_item(int index)
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_index(index, __LINE__);
@@ -303,7 +303,7 @@ T &Vector<T>::get_item(int index)
 }
 
 template <ContainerType T>
-const T &Vector<T>::get_item(int index) const
+typename Vector<T>::const_reference Vector<T>::get_item(int index) const
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_index(index, __LINE__);
@@ -321,7 +321,7 @@ const T &Vector<T>::get_item(int index) const
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 template <ContainerType T>
-VectorIterator<T> Vector<T>::begin(void) const noexcept
+VectorIterator<T> Vector<T>::begin(void)
 {
     VectorIterator<T> iter(*this);
     return iter;
@@ -329,15 +329,30 @@ VectorIterator<T> Vector<T>::begin(void) const noexcept
 
 // возвращает мой итератор на конец вектора
 template <ContainerType T>
-VectorIterator<T> Vector<T>::end(void) const noexcept
+VectorIterator<T> Vector<T>::end(void)
 {
     VectorIterator<T> iter(*this);
     return iter + container_size;
 }
 
+template <ContainerType T>
+VectorConstIterator<T> Vector<T>::begin(void) const
+{
+    VectorConstIterator<T> iter(*this);
+    return iter;
+}
+
+// возвращает мой итератор на конец вектора
+template <ContainerType T>
+VectorConstIterator<T> Vector<T>::end(void) const
+{
+    VectorConstIterator<T> iter(*this);
+    return iter + container_size;
+}
+
 // возвращает мой константный итератор на начало вектора
 template <ContainerType T>
-VectorConstIterator<T> Vector<T>::cbegin(void) const noexcept
+VectorConstIterator<T> Vector<T>::cbegin(void) const
 {
     VectorConstIterator<T> iter(*this);
     return iter;
@@ -345,35 +360,49 @@ VectorConstIterator<T> Vector<T>::cbegin(void) const noexcept
 
 // возвращает мой константный итератор на конец вектора
 template <ContainerType T>
-VectorConstIterator<T> Vector<T>::cend(void) const noexcept
+VectorConstIterator<T> Vector<T>::cend(void) const
 {
     VectorConstIterator<T> iter(*this);
     return iter + this->container_size;
 }
 
 template <ContainerType T>
-VectorReverseIterator<T> Vector<T>::rbegin(void) const noexcept
+VectorReverseIterator<T> Vector<T>::rbegin(void)
 {
     VectorReverseIterator<T> iter(*this);
     return iter;
 }
 
 template <ContainerType T>
-VectorReverseIterator<T> Vector<T>::rend(void) const noexcept
+VectorReverseIterator<T> Vector<T>::rend(void)
 {
     VectorReverseIterator<T> iter(*this);
     return iter + this->container_size;
 }
 
 template <ContainerType T>
-VectorConstReverseIterator<T> Vector<T>::crbegin(void) const noexcept
+VectorConstReverseIterator<T> Vector<T>::rbegin(void) const
 {
     VectorConstReverseIterator<T> iter(*this);
     return iter;
 }
 
 template <ContainerType T>
-VectorConstReverseIterator<T> Vector<T>::crend(void) const noexcept
+VectorConstReverseIterator<T> Vector<T>::rend(void) const
+{
+    VectorConstReverseIterator<T> iter(*this);
+    return iter + this->container_size;
+}
+
+template <ContainerType T>
+VectorConstReverseIterator<T> Vector<T>::crbegin(void) const
+{
+    VectorConstReverseIterator<T> iter(*this);
+    return iter;
+}
+
+template <ContainerType T>
+VectorConstReverseIterator<T> Vector<T>::crend(void) const
 {
     VectorConstReverseIterator<T> iter(*this);
     return iter + this->container_size;
@@ -863,7 +892,7 @@ Vector<T> &Vector<T>::operator=(const Con &other)
 
 template <ContainerType T>
 template <ValidContainer<T> Con>
-Vector<T> &Vector<T>::operator=(const Con &&other)
+Vector<T> &Vector<T>::operator=(Con &&other) noexcept
 {
     this->check_vector_size(other.size(), __LINE__);
 
@@ -876,7 +905,7 @@ Vector<T> &Vector<T>::operator=(const Con &&other)
 
 template <ContainerType T>
 template <ConvertAssignable<T> U>
-Vector<T> &Vector<T>::operator=(const Vector<T> &other)
+Vector<T> &Vector<T>::operator=(const Vector<U> &other)
 {
     this->check_vector_size(other.size(), __LINE__);
 
@@ -893,10 +922,8 @@ Vector<T> &Vector<T>::operator=(const Vector<T> &other)
 
 template <ContainerType T>
 template <ConvertAssignable<T> U>
-Vector<T> &Vector<T>::operator=(const Vector<T> &&other)
+Vector<T> &Vector<T>::operator=(Vector<U> &&other) noexcept
 {
-    this->check_vector_size(other.size(), __LINE__);
-
     this->container_size = other.size();
     this->memory_allocation(this->container_size, __LINE__);
 
@@ -964,14 +991,14 @@ bool Vector<T>::operator!=(const Vector<T> &other) const
 
 // Перегрузка оператора []
 template <ContainerType T>
-T &Vector<T>::operator[](int index)
+typename Vector<T>::reference Vector<T>::operator[](int index)
 {
     return get_item(index);
 }
 
 // Перегрузка оператора []
 template <ContainerType T>
-const T &Vector<T>::operator[](int index) const
+typename Vector<T>::const_reference Vector<T>::operator[](int index) const
 {
     return get_item(index);
 }
@@ -1290,9 +1317,9 @@ void Vector<T>::memory_allocation(const int &container_size, int line)
 // | Приватные функции, проверяющие входные параметры. Выбрасывают исключения  |
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 template <ContainerType T>
-void Vector<T>::check_vector_size(const int &container_size, int line) const
+void Vector<T>::check_vector_size(baseContainer::size_type size, int line) const
 {
-    if (container_size <= 0)
+    if (size <= 0)
     {
         time_t now = time(NULL);
         throw errNegSize(__FILE__, line, typeid(*this).name(), ctime(&now));
@@ -1321,7 +1348,7 @@ void Vector<T>::check_division_zero(const U &num, int line) const
 }
 
 template <ContainerType T>
-void Vector<T>::check_index(const int &index, int line) const
+void Vector<T>::check_index(int index, int line) const
 {
     if (index < 0 || index >= this->container_size)
     {
@@ -1335,7 +1362,7 @@ void Vector<T>::check_index(const int &index, int line) const
 /// @param size Размер второго вектора/ значение, с которым нужно сравнить
 /// @param line Номер строки, нужен для сообщение об ошибке
 template <ContainerType T>
-void Vector<T>::check_size_equal(const size_type &size, int line) const
+void Vector<T>::check_size_equal(baseContainer::size_type size, int line) const
 {
     this->check_vector_size(this->container_size, __LINE__);
     if (std::fabs(this->container_size - size) > EPS)

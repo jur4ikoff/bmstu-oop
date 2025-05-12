@@ -7,7 +7,7 @@ bool baseContainer::is_empty() const noexcept
     return container_size == 0;
 }
 
-int baseContainer::size() const noexcept
+baseContainer::size_type baseContainer::size() const noexcept
 {
     return container_size;
 }
