@@ -112,3 +112,17 @@ TEST(CreationTest, constructs_from_iterator)
         EXPECT_EQ(el, a[i++]);
     }
 }
+
+TEST(CreationTest, constructs_from_my_iterator)
+{
+    // Проверка на инициализацию от списка инициализации целых чисел
+    Vector<int> test = {1, 2, 3, 4, 5};
+    Vector<int> new_iter(test.begin(), test.end());
+
+    EXPECT_EQ(new_iter.size(), 5);
+
+    for (int i = 0; i < test.size(); i++)
+    {
+        EXPECT_EQ(new_iter[i], test[i]);
+    }
+}
