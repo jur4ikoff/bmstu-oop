@@ -40,11 +40,11 @@ public:
     Vector(Vector<T> &&other) noexcept;      // Копирование по правой ссылке на вектор этого же типа
     template <typename U>
         requires ConvertAssignable<T, U>
-    Vector(const Vector<U> &other); // Преобразование из вектора другого типа
+    explicit Vector(const Vector<U> &other); // Преобразование из вектора другого типа
     template <typename Con>
         requires ValidContainer<T, Con>
-    Vector(const Con &other);         // Преобразование из контейнера, подходящего под требования
-    explicit Vector(const int &size); // Конструктор по рамзеру
+    explicit Vector(const Con &other); // Преобразование из контейнера, подходящего под требования
+    explicit Vector(const int &size);  // Конструктор по рамзеру
     template <ConvertAssignable<T> U>
     Vector(std::initializer_list<U> arr); // Конструктор по списку иницалиизации
     template <ConvertAssignable<T> U>

@@ -13,7 +13,7 @@ TEST(test_normalization, test_null_vec)
 TEST(test_normalization, test_one_vec)
 {
     Vector<int> vec = {0, 1, 0};
-    Vector<int> res = vec;
+    Vector<int> res(vec);
     vec.normalization();
 
     EXPECT_EQ(vec.size(), res.size());

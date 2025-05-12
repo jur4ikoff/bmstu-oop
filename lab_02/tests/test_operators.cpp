@@ -783,7 +783,7 @@ TEST_F(VectorUnaryMinus, ReturnsCorrectType)
 // Проверка, что исходный вектор не изменяется
 TEST_F(VectorUnaryMinus, OriginalVectorNotModified)
 {
-    auto original = vec_int;
+    auto original(vec_int);
     auto result = -vec_int;
 
     EXPECT_EQ(original[0], 1);

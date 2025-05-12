@@ -15,7 +15,7 @@ template <typename T, typename U>
 concept Divisable = requires(T t, U u) { t / u; };
 
 template <typename T, typename U>
-concept Multipy = requires(T t, U u) { t *u; };
+concept Multipy = requires(T t, U u) { t * u; };
 
 template <typename T, typename U>
 concept Summable = requires(T t, U u) { t + u; };
@@ -29,14 +29,22 @@ concept Container = requires(T t) {
     typename T::size_type;
     typename T::iterator;
     typename T::const_iterator;
+    typename T::reverse_iterator;
+    typename T::const_reverse_iterator;
 
-    { t.container_size() } noexcept -> std::same_as<typename T::size_type>;
+    { t.size() } noexcept -> std::same_as<typename T::size_type>;
 
     { t.begin() } noexcept -> std::same_as<typename T::iterator>;
     { t.end() } noexcept -> std::same_as<typename T::iterator>;
 
     { t.cbegin() } noexcept -> std::same_as<typename T::const_iterator>;
     { t.cend() } noexcept -> std::same_as<typename T::const_iterator>;
+
+    { t.rbegin() } noexcept -> std::same_as<typename T::reverse_iterator>;
+    { t.rend() } noexcept -> std::same_as<typename T::reverse_iterator>;
+
+    { t.crbegin() } noexcept -> std::same_as<typename T::const_reverse_iterator>;
+    { t.crend() } noexcept -> std::same_as<typename T::const_reverse_iterator>;
 };
 
 // Концепт ограничивает используемые типы

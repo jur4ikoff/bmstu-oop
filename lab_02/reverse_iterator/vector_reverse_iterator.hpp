@@ -151,7 +151,6 @@ VectorReverseIterator<T> operator+(typename BaseReverseIterator<T>::difference_t
 template <ContainerType T>
 T &VectorReverseIterator<T>::operator[](int index) const
 {
-    // Проверить
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
 

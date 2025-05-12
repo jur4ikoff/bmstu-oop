@@ -83,7 +83,7 @@ TEST_F(VectorSumOperator, PlusReturnTypeDeduction)
 TEST_F(VectorSumOperator, PlusEqSameType)
 {
     Vector<int> other{1, 2, 3};
-    Vector<int> original = int_vec;
+    Vector<int> original(int_vec);
     int_vec.vec_sum_eq(other);
 
     ASSERT_EQ(int_vec.size(), 3);
@@ -112,7 +112,7 @@ TEST_F(VectorSumOperator, PlusEqReturnsReference)
 
 TEST_F(VectorSumOperator, PlusEqSelfAssignment)
 {
-    Vector<int> original = int_vec;
+    Vector<int> original(int_vec);
     int_vec.vec_sum_eq(int_vec);
 
     ASSERT_EQ(int_vec.size(), 3);
@@ -290,13 +290,13 @@ TEST_F(VectorSubNumOperator, minus_eq_default)
 {
     int_vec.minus_eq(2);
     ASSERT_EQ(int_vec.size(), 3);
-    EXPECT_EQ(int_vec[0], 0); // 2-2
-    EXPECT_EQ(int_vec[1], 1); // 3-2
-    EXPECT_EQ(int_vec[2], 2); // 4-2
+    EXPECT_EQ(int_vec[0], 0); 
+    EXPECT_EQ(int_vec[1], 1); 
+    EXPECT_EQ(int_vec[2], 2); 
 }
 
 TEST_F(VectorSubNumOperator, minus_eq_chain)
 {
     int_vec.minus_eq(1).minus_eq(1);
-    EXPECT_EQ(int_vec[0], 0); // (2-1)-1
+    EXPECT_EQ(int_vec[0], 0);
 }
