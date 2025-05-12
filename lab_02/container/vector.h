@@ -53,6 +53,8 @@ public:
     Vector(int size, const U &elem, ...); // Конструктор по длине и параметрам, для заполнения
     template <CompatibleIterator<T> U>
     Vector(U begin, U end); // Конструктор по иттератору на некий контейнер, на начало и конец
+    template <CompatibleIterator<T> I, SentinelIter<T> S>
+    Vector(I beg, S end);
 
     ~Vector() = default;
 

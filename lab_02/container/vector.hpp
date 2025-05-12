@@ -162,6 +162,27 @@ Vector<T>::Vector(U begin, U end)
     }
 }
 
+template <ContainerType T>
+template <CompatibleIterator<T> I, SentinelIter<T> S>
+Vector<T>::Vector(I begin, S end)
+{
+    int size = 0;
+    for (auto iter1 = begin; iter1 != end; iter1++)
+    {
+        size++;
+    }
+    this->check_vector_size(size, __LINE__);
+    this->container_size = size;
+    this->memory_allocation(size, __LINE__);
+
+    auto iter = this->begin();
+    for (auto iter1 = begin; iter1 != end; iter1++)
+    {
+        *iter = *iter1;
+        iter++;
+    }
+}
+
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 // |                  Математические Функции для работы с вектором                 |
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
