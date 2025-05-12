@@ -101,8 +101,9 @@ public:
 #pragma endregion iterators
 
 #pragma region operators
-    // Перегрузка +
+    // Перегрузка + 
     // Перегрузка оператора + для вектора
+    // template <ValidContainer<T> Con>
     template <ConvertAssignableSum<T> U>
     decltype(auto) operator+(const Vector<U> &other) const;
     template <ConvertAssignableSum<T> U>
