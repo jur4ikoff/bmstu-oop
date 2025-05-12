@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "base_reverse_iterator.h"
+#include "vector_const_reverse_iterator.h"
 
 template <ContainerType T>
 class Vector;
@@ -11,20 +12,25 @@ template <ContainerType T>
 class VectorReverseIterator;
 
 template <ContainerType T>
+class VectorConstReverseIterator;
+
+template <ContainerType T>
 VectorReverseIterator<T> operator+(typename BaseReverseIterator<T>::difference_type n, const VectorReverseIterator<T> &other) noexcept;
 
 template <ContainerType T>
 class VectorReverseIterator final : public BaseReverseIterator<T>
 {
 public:
-    VectorReverseIterator() = default;                    // Пустой конструктор
+    friend class VectorConstReverseIterator<T>;
+    VectorReverseIterator() = default;                                    // Пустой конструктор
     VectorReverseIterator(const VectorReverseIterator<T> &iter) noexcept; // Конструктор по иттератору
-    VectorReverseIterator(const Vector<T> &vec) noexcept;          // Коструктор по контейнеру
-    ~VectorReverseIterator() = default;                   // Деструктор
+    VectorReverseIterator(const Vector<T> &vec) noexcept;                 // Коструктор по контейнеру
+    ~VectorReverseIterator() = default;                                   // Деструктор
 
     // Перегруза операторов * и ->
-    T &operator*() const;
-    T *operator->() const;
+    BaseReverseIterator<T>::reference operator*() const;
+    BaseReverseIterator<T>::pointer operator->() const;
+    BaseReverseIterator<T>::reference operator[](int index) const;
 
     // Перегрузка оператора =
     VectorReverseIterator<T> &operator=(const VectorReverseIterator<T> &other);
@@ -33,23 +39,14 @@ public:
     VectorReverseIterator<T> operator+(const int i) const noexcept;
     VectorReverseIterator<T> &operator+=(const int i) noexcept;
     friend VectorReverseIterator<T>(::operator+ <>)(typename BaseReverseIterator<T>::difference_type n, const VectorReverseIterator<T> &other) noexcept;
-
-    // Перегрузка инкремента
-    VectorReverseIterator<T> &operator++() noexcept;   // ++iter
-    VectorReverseIterator<T> operator++(int) noexcept; // iter++
+    VectorReverseIterator<T> &operator++() noexcept; // Перегрузка инкремента
+    VectorReverseIterator<T> operator++(int) noexcept;
 
     // Перегрузка оператора -
     VectorReverseIterator<T> operator-(const int i) const noexcept;
     VectorReverseIterator<T> &operator-=(const int i) noexcept;
-
-    // Перегрузка декремента
-    VectorReverseIterator<T> &operator--() noexcept;   // --iter
-    VectorReverseIterator<T> operator--(int) noexcept; // iter--
-
-    T &operator[](int index) const;
-
-    explicit operator bool() const noexcept;
-
+    VectorReverseIterator<T> &operator--() noexcept; // Перегрузка декремента
+    VectorReverseIterator<T> operator--(int) noexcept;
     typename BaseReverseIterator<T>::difference_type operator-(const VectorReverseIterator<T> &other) const noexcept;
 };
 

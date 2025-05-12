@@ -15,7 +15,7 @@ template <typename T, typename U>
 concept Divisable = requires(T t, U u) { t / u; };
 
 template <typename T, typename U>
-concept Multipy = requires(T t, U u) { t * u; };
+concept Multipy = requires(T t, U u) { t *u; };
 
 template <typename T, typename U>
 concept Summable = requires(T t, U u) { t + u; };
@@ -53,10 +53,16 @@ concept Container = requires(T t) {
 //                         std::assignable_from<T &, T> &&
 //                         std::is_arithmetic_v<T>;
 
+// template <typename T>
+// concept ContainerType = requires(T a, T b) {
+//     std::default_initializable<T>;
+//     { a = b } -> std::same_as<T &>;
+// };
+
 template <typename T>
 concept ContainerType = requires(T a, T b) {
-    std::default_initializable<T>;
-    { a = b } -> std::same_as<T &>;
+    requires std::default_initializable<T>;
+    { a = b } -> std::same_as<T&>;
 };
 
 template <typename S, typename I>

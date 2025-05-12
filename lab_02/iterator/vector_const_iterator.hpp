@@ -114,7 +114,7 @@ typename BaseIterator<T>::difference_type VectorConstIterator<T>::operator-(cons
 }
 
 template <ContainerType T>
-const T &VectorConstIterator<T>::operator[](int index) const
+typename BaseIterator<T>::const_reference VectorConstIterator<T>::operator[](int index) const
 {
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
@@ -123,10 +123,4 @@ const T &VectorConstIterator<T>::operator[](int index) const
     iter += index;
 
     return *iter;
-}
-
-template <ContainerType T>
-VectorConstIterator<T>::operator bool() const noexcept
-{
-    return this->piter.lock() && this->index >= 0 && this->index < this->size;
 }

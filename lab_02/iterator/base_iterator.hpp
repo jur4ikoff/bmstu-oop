@@ -3,7 +3,7 @@
 #include <ctime>
 
 #include "base_iterator.h"
-#include "vector_exceptions.h"
+#include "iterator_exceptions.h"
 
 template <ContainerType T>
 typename BaseIterator<T>::const_reference BaseIterator<T>::operator*() const
@@ -60,18 +60,14 @@ void BaseIterator<T>::check_iter(int line) const
 }
 
 template <ContainerType T>
-void BaseIterator<T>::check_same_iter_type(const BaseIterator<T> &other, int line) const
-{
-    if (piter.lock() != other.piter.lock())
-    {
-        time_t now = time(NULL);
-        throw errDifferentContainers(__FILE__, line, typeid(*this).name(), ctime(&now));
-    }
-}
-
-template <ContainerType T>
 typename BaseIterator<T>::pointer BaseIterator<T>::get_ptr_cur() const
 {
     std::shared_ptr<T[]> piter_to_shared_ptr = piter.lock();
     return piter_to_shared_ptr.get() + index;
+}
+
+template <ContainerType T>
+BaseIterator<T>::operator bool() const noexcept
+{
+    return this->piter.lock() && this->index >= 0 && this->index < this->size;
 }

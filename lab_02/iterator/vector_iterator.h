@@ -12,21 +12,27 @@ template <ContainerType T>
 class VectorIterator;
 
 template <ContainerType T>
+class VectorConstIterator;
+
+template <ContainerType T>
 VectorIterator<T> operator+(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other) noexcept;
 
 template <ContainerType T>
 class VectorIterator final : public BaseIterator<T>
 {
     friend class VectorConstIterator<T>;
+
 public:
     VectorIterator() = default;                             // Пустой конструктор
     VectorIterator(const VectorIterator<T> &iter) noexcept; // Конструктор по иттератору
     VectorIterator(const Vector<T> &vec) noexcept;          // Коструктор по контейнеру
     ~VectorIterator() = default;                            // Деструктор
 
-    // Перегруза операторов * и ->
-    T &operator*() const;
-    T *operator->() const;
+    // Перегрузка операторов * и ->
+    // Конст, потому что итератор не меняется. Меняется объект вектор
+    BaseIterator<T>::reference operator*() const;
+    BaseIterator<T>::pointer operator->() const;
+    BaseIterator<T>::reference operator[](int index) const;
 
     // Перегрузка оператора =
     VectorIterator<T> &operator=(const VectorIterator<T> &other);
@@ -47,10 +53,6 @@ public:
     // Перегрузка декремента
     VectorIterator<T> &operator--() noexcept;
     VectorIterator<T> operator--(int) noexcept;
-
-    T &operator[](int index) const;
-
-    explicit operator bool() const noexcept;
 
     typename BaseIterator<T>::difference_type operator-(const VectorIterator<T> &other) const noexcept;
 };

@@ -3,10 +3,10 @@
 #include <ctime>
 
 #include "base_reverse_iterator.h"
-#include "vector_exceptions.h"
+#include "iterator_exceptions.h"
 
 template <ContainerType T>
-const T &BaseReverseIterator<T>::operator*() const
+BaseReverseIterator<T>::const_reference BaseReverseIterator<T>::operator*() const
 {
     check_iter(__LINE__);
     check_vector(__LINE__);
@@ -14,7 +14,7 @@ const T &BaseReverseIterator<T>::operator*() const
 }
 
 template <ContainerType T>
-const T *BaseReverseIterator<T>::operator->() const
+BaseReverseIterator<T>::const_pointer BaseReverseIterator<T>::operator->() const
 {
     check_iter(__LINE__);
     check_vector(__LINE__);
@@ -22,25 +22,20 @@ const T *BaseReverseIterator<T>::operator->() const
 }
 
 template <ContainerType T>
-bool BaseReverseIterator<T>::operator==(const BaseReverseIterator<T> &other) const
+bool BaseReverseIterator<T>::operator==(const BaseReverseIterator<T> &other) const noexcept
 {
-    check_vector(__LINE__);
     return index == other.index;
 }
 
 template <ContainerType T>
-bool BaseReverseIterator<T>::operator!=(const BaseReverseIterator<T> &other) const
+bool BaseReverseIterator<T>::operator!=(const BaseReverseIterator<T> &other) const noexcept
 {
-    check_vector(__LINE__);
     return index != other.index;
 }
 
 template <ContainerType T>
-auto BaseReverseIterator<T>::operator<=>(const BaseReverseIterator<T> &other) const
+auto BaseReverseIterator<T>::operator<=>(const BaseReverseIterator<T> &other) const noexcept
 {
-    check_vector(__LINE__);
-    check_same_iter_type(other, __LINE__);
-
     return index <=> other.index;
 }
 
@@ -65,36 +60,14 @@ void BaseReverseIterator<T>::check_iter(int line) const
 }
 
 template <ContainerType T>
-void BaseReverseIterator<T>::check_same_iter_type(const BaseReverseIterator<T> &other, int line) const
-{
-    if (piter.lock() != other.piter.lock())
-    {
-        time_t now = time(NULL);
-        throw errDifferentContainers(__FILE__, line, typeid(*this).name(), ctime(&now));
-    }
-}
-
-template <ContainerType T>
-T *BaseReverseIterator<T>::get_ptr_cur() const
+BaseReverseIterator<T>::pointer BaseReverseIterator<T>::get_ptr_cur() const
 {
     std::shared_ptr<T[]> piter_to_shared_ptr = piter.lock();
     return piter_to_shared_ptr.get() + index;
 }
 
 template <ContainerType T>
-int BaseReverseIterator<T>::get_size() const
+BaseReverseIterator<T>::operator bool() const noexcept
 {
-    return size;
-}
-
-template <ContainerType T>
-int BaseReverseIterator<T>::get_index() const
-{
-    return index;
-}
-
-template <ContainerType T>
-std::weak_ptr<T[]> BaseReverseIterator<T>::get_piter() const
-{
-    return piter;
+    return this->piter.lock() && this->index >= 0 && this->index < this->size;
 }

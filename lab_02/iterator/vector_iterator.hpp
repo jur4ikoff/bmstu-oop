@@ -24,7 +24,7 @@ VectorIterator<T>::VectorIterator(const Vector<T> &vec) noexcept
 }
 
 template <ContainerType T>
-T &VectorIterator<T>::operator*() const
+BaseIterator<T>::reference VectorIterator<T>::operator*() const
 {
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
@@ -32,7 +32,7 @@ T &VectorIterator<T>::operator*() const
 }
 
 template <ContainerType T>
-T *VectorIterator<T>::operator->() const
+BaseIterator<T>::pointer VectorIterator<T>::operator->() const
 {
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
@@ -122,19 +122,13 @@ typename BaseIterator<T>::difference_type VectorIterator<T>::operator-(const Vec
 }
 
 template <ContainerType T>
-VectorIterator<T>::operator bool() const noexcept
-{
-    return this->piter.lock() != nullptr && this->index >= 0 && this->index < this->size;
-}
-
-template <ContainerType T>
 VectorIterator<T> operator+(typename BaseIterator<T>::difference_type n, const VectorIterator<T> &other) noexcept
 {
     return other + n;
 }
 
 template <ContainerType T>
-T &VectorIterator<T>::operator[](int index) const 
+BaseIterator<T>::reference VectorIterator<T>::operator[](int index) const
 {
     this->check_iter(__LINE__);
     this->check_vector(__LINE__);
