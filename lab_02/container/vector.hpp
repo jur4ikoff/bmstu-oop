@@ -140,7 +140,7 @@ Vector<T>::Vector(int size, U elem, ...)
 }
 
 template <ContainerType T>
-template <ForwardIterator U>
+template <CompatibleIterator<T> U>
 Vector<T>::Vector(U begin, U end)
 {
     // Вычисляем размер

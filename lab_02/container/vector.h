@@ -51,7 +51,7 @@ public:
     Vector(int size, const U *arr); // Конструктор по размеру и массиву заполнения
     template <ConvertAssignable<T> U>
     Vector(int size, U elem, ...); // Конструктор по длине и параметрам, для заполнения
-    template <ForwardIterator U>
+    template <CompatibleIterator<T> U>
     Vector(U begin, U end); // Конструктор по иттератору на некий контейнер, на начало и конец
 
     ~Vector() = default;

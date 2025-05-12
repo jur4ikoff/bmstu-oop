@@ -95,24 +95,7 @@ concept ValidContainer = Container<Con> &&
                          Convertiable<typename Con::value_type, T> &&
                          Assignable<typename Con::value_type, T>;
 
-// template <typename Iter, typename T>
-// concept CompatibleIterator =
-//     std::input_iterator<Iter> &&
-//     std::constructible_from<T, typename std::iterator_traits<Iter>::value_type>;
-
-template <typename Iter>
-concept ForwardIterator = requires(Iter it) {
-    requires std::input_iterator<Iter>;
-
-    { Iter() } -> std::same_as<Iter>;
-
-    requires std::is_lvalue_reference_v<typename std::iterator_traits<Iter>::reference>;
-
-    requires std::derived_from<
-        typename std::iterator_traits<Iter>::iterator_category,
-        std::forward_iterator_tag>;
-
-    // Проверка инкремента
-    { ++it } -> std::same_as<Iter &>;
-    { it++ } -> std::same_as<Iter>;
-};
+template <typename Iter, typename T>
+concept CompatibleIterator =
+    std::input_iterator<Iter> &&
+    std::constructible_from<T, typename std::iterator_traits<Iter>::value_type>;
