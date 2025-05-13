@@ -259,6 +259,8 @@ public:
     template <ConvertAssignable<T> U>
     bool operator==(const Vector<T> &other) const;
     template <ConvertAssignable<T> U>
+    bool operator==(std::initializer_list<U> arr) const;
+    template <ConvertAssignable<T> U>
     bool operator!=(const Vector<T> &other) const;
 #pragma endregion equals
 

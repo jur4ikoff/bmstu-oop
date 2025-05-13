@@ -1043,6 +1043,29 @@ bool Vector<T>::operator==(const Con &other) const
     return rc;
 }
 
+
+// Перегрузка оператора ==
+template <ContainerType T>
+template <ConvertAssignable<T> U>
+bool Vector<T>::operator==(std::initializer_list<U> arr) const
+{
+    bool rc = this->container_size == arr.size();
+
+    if (rc)
+    {
+        auto iter = this->begin();
+        for (auto iter1 = arr.begin(); iter1 != arr.end() && rc; iter1++)
+        {
+            if (std::fabs(*iter - *iter1) > EPS)
+                rc = false;
+
+            iter++;
+        }
+    }
+
+    return rc;
+}
+
 // Перегрузка оператора !=
 template <ContainerType T>
 template <ValidContainer<T> Con>
