@@ -90,13 +90,6 @@ public:
     Vector<T> &operator+=(const Vector<U> &other);
     template <ConvertAssignable<T> U>
     Vector<T> &operator+=(std::initializer_list<U> arr);
-
-    // Сложение вектора и числа
-    template <ConvertAssignableSum<T> U>
-    decltype(auto) operator+(const U &num) const;
-    template <ConvertAssignableSum<T> U>
-    Vector<T> &operator+=(const U &num);
-
     template <ValidContainer<T> Con>
     decltype(auto) vec_sum(const Con &other) const;
     template <ConvertAssignableSum<T> U>
@@ -106,6 +99,11 @@ public:
     template <ConvertAssignableSum<T> U>
     Vector<T> &vec_sum_eq(const Vector<U> &other);
 
+    // Сложение вектора и числа
+    template <ConvertAssignableSum<T> U>
+    decltype(auto) operator+(const U &num) const;
+    template <ConvertAssignableSum<T> U>
+    Vector<T> &operator+=(const U &num);
     // Сложение вектора с числом
     template <ConvertAssignableSum<T> U>
     decltype(auto) plus(const U &num);
@@ -126,19 +124,6 @@ public:
     Vector<T> &operator-=(const Vector<U> &other);
     template <ConvertAssignable<T> U>
     Vector<T> &operator-=(std::initializer_list<U> arr);
-
-    // Перегрзука оператора - для числа
-    template <ConvertAssignableSub<T> U>
-    decltype(auto) operator-(const U &num) const;
-    template <ConvertAssignableSub<T> U>
-    Vector<T> &operator-=(const U &num);
-
-    // Вычитание числа из вектора
-    template <ConvertAssignableSub<T> U>
-    decltype(auto) minus(const U &num) const;
-    template <ConvertAssignableSub<T> U>
-    Vector<T> &minus_eq(const U &num);
-
     template <ValidContainer<T> Con>
     decltype(auto) vec_sub(const Con &other) const;
     template <ConvertAssignableSub<T> U>
@@ -147,6 +132,17 @@ public:
     Vector<T> &vec_sub_eq(const Con &other);
     template <ConvertAssignableSub<T> U>
     Vector<T> &vec_sub_eq(const Vector<U> &other);
+
+    // Перегрзука оператора - для числа
+    template <ConvertAssignableSub<T> U>
+    decltype(auto) operator-(const U &num) const;
+    template <ConvertAssignableSub<T> U>
+    Vector<T> &operator-=(const U &num);
+    // Вычитание числа из вектора
+    template <ConvertAssignableSub<T> U>
+    decltype(auto) minus(const U &num) const;
+    template <ConvertAssignableSub<T> U>
+    Vector<T> &minus_eq(const U &num);
 
     Vector<T> operator-(void); // Оператор отрицание
     Vector<T> negative(void);  // отрицание вектора
@@ -165,13 +161,6 @@ public:
     Vector<T> &operator*=(const Vector<U> &other);
     template <ConvertAssignable<T> U>
     Vector<T> &operator*=(std::initializer_list<U> arr);
-
-    // Перегрзука оператора * для числа
-    template <ConvertAssignableMul<T> U>
-    decltype(auto) operator*(const U &num) const;
-    template <ConvertAssignableMul<T> U>
-    Vector<T> &operator*=(const U &num);
-
     // Поэлементное умножение
     template <ValidContainer<T> Con>
     decltype(auto) vec_el_mul(const Con &other) const;
@@ -182,6 +171,11 @@ public:
     template <ConvertAssignableMul<T> U>
     Vector<T> &vec_el_mul_eq(const Vector<U> &other);
 
+    // Перегрзука оператора * для числа
+    template <ConvertAssignableMul<T> U>
+    decltype(auto) operator*(const U &num) const;
+    template <ConvertAssignableMul<T> U>
+    Vector<T> &operator*=(const U &num);
     // Умножение вектора на число
     template <ConvertAssignableMul<T> U>
     decltype(auto) mul(const U &num) const;
@@ -202,13 +196,6 @@ public:
     Vector<T> &operator/=(const Vector<U> &other);
     template <ConvertAssignable<T> U>
     Vector<T> &operator/=(std::initializer_list<U> arr);
-
-    // Перегрузка оператора / деление на число
-    template <ConvertAssignableDiv<T> U>
-    decltype(auto) operator/(const U &num) const;
-    template <ConvertAssignableDiv<T> U>
-    Vector<T> &operator/=(const U &num);
-
     // Поэлементное Деление
     template <ValidContainer<T> Con>
     decltype(auto) vec_el_div(const Con &other) const;
@@ -219,6 +206,11 @@ public:
     template <ConvertAssignableDiv<T> U>
     Vector<T> &vec_el_div_eq(const Vector<U> &other);
 
+    // Перегрузка оператора / деление на число
+    template <ConvertAssignableDiv<T> U>
+    decltype(auto) operator/(const U &num) const;
+    template <ConvertAssignableDiv<T> U>
+    Vector<T> &operator/=(const U &num);
     // Деление вектора на число
     template <ConvertAssignableDiv<T> U>
     decltype(auto) div(const U &num) const;
@@ -238,13 +230,6 @@ public:
     Vector<T> &operator^=(const Vector<U> &other);
     template <ConvertAssignable<T> U>
     Vector<T> &operator^=(std::initializer_list<U> arr);
-
-    // перегрузка оператора & - Скалярное умножение
-    template <ValidContainer<T> Con>
-    decltype(auto) operator&(const Con &other) const;
-    template <ConvertAssignableOperationable<T> U>
-    decltype(auto) operator&(const Vector<U> &other) const;
-
     template <ValidContainer<T> Con>
     decltype(auto) vec_mul(const Con &other) const;
     template <ConvertAssignableOperationable<T> U>
@@ -254,6 +239,11 @@ public:
     template <ConvertAssignableOperationable<T> U>
     Vector<T> &vec_mul_eq(const Vector<U> &other);
 
+    // перегрузка оператора & - Скалярное умножение
+    template <ValidContainer<T> Con>
+    decltype(auto) operator&(const Con &other) const;
+    template <ConvertAssignableOperationable<T> U>
+    decltype(auto) operator&(const Vector<U> &other) const;
     template <ValidContainer<T> Con>
     decltype(auto) scal_mul(const Con &other);
     template <ConvertAssignableOperationable<T> U>
