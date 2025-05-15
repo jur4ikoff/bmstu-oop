@@ -89,7 +89,6 @@ Vector<T>::Vector(baseContainer::size_type size)
 template <ContainerType T>
 template <ConvertAssignable<T> U>
 Vector<T>::Vector(std::initializer_list<U> arr)
-    requires(arr.size() > 2)
 {
     this->container_size = arr.size();
     this->memory_allocation(this->container_size, __LINE__);
