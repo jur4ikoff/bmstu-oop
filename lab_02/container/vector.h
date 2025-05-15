@@ -43,7 +43,8 @@ public:
     explicit Vector(const Con &other);              // Преобразование из контейнера, подходящего под требования
     explicit Vector(baseContainer::size_type size); // Конструктор по рамзеру
     template <ConvertAssignable<T> U>
-    Vector(std::initializer_list<U> arr); // Конструктор по списку иницалиизации
+    Vector(std::initializer_list<U> arr) // Конструктор по списку иницалиизации
+        requires(arr.size() >= 2);
     template <ConvertAssignable<T> U>
     Vector(baseContainer::size_type size, const U *arr); // Конструктор по размеру и массиву заполнения
     template <ConvertAssignable<T> U>

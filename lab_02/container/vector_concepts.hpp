@@ -15,7 +15,7 @@ template <typename T, typename U>
 concept Divisable = requires(T t, U u) { t / u; };
 
 template <typename T, typename U>
-concept Multipy = requires(T t, U u) { t *u; };
+concept Multipy = requires(T t, U u) { t * u; };
 
 template <typename T, typename U>
 concept Summable = requires(T t, U u) { t + u; };
@@ -113,3 +113,10 @@ concept CompatibleIterator =
     std::input_iterator<Iter> &&
     std::constructible_from<T, typename std::iterator_traits<Iter>::value_type>;
 
+template <typename List, typename ValueType>
+concept InitializerListMoreThanTwo = requires(List list) {
+    requires std::is_same_v<List, std::initializer_list<ValueType>>;
+    requires list.size() > 2;
+    // Проверяем, что элементы списка можно конвертировать и присвоить
+    requires ConvertAssignable<ValueType, typename List::value_type>;
+};

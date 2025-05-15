@@ -89,6 +89,7 @@ Vector<T>::Vector(baseContainer::size_type size)
 template <ContainerType T>
 template <ConvertAssignable<T> U>
 Vector<T>::Vector(std::initializer_list<U> arr)
+    requires(arr.size() > 2)
 {
     this->container_size = arr.size();
     this->memory_allocation(this->container_size, __LINE__);
@@ -838,7 +839,7 @@ decltype(auto) Vector<T>::operator^(const Con &other) const
     new_type cy = (*this)[2] * other[0] - (*this)[0] * other[2];
     new_type cz = (*this)[0] * other[1] - (*this)[1] * other[0];
 
-    result = { cx, cy, cz };
+    result = {cx, cy, cz};
     return result;
 }
 
@@ -868,7 +869,7 @@ Vector<T> &Vector<T>::operator^=(std::initializer_list<U> arr)
     T cy = (*this)[2] * arr[0] - (*this)[0] * arr[2];
     T cz = (*this)[0] * arr[1] - (*this)[1] * arr[0];
 
-    *this = { cx, cy, cz };
+    *this = {cx, cy, cz};
     return *this;
 }
 
@@ -893,7 +894,7 @@ decltype(auto) Vector<T>::operator^(const Vector<U> &other) const
     new_type cy = (*this)[2] * other[0] - (*this)[0] * other[2];
     new_type cz = (*this)[0] * other[1] - (*this)[1] * other[0];
 
-    result = { cx, cy, cz };
+    result = {cx, cy, cz};
     return result;
 }
 
@@ -1042,7 +1043,6 @@ bool Vector<T>::operator==(const Con &other) const
 
     return rc;
 }
-
 
 // Перегрузка оператора ==
 template <ContainerType T>
