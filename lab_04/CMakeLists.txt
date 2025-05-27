@@ -1,27 +1,37 @@
 cmake_minimum_required(VERSION 3.16)
+
 project(app.exe LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
-cmake_minimum_required(VERSION 3.14)
-project(MyProject)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui)
+qt_standard_project_setup()
 
+# Рекурсивно собираем все .cpp файлы в папке src
+# file(GLOB_RECURSE SOURCES "src/*.cpp" "model/*.cpp" "render/*.cpp")
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE MAIN "main.cpp")
 
-# Указываем пути к заголовочным файлам
-include_directories(
-    ${GTEST_INCLUDE_DIRS}
-    /opt/homebrew/Cellar/googletest/1.16.0  # Путь где Homebrew устанавливает заголовки
-    /usr/local/include
-# ${CMAKE_CURRENT_SOURCE_DIR}/container  # Добавляем папку с вашими заголовками
-    ${CMAKE_CURRENT_SOURCE_DIR}          # Добавляем текущую директорию (если заголовки там)
+# Создаем исполняемый файл из всех собранных источников
+
+qt_add_executable(app.exe
+    ${SOURCES} ${MAIN}
 )
 
-# file(GLOB CONTAINER "container/*.cpp")
+target_include_directories(app.exe PRIVATE src/)
 
-# Если нужно добавить тесты
-file(GLOB MAIN "main.cpp")
+target_precompile_headers(app.exe
+PRIVATE "pch.hxx"
+)
 
-add_executable(app.exe ${MAIN})
-target_link_libraries(app.exe)
+# qt_add_uic(UI_FILES src/main_window.ui)
+target_link_libraries(app.exe PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui)
+
+# Указываем .ui файл для обработки
+set(UI_FILES main_window.ui)
+qt_wrap_ui(QtUIExample ${UI_FILES})

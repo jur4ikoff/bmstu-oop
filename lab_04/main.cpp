@@ -1,8 +1,13 @@
-#include <iostream>
+#include "main_window.h"
+#include <QApplication>
+#include <QStyleFactory>
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-    std::cout << "run" << std::endl;
+    QApplication application(argc, argv);
 
-    return 0;
+    MainWindow window;
+    window.show();
+    
+    return application.exec();
 }
