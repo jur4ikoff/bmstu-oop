@@ -1,6 +1,5 @@
 #include "main_window.h"
 #include <QApplication>
-#include <QStyleFactory>
 
 int main(int argc, char *argv[])
 {
