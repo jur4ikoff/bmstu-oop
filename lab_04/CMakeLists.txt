@@ -14,8 +14,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui)
 qt_standard_project_setup()
 
 # Рекурсивно собираем все .cpp файлы в папке src
-# file(GLOB_RECURSE SOURCES "src/*.cpp" "model/*.cpp" "render/*.cpp")
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+file(GLOB_RECURSE SOURCES "elevator_system/*.cpp")
 file(GLOB_RECURSE MAIN "main.cpp" "main_window.cpp")
 
 # Создаем исполняемый файл из всех собранных источников
@@ -30,7 +29,7 @@ qt_add_executable(app.exe
 target_include_directories(app.exe PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
-    src/)
+    elevator_system/)
 
 target_precompile_headers(app.exe
 PRIVATE "pch.hxx"

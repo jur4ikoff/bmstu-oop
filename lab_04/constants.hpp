@@ -1,11 +1,10 @@
 #ifndef CONSTANTS_H__
 #define CONSTANTS_H__
 
-#define WINDOWS_X 1250
-#define WINDOWS_Y 715
+#define WINDOWS_X 800
+#define WINDOWS_Y 810
 
-#define RENDER_FRAME_WIDTH 700
-#define RENDER_FRAME_HEIGHT 700
+#define FLOOR_COUNT 8
 
 #define PI 3.14
 
@@ -13,5 +12,11 @@
 #define INF 10e7
 
 #define EPS 10e-7
+
+enum direction_t
+{
+    DIR_UP,
+    DIR_DOWN
+};
 
 #endif // CONSTANTS_H__

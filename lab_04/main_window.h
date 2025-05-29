@@ -1,5 +1,8 @@
 #pragma once
 
+#include "constants.hpp"
+#include "elevator_system.hpp"
+
 #include <QMainWindow>
 
 // Включаем сгенерированный заголовочный файл
@@ -20,8 +23,12 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow(void);
 
-private slots:
+public slots:
+    void handleFloorUp(int floor);
+    void handleFloorDown(int floor);
 
 private:
     Ui::MainWindow *ui; // Указатель на сгенерированный интерфейс
+
+    ElevatorSystem elevator_system;
 };
