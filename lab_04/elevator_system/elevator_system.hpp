@@ -13,6 +13,7 @@ public:
 
 public slots:
     void manage_floor_call_slot(int floor, direction_t direction);
+    void manage_cabin_call_slot(int floor, cabin_id_t cabin_id);
 
 private:
     // Состояния подъемной системы

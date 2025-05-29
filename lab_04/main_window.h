@@ -10,7 +10,7 @@ QT_BEGIN_NAMESPACE
 
 namespace Ui
 {
-    class MainWindow;
+class MainWindow;
 }
 
 QT_END_NAMESPACE
@@ -22,10 +22,6 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow(void);
-
-public slots:
-    void handleFloorUp(int floor);
-    void handleFloorDown(int floor);
 
 private:
     Ui::MainWindow *ui; // Указатель на сгенерированный интерфейс

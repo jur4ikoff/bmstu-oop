@@ -19,4 +19,9 @@ enum direction_t
     DIR_DOWN
 };
 
+enum cabin_id_t
+{
+    CID_FIRST,
+    CID_SECOND
+};
 #endif // CONSTANTS_H__

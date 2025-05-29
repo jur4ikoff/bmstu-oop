@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     this->setFixedSize(WINDOWS_X, WINDOWS_Y);
     this->setWindowTitle("ЛР4 — Лифт");
 
+    // Берем все кнопки и коннектис их к слотам
     for (int floor = 1; floor <= FLOOR_COUNT; floor++)
     {
         if (floor != FLOOR_COUNT)
@@ -22,27 +23,15 @@ MainWindow::MainWindow(QWidget *parent)
             QObject::connect(down_button, &QPushButton::clicked, [=, this]() { elevator_system.manage_floor_call_slot(floor, DIR_DOWN); });
         }
 
-        //     QPushButton *downBtn = findChild<QPushButton *>(QString("floor%1_down").arg(floor));
-        //     QPushButton *el1Btn = findChild<QPushButton *>(QString("el1_floor%1").arg(floor));
-        //     QPushButton *el2Btn = findChild<QPushButton *>(QString("el2_floor%1").arg(floor));
+        QPushButton *floor_button = findChild<QPushButton *>(QString("el1_floor%1").arg(floor));
+        QObject::connect(floor_button, &QPushButton::clicked, [=, this]() { elevator_system.manage_cabin_call_slot(floor, CID_FIRST); });
 
-        //     connect(downBtn, &QPushButton::clicked, [this, floor]()
-        //             { handleFloorDown(floor); });
-        //     connect(el1Btn, &QPushButton::clicked, [this, floor]()
-        //             { handleEl1Floor(floor); });
-        //     connect(el2Btn, &QPushButton::clicked, [this, floor]()
-        //             { handleEl2Floor(floor); });
+        floor_button = findChild<QPushButton *>(QString("el2_floor%1").arg(floor));
+        QObject::connect(floor_button, &QPushButton::clicked, [=, this]() { elevator_system.manage_cabin_call_slot(floor, CID_SECOND); });
     }
-}
 
-void MainWindow::handleFloorUp(int floor)
-{
-    qDebug() << "Floor" << floor << "UP button pressed";
-}
-
-void MainWindow::handleFloorDown(int floor)
-{
-    qDebug() << "Floor" << floor << "DOWN button pressed";
+    // TODO Привязать изменение цвета на нажатие кнопки 
+    // Остановился на 124 строке
 }
 
 MainWindow::~MainWindow(void)
