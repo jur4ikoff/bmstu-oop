@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
         {
             QPushButton *up_button = findChild<QPushButton *>(QString("floor%1_up").arg(floor));
             QObject::connect(up_button, &QPushButton::clicked, [=, this]() { elevator_system.manage_floor_call_slot(floor, DIR_UP); });
-            free(up_button);
         }
         if (floor > 1)
         {
