@@ -2,11 +2,6 @@
 #include "constants.hpp"
 #include "ui_main_window.h"
 
-static double to_radians(const double &angle)
-{
-    return angle * (PI / 180);
-}
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -14,19 +9,18 @@ MainWindow::MainWindow(QWidget *parent)
     this->setFixedSize(WINDOWS_X, WINDOWS_Y);
     this->setWindowTitle("ЛР4 — Лифт");
 
-    for (int floor = 1; floor <= FLOOR_COUNT; ++floor)
+    for (int floor = 1; floor <= FLOOR_COUNT; floor++)
     {
         if (floor != FLOOR_COUNT)
         {
             QPushButton *up_button = findChild<QPushButton *>(QString("floor%1_up").arg(floor));
-            QObject::connect(up_button, &QPushButton::clicked, [=, this]()
-                             { elevator_system.manage_floor_call_slot(floor, DIR_UP); });
+            QObject::connect(up_button, &QPushButton::clicked, [=, this]() { elevator_system.manage_floor_call_slot(floor, DIR_UP); });
+            free(up_button);
         }
         if (floor > 1)
         {
             QPushButton *down_button = findChild<QPushButton *>(QString("floor%1_down").arg(floor));
-            QObject::connect(down_button, &QPushButton::clicked, [=, this]()
-                             { elevator_system.manage_floor_call_slot(floor, DIR_DOWN); });
+            QObject::connect(down_button, &QPushButton::clicked, [=, this]() { elevator_system.manage_floor_call_slot(floor, DIR_DOWN); });
         }
 
         //     QPushButton *downBtn = findChild<QPushButton *>(QString("floor%1_down").arg(floor));

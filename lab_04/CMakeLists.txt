@@ -39,6 +39,15 @@ PRIVATE "pch.hxx"
 target_link_libraries(app.exe PRIVATE Qt6::Core Qt6::Widgets Qt6::Gui)
 
 
+# Добавляем цель debug с соответствующими флагами
+add_custom_target(debug
+    COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Debug ${CMAKE_SOURCE_DIR}
+    COMMENT "Setting up debug build"
+)
+
+# Устанавливаем флаги для отладочной сборки
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -Wextra")
+
 # qt_wrap_ui(QtUIExample ${UI_FILES})
 
 #target_sources(app.exe PRIVATE ${UI_HEADERS})  
