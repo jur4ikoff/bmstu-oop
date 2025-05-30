@@ -1,6 +1,9 @@
 #pragma once
 
 #define FLOOR_COUNT 8
+#define N_CABINS 2
+
+#define START_FLOOR
 
 #define COLOR_ACTIVE_BUTTON "#00FF00"
 #define COLOR_INACTIVE_BUTTON "#606060"
@@ -8,6 +11,7 @@
 enum direction_t
 {
     DIR_UP,
+    DIR_STAND,
     DIR_DOWN
 };
 

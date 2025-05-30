@@ -35,5 +35,5 @@ public slots:
 private:
     Ui::MainWindow *ui; // Указатель на сгенерированный интерфейс
 
-    liftSystem lift_system;
+    LiftSystem lift_system;
 };

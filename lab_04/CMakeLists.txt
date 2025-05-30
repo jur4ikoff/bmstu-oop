@@ -14,7 +14,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets Gui)
 qt_standard_project_setup()
 
 # Рекурсивно собираем все .cpp файлы в папке src
-file(GLOB_RECURSE SOURCES "lift/*.cpp" "contoller/*.cpp")
+file(GLOB_RECURSE SOURCES "lift/*.cpp" "controller/*.cpp" "doors/*.cpp" "cabin/*.cpp" "buttons/*.cpp")
 file(GLOB_RECURSE MAIN "main.cpp" "main_window.cpp")
 
 # Создаем исполняемый файл из всех собранных источников
@@ -31,6 +31,9 @@ target_include_directories(app.exe PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
     lift/
     controller/
+    buttons/
+    doors/
+    cabin/
     )
 
 target_precompile_headers(app.exe
