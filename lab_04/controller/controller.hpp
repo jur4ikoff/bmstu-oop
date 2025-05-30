@@ -1,8 +1,10 @@
 #pragma once
 
+#include "cabin.hpp"
 #include "config.h"
 #include "constants.hpp"
-#include "cabin.hpp"
+#include "floor_button.hpp"
+#include "lift_button.hpp"
 
 #include <QObject>
 #include <iostream>
@@ -31,5 +33,10 @@ private:
         CON_BUSY,
     };
 
-    std::unique_ptr<Cabin> cabin[N_CABINS] = {};
+    std::unique_ptr<Cabin> _cabins[CABINS_COUNT] = {};
+    int _cur_floor[CABINS_COUNT] = {};
+    direction_t _cur_directions[CABINS_COUNT] = {};
+
+    std::shared_ptr<FloorButton> _floor_buttons[DIRECTIONS_COUNT][FLOOR_COUNT];
+    // std::shared_ptr<LiftButton> _lift_button[CABINS_COUNT][FLOOR_COUNT];
 };

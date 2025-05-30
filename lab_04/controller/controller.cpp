@@ -3,9 +3,19 @@
 Controller::Controller(QObject *parent)
     : QObject(parent)
 {
-    for (int i = 0; i < N_CABINS; i++)
+    for (int i = 0; i < CABINS_COUNT; i++)
     {
-        cabin[i] = std::make_unique<Cabin>((cabin_id_t)i, this);
+        _cabins[i] = std::make_unique<Cabin>((cabin_id_t)i, this);
+        _cur_floor[i] = START_FLOOR - 1;
+        _cur_directions[i] = DIR_STAND;
+        // TODO BIND
+    }
+
+    // TODO BIND
+
+    for (int i = 0; i < FLOOR_COUNT; i++)
+    {
+        ;
     }
     qDebug() << "controller Init";
 }
@@ -33,7 +43,7 @@ void Controller::cabin_destanation_slot(int floor, cabin_id_t id)
         qDebug() << "Call " << floor << "floor in 2 elevator";
     }
 
-    emit cabin_buttons_change_color_signal(1, CID_FIRST, 1);
+    // emit cabin_buttons_change_color_signal(1, CID_FIRST, 1);
 }
 
 Controller::~Controller()
