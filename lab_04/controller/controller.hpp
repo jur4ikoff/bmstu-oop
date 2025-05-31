@@ -26,6 +26,9 @@ public slots:
     void cabin_destanation_slot(int floor, cabin_id_t id);
 
 private:
+    void color_floor_button_change(int floor, direction_t direction, bool is_active);
+    void color_cabin_button_change(int floor, cabin_id_t id, bool is_active);
+
     enum controller_state_t
     {
         CON_FREE,
@@ -33,10 +36,14 @@ private:
         CON_BUSY,
     };
 
+    controller_state_t _state = CON_FREE;
+
     std::unique_ptr<Cabin> _cabins[CABINS_COUNT] = {};
     int _cur_floor[CABINS_COUNT] = {};
     direction_t _cur_directions[CABINS_COUNT] = {};
 
     std::shared_ptr<FloorButton> _floor_buttons[DIRECTIONS_COUNT][FLOOR_COUNT];
-    // std::shared_ptr<LiftButton> _lift_button[CABINS_COUNT][FLOOR_COUNT];
+    std::shared_ptr<LiftButton> _lift_buttons[CABINS_COUNT][FLOOR_COUNT];
+
+    bool to_visit[CABINS_COUNT][TO_VISIT_COUNT][FLOOR_COUNT] = {};
 };
