@@ -14,15 +14,34 @@ class Cabin : public QObject
 public:
     Cabin(cabin_id_t id, QObject *parent = nullptr);
     ~Cabin();
+    QTimer move_timer;
+
+signals:
+    void cabin_finish_boarding(int floor, cabin_id_t id);
+    
+    void cabin_free();
+    void cabin_stop();
+    void passing_floor();
+    void open_doors();
+
+public slots:
+    void cabin_free_slot();
+    void cabin_moving_slot(direction_t direction);
+    void cabin_stop_slot();
 
 private:
-    int _id;
-    // enum cabin_state_t
-    // {
-    //     CAB_FREE,
-    //     CAB_UP,
-    //     CAB_DOWN,
-    //     CAB_BOARDING_STARTED,
-    //     CAB_BOARDING_FINISHED,
-    // }
+    cabin_id_t _id;
+
+    enum cabin_state_t
+    {
+        CAB_FREE,
+        CAB_MOVE,
+        CAB_BOARDING_STARTED,
+        CAB_BOARDING_FINISHED,
+    };
+
+    cabin_state_t _state;
+    Doors _doors;
+
+    QTimer _move_timer;
 };

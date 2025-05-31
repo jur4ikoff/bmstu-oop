@@ -3,7 +3,7 @@
 #define FLOOR_COUNT 8
 #define CABINS_COUNT 2
 
-#define START_FLOOR
+#define START_FLOOR 1
 
 #define COLOR_ACTIVE_BUTTON "#00FF00"
 #define COLOR_INACTIVE_BUTTON "#606060"
@@ -15,6 +15,9 @@
 #define TEXT_DEFAULT "\033[0m"
 
 #define DIRECTIONS_COUNT 2
+
+#define WAIT_TIME 1200
+#define MOVE_TIME 1200
 
 enum direction_t
 {
