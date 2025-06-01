@@ -14,12 +14,12 @@ class Cabin : public QObject
 public:
     Cabin(cabin_id_t id, QObject *parent = nullptr);
     ~Cabin();
-    QTimer move_timer;
+    QTimer _move_timer; // TODO заменить памблик таймер на сигнал
 
 signals:
     void cabin_finish_boarding(int floor, cabin_id_t id);
-    
-    void cabin_free();
+
+    // void cabin_free();
     void cabin_stop();
     void passing_floor();
     void open_doors();
@@ -27,7 +27,8 @@ signals:
 public slots:
     void cabin_free_slot();
     void cabin_moving_slot(direction_t direction);
-    void cabin_stop_slot();
+    void cabin_stop_boarding_slot();
+    void cabin_start_boarding_slot();
 
 private:
     cabin_id_t _id;
@@ -43,5 +44,5 @@ private:
     cabin_state_t _state;
     Doors _doors;
 
-    QTimer _move_timer;
+    int _cur_floor;
 };

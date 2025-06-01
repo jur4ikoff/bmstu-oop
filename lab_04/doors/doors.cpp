@@ -10,7 +10,6 @@ Doors::Doors(cabin_id_t id, QObject *parent)
     QObject::connect(&open_door_timer, SIGNAL(timeout()), this, SLOT(open_slot()));
     QObject::connect(&open_state_door_timer, SIGNAL(timeout()), this, SLOT(start_closing_slot()));
     QObject::connect(&close_door_timer, SIGNAL(timeout()), this, SLOT(close_slot()));
-    qDebug() << "Init doors";
 }
 
 void Doors::start_opening_slot()

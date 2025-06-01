@@ -2,6 +2,8 @@
 
 #define FLOOR_NOT_FOUND -1
 
+// ЛИФТ ОСТАНАВЛИВАЕТСЯ НА КАЖДОМ ЭТАЖЕ
+
 Controller::Controller(QObject *parent)
     : QObject(parent)
 {
@@ -13,12 +15,12 @@ Controller::Controller(QObject *parent)
         // TODO BIND
 
         QObject::connect(_cabins[i].get(), &Cabin::cabin_finish_boarding, this, &Controller::reach_floor_slot);
-        QObject::connect(&_cabins[i]->move_timer, &QTimer::timeout, this, [=, this]() { manage_cabin_slot(static_cast<cabin_id_t>(i)); });
+        QObject::connect(&_cabins[i]->_move_timer, &QTimer::timeout, this, [=, this]() { manage_cabin_slot(static_cast<cabin_id_t>(i)); });
     }
 
-    QObject::connect(this, &Controller::free_cabin_signal, this, [this](cabin_id_t id) { _cabins[id]->cabin_free_slot(); });
+    QObject::connect(this, &Controller::free_cabin_signal, this, [this](cabin_id_t id) { _cabins[id]->cabin_free_slot(); }); // TODO CHECK Слот или сигнал
     QObject::connect(this, &Controller::move_cabin_signal, this, [this](cabin_id_t id, direction_t direction) { _cabins[id]->cabin_moving_slot(direction); });
-    QObject::connect(this, &Controller::stop_cabin_signal, this, [this](cabin_id_t id) { _cabins[id]->cabin_stop_slot(); });
+    QObject::connect(this, &Controller::stop_cabin_signal, this, [this](cabin_id_t id) { _cabins[id]->cabin_start_boarding_slot(); });
 
     for (int i = 0; i < FLOOR_COUNT; i++)
     {
@@ -163,7 +165,7 @@ void Controller::manage_cabin_slot(cabin_id_t id)
     _state = CON_MANAGING_CABIN;
 
     int dst_floor = get_next_visit_floor(id);
-
+    qDebug() << dst_floor;
     if (dst_floor == FLOOR_NOT_FOUND)
     {
         _cur_directions[id] = DIR_STAND;
