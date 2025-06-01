@@ -58,6 +58,7 @@ Controller::Controller(QObject *parent)
     }
 }
 
+// Слот вызывается, при нажатии на кнопку вызова на этаже
 void Controller::floor_destanation_slot(int floor, direction_t direction)
 {
     // Если кабина уже едет на этаж, то выходим
@@ -128,6 +129,7 @@ void Controller::floor_destanation_slot(int floor, direction_t direction)
     }
 }
 
+// Слот вызывается при нажатии на кнопку в кабине
 void Controller::cabin_destanation_slot(int floor, cabin_id_t id)
 {
     if (_to_visit[id][TO_VISIT_ANY][floor - 1])
@@ -139,6 +141,7 @@ void Controller::cabin_destanation_slot(int floor, cabin_id_t id)
     emit _lift_buttons[id][floor - 1]->activate_signal();
 }
 
+// Основная функция управления кабиной
 void Controller::manage_cabin_slot(cabin_id_t id)
 {
     if (_state == CON_FREE)
@@ -174,6 +177,7 @@ void Controller::manage_cabin_slot(cabin_id_t id)
         emit free_contoller_signal();
 }
 
+// Слот обрабатывает достижение этажа
 void Controller::reach_floor_slot(int floor, cabin_id_t id)
 {
     if (_state != CON_REQUEST && _state != CON_MANAGING_CABIN)
@@ -227,6 +231,7 @@ direction_t Controller::get_direction(int difference)
     return difference > 0 ? DIR_UP : DIR_DOWN;
 }
 
+
 cabin_id_t Controller::get_desided_cabin_id(int floor, direction_t direction)
 {
     for (int i = 0; i < CABINS_COUNT; i++)
@@ -238,6 +243,7 @@ cabin_id_t Controller::get_desided_cabin_id(int floor, direction_t direction)
     return CID_FIRST;
 }
 
+// Вычисление этажа на который (следующим) поедет кабина
 int Controller::get_next_visit_floor(cabin_id_t id)
 {
     int dst_floor = FLOOR_NOT_FOUND;
@@ -299,6 +305,7 @@ int Controller::get_next_visit_floor(cabin_id_t id)
     return dst_floor;
 }
 
+// Вычесление следующего направления
 direction_t Controller::get_next_direction(cabin_id_t id)
 {
     if (_cur_directions[id] == DIR_STAND)
