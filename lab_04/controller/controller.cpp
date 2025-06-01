@@ -14,7 +14,7 @@ Controller::Controller(QObject *parent)
         _cur_directions[i] = DIR_STAND;
 
         QObject::connect(_cabins[i].get(), &Cabin::cabin_finish_boarding, this, &Controller::reach_floor_slot);
-        QObject::connect(&_cabins[i]->_move_timer, &QTimer::timeout, this, [=, this]() { manage_cabin_slot(static_cast<cabin_id_t>(i)); });
+        QObject::connect(&_cabins[i]->move_timer, &QTimer::timeout, this, [=, this]() { manage_cabin_slot(static_cast<cabin_id_t>(i)); });
     }
 
     QObject::connect(this, &Controller::free_cabin_signal, this, [this](cabin_id_t id) { _cabins[id]->cabin_free_slot(); });
