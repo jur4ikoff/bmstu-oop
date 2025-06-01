@@ -19,7 +19,6 @@ public:
 signals:
     void cabin_finish_boarding(int floor, cabin_id_t id);
 
-    // void cabin_free();
     void cabin_stop();
     void passing_floor();
     void open_doors();

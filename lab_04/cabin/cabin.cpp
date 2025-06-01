@@ -4,17 +4,15 @@ Cabin::Cabin(cabin_id_t id, QObject *parent)
     : QObject(parent), _id(id), _state(CAB_BOARDING_FINISHED), _doors(id), _cur_floor(START_FLOOR)
 {
     _move_timer.setSingleShot(true);
-    // QObject::connect(this, SIGNAL(cabin_stop()), this, SLOT(cabin_start_boarding_slot())); // TODO Нет такого сигнала
     QObject::connect(this, SIGNAL(open_doors()), &_doors, SLOT(start_opening_slot()));
     QObject::connect(&_doors, SIGNAL(door_is_closed()), this, SLOT(cabin_stop_boarding_slot()));
 }
 
 void Cabin::cabin_free_slot()
 {
-    // TODO check_condition
     if (_state != CAB_BOARDING_STARTED)
         return;
-    
+
     _state = CAB_FREE;
 }
 
