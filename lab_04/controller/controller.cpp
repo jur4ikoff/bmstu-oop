@@ -165,7 +165,6 @@ void Controller::manage_cabin_slot(cabin_id_t id)
     _state = CON_MANAGING_CABIN;
 
     int dst_floor = get_next_visit_floor(id);
-    qDebug() << dst_floor;
     if (dst_floor == FLOOR_NOT_FOUND)
     {
         _cur_directions[id] = DIR_STAND;

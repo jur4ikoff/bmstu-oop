@@ -46,7 +46,6 @@ void Cabin::cabin_start_boarding_slot()
 
     _state = CAB_BOARDING_STARTED;
     qInfo("Лифт №%d остановился на этаже №%d.", _id + 1, _cur_floor);
-    _cur_floor++;
     emit open_doors();
 }
 

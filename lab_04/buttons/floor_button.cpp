@@ -42,5 +42,5 @@ void FloorButton::deactivate_slot()
         qInfo(TEXT_BLUE "[!] На этаже №%d кнопка ВНИЗ была декактивирована" TEXT_DEFAULT, _floor);
     }
 
-    emit activated_signal();
+    emit deactivated_signal();
 }
