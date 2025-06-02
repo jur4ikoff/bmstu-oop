@@ -32,8 +32,9 @@ public slots:
     void floor_destanation_slot(int floor, direction_t direction);
     void cabin_destanation_slot(int floor, cabin_id_t id);
 
+    void manage_move_slot(cabin_id_t id);
     void manage_cabin_slot(cabin_id_t cabin_id);
-    void reach_floor_slot(int floor, cabin_id_t id);
+    void reach_dst_floor_slot(int floor, cabin_id_t id);
     void free_controller_slot();
 
 private:
@@ -47,9 +48,11 @@ private:
     enum controller_state_t
     {
         CON_FREE,
-        CON_REQUEST,
+        CON_REQUEST_CABIN,
+        CON_REQUEST_FLOOR,
         CON_MANAGING_CABIN,
-        CON_REACH_FLOOR,
+        CON_MANAGING_MOVE,
+        CON_REACH_DST_FLOOR,
     };
 
     controller_state_t _state = CON_FREE;
@@ -57,6 +60,7 @@ private:
     std::unique_ptr<Cabin> _cabins[CABINS_COUNT] = {};
     int _cur_floor[CABINS_COUNT] = {};
     direction_t _cur_directions[CABINS_COUNT] = {};
+    direction_t _last_direction = DIR_STAND;
 
     std::shared_ptr<FloorButton> _floor_buttons[DIRECTIONS_COUNT][FLOOR_COUNT];
     std::shared_ptr<LiftButton> _lift_buttons[CABINS_COUNT][FLOOR_COUNT];
