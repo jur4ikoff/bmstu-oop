@@ -18,6 +18,7 @@ Controller::Controller(QObject *parent)
         QObject::connect(&_cabins[i]->move_timer, &QTimer::timeout, this, [=, this]() { manage_move_slot(static_cast<cabin_id_t>(i)); });
     }
 
+    QObject::connect(this, &Controller::after_move_signal, this, [this](cabin_id_t id) { manage_cabin_slot(static_cast<cabin_id_t>(id)); });
     QObject::connect(this, &Controller::free_cabin_signal, this, [this](cabin_id_t id) { _cabins[id]->cabin_free_slot(); });
     QObject::connect(this, &Controller::move_cabin_signal, this, [this](cabin_id_t id, direction_t direction) { _cabins[id]->cabin_moving_slot(direction); });
     QObject::connect(this, &Controller::stop_cabin_signal, this, [this](cabin_id_t id) { _cabins[id]->cabin_start_boarding_slot(); });
@@ -153,14 +154,14 @@ void Controller::manage_move_slot(cabin_id_t id)
     if (_state != CON_MANAGING_CABIN)
         return;
 
-    _cur_floor[id] += _cur_directions[id];
-    manage_cabin_slot(id);
+    _state = CON_MANAGING_MOVE;
+    emit after_move_signal(id);
 }
 
 // Основная функция управления кабиной
 void Controller::manage_cabin_slot(cabin_id_t id)
 {
-    if (_state == CON_FREE)
+    if (_state == CON_FREE || _state == CON_MANAGING_CABIN)
         return;
 
     _state = CON_MANAGING_CABIN;
@@ -174,11 +175,13 @@ void Controller::manage_cabin_slot(cabin_id_t id)
     else if (dst_floor > _cur_floor[id])
     {
         _cur_directions[id] = DIR_UP;
+        _cur_floor[id]++;
         emit move_cabin_signal(id, DIR_UP);
     }
     else if (dst_floor < _cur_floor[id])
     {
         _cur_directions[id] = DIR_DOWN;
+        _cur_floor[id]--;
         emit move_cabin_signal(id, DIR_DOWN);
     }
     else

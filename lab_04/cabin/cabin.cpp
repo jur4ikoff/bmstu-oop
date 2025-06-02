@@ -39,7 +39,7 @@ void Cabin::cabin_moving_slot(direction_t direction)
 
 void Cabin::cabin_start_boarding_slot()
 {
-    if (_state == CAB_BOARDING_STARTED || _state == CAB_BOARDING_FINISHED)
+    if (_state == CAB_BOARDING_STARTED || _state == CAB_BOARDING_FINISHED )
         return;
 
     _state = CAB_BOARDING_STARTED;
