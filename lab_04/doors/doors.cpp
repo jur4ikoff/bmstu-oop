@@ -14,12 +14,22 @@ Doors::Doors(cabin_id_t id, QObject *parent)
 
 void Doors::start_opening_slot()
 {
-    if (_state != DOOR_CLOSED)
+    if (_state != DOOR_CLOSED && _state != DOOR_CLOSING)
         return;
 
-    _state = DOOR_OPENING;
-    qInfo(TEXT_GREEN "[*] Двери лифта №%d открываются..." TEXT_DEFAULT, _id + 1);
-    open_door_timer.start(WAIT_TIME);
+    if (_state == DOOR_CLOSED)
+    {
+        _state = DOOR_OPENING;
+        qInfo(TEXT_GREEN "[*] Двери лифта №%d открываются..." TEXT_DEFAULT, _id + 1);
+        open_door_timer.start(WAIT_TIME);
+    }
+    else if (_state == DOOR_CLOSING)
+    {
+        close_door_timer.stop();
+        _state = DOOR_OPENING;
+        qInfo(TEXT_GREEN "[*] Двери лифта №%d открываются..." TEXT_DEFAULT, _id + 1);
+        open_door_timer.start(DOOR_OPENING_AFTER_CLOSING);
+    }
 }
 
 void Doors::start_closing_slot()

@@ -10,10 +10,10 @@ Cabin::Cabin(cabin_id_t id, QObject *parent)
 
 void Cabin::cabin_free_slot()
 {
-    if (_state != CAB_BOARDING_STARTED)
+    if (_state != CAB_BOARDING_FINISHED)
         return;
 
-    _state = CAB_FREE;
+    _state = CAB_STOP;
 }
 
 void Cabin::cabin_moving_slot(direction_t direction)
@@ -39,7 +39,7 @@ void Cabin::cabin_moving_slot(direction_t direction)
 
 void Cabin::cabin_start_boarding_slot()
 {
-    if (_state == CAB_BOARDING_STARTED)
+    if (_state == CAB_BOARDING_STARTED || _state == CAB_BOARDING_FINISHED)
         return;
 
     _state = CAB_BOARDING_STARTED;

@@ -36,7 +36,7 @@ private:
 
     enum cabin_state_t
     {
-        CAB_FREE,
+        CAB_STOP,
         CAB_MOVE,
         CAB_BOARDING_STARTED,
         CAB_BOARDING_FINISHED,

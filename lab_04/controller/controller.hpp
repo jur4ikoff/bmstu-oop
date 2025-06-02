@@ -32,11 +32,7 @@ public slots:
     void floor_destanation_slot(int floor, direction_t direction);
     void cabin_destanation_slot(int floor, cabin_id_t id);
 
-    void color_floor_button_change_slot(int floor, direction_t direction, bool is_active);
-    void color_cabin_button_change_slot(int floor, cabin_id_t id, bool is_active);
-
     void manage_cabin_slot(cabin_id_t cabin_id);
-
     void reach_floor_slot(int floor, cabin_id_t id);
     void free_controller_slot();
 

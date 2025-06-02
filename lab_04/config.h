@@ -18,6 +18,7 @@
 
 #define WAIT_TIME 1200
 #define MOVE_TIME 1200
+#define DOOR_OPENING_AFTER_CLOSING 800
 
 enum direction_t
 {
