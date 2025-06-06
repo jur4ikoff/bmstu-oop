@@ -31,6 +31,7 @@ public slots:
     void floor_destanation_slot(int floor, direction_t direction);
     void cabin_destanation_slot(int floor, cabin_id_t id);
 
+    void manage_move_slot(cabin_id_t id);
     void manage_cabin_slot(cabin_id_t cabin_id);
     void reach_dst_floor_slot(int floor, cabin_id_t id);
     void free_controller_slot();

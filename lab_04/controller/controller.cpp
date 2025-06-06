@@ -15,7 +15,7 @@ Controller::Controller(QObject *parent)
 
         QObject::connect(_cabins[i].get(), &Cabin::cabin_finish_boarding, this, &Controller::reach_dst_floor_slot);
         QObject::connect(&_cabins[i]->move_timer, &QTimer::timeout, this, [=, this]()
-                         { manage_cabin_slot(static_cast<cabin_id_t>(i)); });
+                         { manage_move_slot(static_cast<cabin_id_t>(i)); });
     }
 
     QObject::connect(this, &Controller::free_cabin_signal, this, [this](cabin_id_t id)
@@ -164,6 +164,15 @@ void Controller::cabin_destanation_slot(int floor, cabin_id_t id)
     _to_visit[id][TO_VISIT_ANY][floor - 1] = true;
 
     emit _lift_buttons[id][floor - 1]->activate_signal();
+}
+
+void Controller::manage_move_slot(cabin_id_t id)
+{
+    if (_state != CON_MANAGING_CABIN)
+        return;
+
+    _state = CON_MANAGING_MOVE;
+    emit manage_cabin_slot(id);
 }
 
 // Основная функция управления кабиной
