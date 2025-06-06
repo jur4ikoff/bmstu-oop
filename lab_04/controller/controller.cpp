@@ -18,8 +18,6 @@ Controller::Controller(QObject *parent)
                          { manage_cabin_slot(static_cast<cabin_id_t>(i)); });
     }
 
-    QObject::connect(this, &Controller::manage_move_signal, this, [this](cabin_id_t id, direction_t direction)
-                     { manage_move_slot(static_cast<cabin_id_t>(id), direction); });
     QObject::connect(this, &Controller::free_cabin_signal, this, [this](cabin_id_t id)
                      { _cabins[id]->cabin_free_slot(); });
     QObject::connect(this, &Controller::move_cabin_signal, this, [this](cabin_id_t id, direction_t direction)
@@ -153,8 +151,11 @@ void Controller::floor_destanation_slot(int floor, direction_t direction)
 // Слот вызывается при нажатии на кнопку в кабине
 void Controller::cabin_destanation_slot(int floor, cabin_id_t id)
 {
+    qDebug() << 1 << _state;
     if (_state != CON_FREE && _state != CON_MANAGING_CABIN && _state != CON_MANAGING_MOVE)
         return;
+
+    qDebug() << 1;
 
     if (_to_visit[id][TO_VISIT_ANY][floor - 1])
         return;
@@ -165,32 +166,15 @@ void Controller::cabin_destanation_slot(int floor, cabin_id_t id)
     emit _lift_buttons[id][floor - 1]->activate_signal();
 }
 
-void Controller::manage_move_slot(cabin_id_t id, direction_t direction)
-{
-    if (_state != CON_MANAGING_CABIN)
-        return;
-
-    _state = CON_MANAGING_MOVE;
-
-    _cur_directions[id] = direction;
-    _cur_floor[id] += direction;
-    emit move_cabin_signal(id, direction);
-}
-
 // Основная функция управления кабиной
 void Controller::manage_cabin_slot(cabin_id_t id)
 {
-    qDebug() << id << _state;
-    if (_state == CON_FREE || _state == CON_MANAGING_CABIN)
-        return;
-
-    if (_state == CON_FREE || _state == CON_MANAGING_CABIN)
+    if (_state == CON_FREE)
         return;
 
     _state = CON_MANAGING_CABIN;
 
     int dst_floor = get_next_visit_floor(id);
-    qDebug() << id << dst_floor;
     if (dst_floor == FLOOR_NOT_FOUND)
     {
         _cur_directions[id] = DIR_STAND;
@@ -198,11 +182,15 @@ void Controller::manage_cabin_slot(cabin_id_t id)
     }
     else if (dst_floor > _cur_floor[id])
     {
-        emit manage_move_signal(id, DIR_UP);
+        _cur_directions[id] = DIR_UP;
+        _cur_floor[id]++;
+        emit move_cabin_signal(id, DIR_UP);
     }
     else if (dst_floor < _cur_floor[id])
     {
-        emit manage_move_signal(id, DIR_DOWN);
+        _cur_directions[id] = DIR_DOWN;
+        _cur_floor[id]--;
+        emit move_cabin_signal(id, DIR_DOWN);
     }
     else
     {

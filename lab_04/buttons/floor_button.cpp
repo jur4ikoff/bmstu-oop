@@ -23,7 +23,7 @@ void FloorButton::activate_slot()
     {
         qInfo(TEXT_BLUE "[!] На этаже №%d была нажата кнопка вызова ВНИЗ" TEXT_DEFAULT, _floor);
     }
-    
+
     emit activated_signal();
 }
 

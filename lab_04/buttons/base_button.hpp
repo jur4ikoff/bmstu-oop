@@ -8,7 +8,7 @@ enum button_state_t
     BUTTON_INACTIVE,
 };
 
-class BaseButton : public QPushButton
+class BaseButton : public QObject
 
 {
     Q_OBJECT
