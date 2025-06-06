@@ -25,10 +25,13 @@ void Doors::start_opening_slot()
     }
     else if (_state == DOOR_CLOSING)
     {
+        int remaining_time = close_door_timer.remainingTime();
+        int opening_time = (remaining_time > 0) ? (WAIT_TIME * remaining_time / WAIT_TIME) : WAIT_TIME;
+
         close_door_timer.stop();
         _state = DOOR_OPENING;
         qInfo(TEXT_GREEN "[*] Двери лифта №%d открываются..." TEXT_DEFAULT, _id + 1);
-        open_door_timer.start(DOOR_OPENING_AFTER_CLOSING);
+        open_door_timer.start(opening_time);
     }
 }
 
