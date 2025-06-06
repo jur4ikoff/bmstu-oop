@@ -79,7 +79,6 @@ Controller::Controller(QObject *parent)
 // Слот вызывается, при нажатии на кнопку вызова на этаже
 void Controller::floor_destanation_slot(int floor, direction_t direction)
 {
-    qDebug() << "tut";
     if (_state != CON_FREE && _state != CON_MANAGING_CABIN && _state != CON_MANAGING_MOVE)
         return;
 
@@ -181,12 +180,17 @@ void Controller::manage_move_slot(cabin_id_t id, direction_t direction)
 // Основная функция управления кабиной
 void Controller::manage_cabin_slot(cabin_id_t id)
 {
+    qDebug() << id << _state;
+    if (_state == CON_FREE || _state == CON_MANAGING_CABIN)
+        return;
+
     if (_state == CON_FREE || _state == CON_MANAGING_CABIN)
         return;
 
     _state = CON_MANAGING_CABIN;
 
     int dst_floor = get_next_visit_floor(id);
+    qDebug() << id << dst_floor;
     if (dst_floor == FLOOR_NOT_FOUND)
     {
         _cur_directions[id] = DIR_STAND;
