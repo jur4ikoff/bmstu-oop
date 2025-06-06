@@ -1,7 +1,7 @@
 #include "base_button.hpp"
 
 BaseButton::BaseButton(QWidget *parent)
-    : QObject(parent)
+    : QPushButton(parent)
 {
     _state = BUTTON_INACTIVE;
 }

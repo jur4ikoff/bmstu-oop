@@ -153,11 +153,8 @@ void Controller::floor_destanation_slot(int floor, direction_t direction)
 // Слот вызывается при нажатии на кнопку в кабине
 void Controller::cabin_destanation_slot(int floor, cabin_id_t id)
 {
-    qDebug() << 1 << _state;
     if (_state != CON_FREE && _state != CON_MANAGING_CABIN && _state != CON_MANAGING_MOVE)
         return;
-
-    qDebug() << 1;
 
     if (_to_visit[id][TO_VISIT_ANY][floor - 1])
         return;

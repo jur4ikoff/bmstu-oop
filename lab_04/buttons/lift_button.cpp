@@ -15,6 +15,10 @@ void LiftButton::activate_slot()
 
     this->_state = BUTTON_ACTIVE;
 
+    this->setStyleSheet(QString("background-color:") + COLOR_ACTIVE_BUTTON);
+
+    this->update();
+
     qInfo(TEXT_CYAN "[!] В кабине лифта №%d была нажата кнопка этажа №%d" TEXT_DEFAULT, _id + 1, _floor);
     emit activated_signal();
 }
