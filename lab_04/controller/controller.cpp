@@ -152,8 +152,9 @@ void Controller::manage_move_slot(cabin_id_t id)
     if (_state != CON_MANAGING_CABIN)
         return;
 
-    _cur_floor[id] += _cur_directions[id];
     _state = CON_MANAGING_MOVE;
+    _cur_floor[id] += _cur_directions[id];
+
     emit manage_cabin_slot(id);
 }
 
