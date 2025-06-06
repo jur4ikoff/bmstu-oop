@@ -1,7 +1,7 @@
 #include "cabin.hpp"
 
 Cabin::Cabin(cabin_id_t id, QObject *parent)
-    : QObject(parent), _id(id), _state(CAB_BOARDING_FINISHED), _doors(id), _cur_floor(START_FLOOR)
+    : QObject(parent), _id(id), _state(CAB_FREE), _doors(id)
 {
     move_timer.setSingleShot(true);
     QObject::connect(this, SIGNAL(open_doors()), &_doors, SLOT(start_opening_slot()));
@@ -13,37 +13,36 @@ void Cabin::cabin_free_slot()
     if (_state != CAB_BOARDING_FINISHED)
         return;
 
-    _state = CAB_STOP;
+    _state = CAB_FREE;
 }
 
-void Cabin::cabin_moving_slot(direction_t direction)
+void Cabin::cabin_moving_slot(int floor, direction_t direction)
 {
-    if (_state == CAB_BOARDING_STARTED)
+    if (_state == CAB_BOARDING_STARTED )
         return;
 
+    floor++; // Нужно, чтобы перейти к пользовательскому представлению
     _state = CAB_MOVE;
 
     if (direction == DIR_UP)
     {
-        qInfo("[!] Лифт №%d едет c этажа №%d на этаж №%d.", _id + 1, _cur_floor, _cur_floor + 1);
-        _cur_floor++;
+        qInfo("[!] Лифт №%d едет c этажа №%d на этаж №%d.", _id + 1, floor, floor + 1);
         move_timer.start(MOVE_TIME);
     }
     else if (direction == DIR_DOWN)
     {
-        qInfo("[!] Лифт №%d едет c этажа №%d на этаж №%d.", _id + 1, _cur_floor, _cur_floor - 1);
-        _cur_floor--;
+        qInfo("[!] Лифт №%d едет c этажа №%d на этаж №%d.", _id + 1, floor, floor - 1);
         move_timer.start(MOVE_TIME);
     }
 }
 
-void Cabin::cabin_start_boarding_slot()
+void Cabin::cabin_start_boarding_slot(int floor)
 {
-    if (_state == CAB_BOARDING_STARTED || _state == CAB_BOARDING_FINISHED )
+    if (_state == CAB_BOARDING_STARTED || _state == CAB_BOARDING_FINISHED)
         return;
 
     _state = CAB_BOARDING_STARTED;
-    qInfo("Лифт №%d остановился на этаже №%d.", _id + 1, _cur_floor);
+    qInfo("Лифт №%d остановился на этаже №%d.", _id + 1, floor + 1);
     emit open_doors();
 }
 
@@ -54,9 +53,5 @@ void Cabin::cabin_stop_boarding_slot()
 
     _state = CAB_BOARDING_FINISHED;
     qInfo("Посадка/высадка пассажиров в лифте №%d завершена.", _id + 1);
-    emit cabin_finish_boarding(_cur_floor, _id);
+    emit cabin_finish_boarding(_id);
 }
-
-// Cabin::~Cabin()
-// {
-// }

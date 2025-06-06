@@ -18,8 +18,7 @@ public:
     QTimer move_timer;
 
 signals:
-    void cabin_finish_boarding(int floor, cabin_id_t id);
-
+    void cabin_finish_boarding(cabin_id_t id);
 
     void cabin_stop();
     void passing_floor();
@@ -27,16 +26,16 @@ signals:
 
 public slots:
     void cabin_free_slot();
-    void cabin_moving_slot(direction_t direction);
+    void cabin_moving_slot(int floor, direction_t direction);
     void cabin_stop_boarding_slot();
-    void cabin_start_boarding_slot();
+    void cabin_start_boarding_slot(int floor);
 
 private:
     cabin_id_t _id;
 
     enum cabin_state_t
     {
-        CAB_STOP,
+        CAB_FREE,
         CAB_MOVE,
         CAB_BOARDING_STARTED,
         CAB_BOARDING_FINISHED,
@@ -44,6 +43,4 @@ private:
 
     cabin_state_t _state;
     Doors _doors;
-
-    int _cur_floor;
 };

@@ -14,16 +14,12 @@ Controller::Controller(QObject *parent)
         _cur_directions[i] = DIR_STAND;
 
         QObject::connect(_cabins[i].get(), &Cabin::cabin_finish_boarding, this, &Controller::reach_dst_floor_slot);
-        QObject::connect(&_cabins[i]->move_timer, &QTimer::timeout, this, [=, this]()
-                         { manage_move_slot(static_cast<cabin_id_t>(i)); });
+        QObject::connect(&_cabins[i]->move_timer, &QTimer::timeout, this, [=, this]() { manage_move_slot(static_cast<cabin_id_t>(i)); });
     }
 
-    QObject::connect(this, &Controller::free_cabin_signal, this, [this](cabin_id_t id)
-                     { _cabins[id]->cabin_free_slot(); });
-    QObject::connect(this, &Controller::move_cabin_signal, this, [this](cabin_id_t id, direction_t direction)
-                     { _cabins[id]->cabin_moving_slot(direction); });
-    QObject::connect(this, &Controller::stop_cabin_signal, this, [this](cabin_id_t id)
-                     { _cabins[id]->cabin_start_boarding_slot(); });
+    QObject::connect(this, &Controller::free_cabin_signal, this, [this](cabin_id_t id) { _cabins[id]->cabin_free_slot(); });
+    QObject::connect(this, &Controller::move_cabin_signal, this, [this](cabin_id_t id, int floor, direction_t direction) { _cabins[id]->cabin_moving_slot(floor, direction); });
+    QObject::connect(this, &Controller::stop_cabin_signal, this, [this](cabin_id_t id, int floor) { _cabins[id]->cabin_start_boarding_slot(floor); });
 
     for (int i = 0; i < FLOOR_COUNT; i++)
     {
@@ -32,19 +28,15 @@ Controller::Controller(QObject *parent)
         _lift_buttons[CID_FIRST][i] = std::make_shared<LiftButton>(i + 1, CID_FIRST);
         _lift_buttons[CID_SECOND][i] = std::make_shared<LiftButton>(i + 1, CID_SECOND);
 
-        QObject::connect(_floor_buttons[BDIR_UP][i].get(), &FloorButton::activated_signal, this, [=, this]()
-                         {
+        QObject::connect(_floor_buttons[BDIR_UP][i].get(), &FloorButton::activated_signal, this, [=, this]() {
             cabin_id_t id = get_desided_cabin_id(i, DIR_UP);
             manage_cabin_slot(id); });
-        QObject::connect(_floor_buttons[BDIR_DOWN][i].get(), &FloorButton::activated_signal, this, [=, this]()
-                         {
+        QObject::connect(_floor_buttons[BDIR_DOWN][i].get(), &FloorButton::activated_signal, this, [=, this]() {
             cabin_id_t id = get_desided_cabin_id(i, DIR_DOWN);
             manage_cabin_slot(id); });
 
-        QObject::connect(_lift_buttons[CID_FIRST][i].get(), &LiftButton::activated_signal, this, [=, this]()
-                         { manage_cabin_slot(CID_FIRST); });
-        QObject::connect(_lift_buttons[CID_SECOND][i].get(), &LiftButton::activated_signal, this, [=, this]()
-                         { manage_cabin_slot(CID_SECOND); });
+        QObject::connect(_lift_buttons[CID_FIRST][i].get(), &LiftButton::activated_signal, this, [=, this]() { manage_cabin_slot(CID_FIRST); });
+        QObject::connect(_lift_buttons[CID_SECOND][i].get(), &LiftButton::activated_signal, this, [=, this]() { manage_cabin_slot(CID_SECOND); });
 
         // Сигналы деактивации кнопки нельзя так просто подключать к менеджеру,
         // потому что есть необходимость в отключении нескольких кнопок за раз.
@@ -52,23 +44,15 @@ Controller::Controller(QObject *parent)
         // когда одна кнопка отключена, а вторая ещё нет.
         QObject::connect(this, SIGNAL(button_deactivated_signal(cabin_id_t)), this, SLOT(manage_cabin_slot(cabin_id_t)));
 
-        QObject::connect(_floor_buttons[BDIR_UP][i].get(), &FloorButton::activated_signal, this, [=, this]()
-                         { emit floor_buttons_change_color_signal(i + 1, DIR_UP, true); });
-        QObject::connect(_floor_buttons[BDIR_DOWN][i].get(), &FloorButton::activated_signal, this, [=, this]()
-                         { emit floor_buttons_change_color_signal(i + 1, DIR_DOWN, true); });
-        QObject::connect(_lift_buttons[CID_FIRST][i].get(), &LiftButton::activated_signal, this, [=, this]()
-                         { emit cabin_buttons_change_color_signal(i + 1, CID_FIRST, true); });
-        QObject::connect(_lift_buttons[CID_SECOND][i].get(), &LiftButton::activated_signal, this, [=, this]()
-                         { emit cabin_buttons_change_color_signal(i + 1, CID_SECOND, true); });
+        QObject::connect(_floor_buttons[BDIR_UP][i].get(), &FloorButton::activated_signal, this, [=, this]() { emit floor_buttons_change_color_signal(i + 1, DIR_UP, true); });
+        QObject::connect(_floor_buttons[BDIR_DOWN][i].get(), &FloorButton::activated_signal, this, [=, this]() { emit floor_buttons_change_color_signal(i + 1, DIR_DOWN, true); });
+        QObject::connect(_lift_buttons[CID_FIRST][i].get(), &LiftButton::activated_signal, this, [=, this]() { emit cabin_buttons_change_color_signal(i + 1, CID_FIRST, true); });
+        QObject::connect(_lift_buttons[CID_SECOND][i].get(), &LiftButton::activated_signal, this, [=, this]() { emit cabin_buttons_change_color_signal(i + 1, CID_SECOND, true); });
 
-        QObject::connect(_floor_buttons[BDIR_UP][i].get(), &FloorButton::deactivated_signal, this, [=, this]()
-                         { emit floor_buttons_change_color_signal(i + 1, DIR_UP, false); });
-        QObject::connect(_floor_buttons[BDIR_DOWN][i].get(), &FloorButton::deactivated_signal, this, [=, this]()
-                         { emit floor_buttons_change_color_signal(i + 1, DIR_DOWN, false); });
-        QObject::connect(_lift_buttons[CID_FIRST][i].get(), &LiftButton::deactivated_signal, this, [=, this]()
-                         { emit cabin_buttons_change_color_signal(i + 1, CID_FIRST, false); });
-        QObject::connect(_lift_buttons[CID_SECOND][i].get(), &LiftButton::deactivated_signal, this, [=, this]()
-                         { emit cabin_buttons_change_color_signal(i + 1, CID_SECOND, false); });
+        QObject::connect(_floor_buttons[BDIR_UP][i].get(), &FloorButton::deactivated_signal, this, [=, this]() { emit floor_buttons_change_color_signal(i + 1, DIR_UP, false); });
+        QObject::connect(_floor_buttons[BDIR_DOWN][i].get(), &FloorButton::deactivated_signal, this, [=, this]() { emit floor_buttons_change_color_signal(i + 1, DIR_DOWN, false); });
+        QObject::connect(_lift_buttons[CID_FIRST][i].get(), &LiftButton::deactivated_signal, this, [=, this]() { emit cabin_buttons_change_color_signal(i + 1, CID_FIRST, false); });
+        QObject::connect(_lift_buttons[CID_SECOND][i].get(), &LiftButton::deactivated_signal, this, [=, this]() { emit cabin_buttons_change_color_signal(i + 1, CID_SECOND, false); });
 
         QObject::connect(this, SIGNAL(free_contoller_signal()), this, SLOT(free_controller_slot()));
     }
@@ -151,11 +135,8 @@ void Controller::floor_destanation_slot(int floor, direction_t direction)
 // Слот вызывается при нажатии на кнопку в кабине
 void Controller::cabin_destanation_slot(int floor, cabin_id_t id)
 {
-    qDebug() << 1 << _state;
     if (_state != CON_FREE && _state != CON_MANAGING_CABIN && _state != CON_MANAGING_MOVE)
         return;
-
-    qDebug() << 1;
 
     if (_to_visit[id][TO_VISIT_ANY][floor - 1])
         return;
@@ -171,6 +152,7 @@ void Controller::manage_move_slot(cabin_id_t id)
     if (_state != CON_MANAGING_CABIN)
         return;
 
+    _cur_floor[id] += _cur_directions[id];
     _state = CON_MANAGING_MOVE;
     emit manage_cabin_slot(id);
 }
@@ -178,7 +160,7 @@ void Controller::manage_move_slot(cabin_id_t id)
 // Основная функция управления кабиной
 void Controller::manage_cabin_slot(cabin_id_t id)
 {
-    if (_state == CON_FREE)
+    if (_state == CON_FREE || _state == CON_MANAGING_CABIN)
         return;
 
     _state = CON_MANAGING_CABIN;
@@ -192,19 +174,17 @@ void Controller::manage_cabin_slot(cabin_id_t id)
     else if (dst_floor > _cur_floor[id])
     {
         _cur_directions[id] = DIR_UP;
-        _cur_floor[id]++;
-        emit move_cabin_signal(id, DIR_UP);
+        emit move_cabin_signal(id, _cur_floor[id], DIR_UP);
     }
     else if (dst_floor < _cur_floor[id])
     {
         _cur_directions[id] = DIR_DOWN;
-        _cur_floor[id]--;
-        emit move_cabin_signal(id, DIR_DOWN);
+        emit move_cabin_signal(id, _cur_floor[id], DIR_DOWN);
     }
     else
     {
         _cur_directions[id] = get_next_direction(id);
-        emit stop_cabin_signal(id);
+        emit stop_cabin_signal(id, _cur_floor[id]);
     }
 
     if (is_all_cabins_are_free())
@@ -212,25 +192,25 @@ void Controller::manage_cabin_slot(cabin_id_t id)
 }
 
 // Слот обрабатывает достижение этажа
-void Controller::reach_dst_floor_slot(int floor, cabin_id_t id)
+void Controller::reach_dst_floor_slot(cabin_id_t id)
 {
     if (_state != CON_MANAGING_CABIN)
         return;
 
     _state = CON_REACH_DST_FLOOR;
 
-    _to_visit[id][TO_VISIT_ANY][floor - 1] = false;
-    emit _lift_buttons[id][floor - 1]->deactivate_signal();
+    _to_visit[id][TO_VISIT_ANY][_cur_floor[id]] = false;
+    emit _lift_buttons[id][_cur_floor[id]]->deactivate_signal();
 
     if (_cur_directions[id] == DIR_UP)
     {
-        _to_visit[id][TO_VISIT_UP][floor - 1] = false;
-        emit _floor_buttons[BDIR_UP][floor - 1]->deactivate_signal();
+        _to_visit[id][TO_VISIT_UP][_cur_floor[id]] = false;
+        emit _floor_buttons[BDIR_UP][_cur_floor[id]]->deactivate_signal();
     }
     else
     {
-        _to_visit[id][TO_VISIT_DOWN][floor - 1] = false;
-        emit _floor_buttons[BDIR_DOWN][floor - 1]->deactivate_signal();
+        _to_visit[id][TO_VISIT_DOWN][_cur_floor[id]] = false;
+        emit _floor_buttons[BDIR_DOWN][_cur_floor[id]]->deactivate_signal();
     }
 
     emit button_deactivated_signal(id);

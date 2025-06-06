@@ -23,8 +23,8 @@ signals:
 
     void button_deactivated_signal(cabin_id_t);
     void free_cabin_signal(cabin_id_t);
-    void move_cabin_signal(cabin_id_t, direction_t);
-    void stop_cabin_signal(cabin_id_t);
+    void move_cabin_signal(cabin_id_t, int, direction_t);
+    void stop_cabin_signal(cabin_id_t, int);
     void free_contoller_signal();
 
 public slots:
@@ -33,7 +33,7 @@ public slots:
 
     void manage_move_slot(cabin_id_t id);
     void manage_cabin_slot(cabin_id_t cabin_id);
-    void reach_dst_floor_slot(int floor, cabin_id_t id);
+    void reach_dst_floor_slot(cabin_id_t id);
     void free_controller_slot();
 
 private:
