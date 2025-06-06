@@ -40,12 +40,6 @@ MainWindow::MainWindow(QWidget *parent)
 
         floor_button = findChild<QPushButton *>(QString("el2_floor%1").arg(floor));
         QObject::connect(floor_button, &QPushButton::clicked, [=, this]() { lift_system.manage_cabin_call_slot(floor, CID_SECOND); });
-
-        // Выполняем изначальную покраску кнопок в серый цвет
-        emit floor_buttons_change_color_signal(floor, DIR_UP, false);
-        emit floor_buttons_change_color_signal(floor, DIR_DOWN, false);
-        emit cabin_buttons_change_color_signal(floor, CID_FIRST, false);
-        emit cabin_buttons_change_color_signal(floor, CID_SECOND, false);
     }
 }
 

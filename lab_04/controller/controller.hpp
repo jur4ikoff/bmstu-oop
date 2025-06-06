@@ -26,7 +26,6 @@ signals:
     void move_cabin_signal(cabin_id_t, direction_t);
     void manage_move_signal(cabin_id_t, direction_t);
     void stop_cabin_signal(cabin_id_t);
-    // void after_move_signal(cabin_id_t);
 
     void free_contoller_signal();
 
