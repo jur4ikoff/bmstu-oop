@@ -88,8 +88,7 @@ void MainWindow::change_cabin_button_style_slot(int floor, cabin_id_t cabin_id, 
     if (button)
     {
         if (is_active)
-            qDebug() << "Test";
-        // button->setStyleSheet(QString("background-color:") + COLOR_ACTIVE_BUTTON);
+            button->setStyleSheet(QString("background-color:") + COLOR_ACTIVE_BUTTON);
         else
             button->setStyleSheet(QString("background-color:") + COLOR_INACTIVE_BUTTON);
     }

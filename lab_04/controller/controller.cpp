@@ -79,6 +79,7 @@ Controller::Controller(QObject *parent)
 // Слот вызывается, при нажатии на кнопку вызова на этаже
 void Controller::floor_destanation_slot(int floor, direction_t direction)
 {
+    qDebug() << "tut";
     if (_state != CON_FREE && _state != CON_MANAGING_CABIN && _state != CON_MANAGING_MOVE)
         return;
 
