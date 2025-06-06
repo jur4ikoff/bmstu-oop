@@ -164,7 +164,6 @@ void Controller::manage_cabin_slot(cabin_id_t id)
         return;
 
     _state = CON_MANAGING_CABIN;
-
     int dst_floor = get_next_visit_floor(id);
     if (dst_floor == FLOOR_NOT_FOUND)
     {
