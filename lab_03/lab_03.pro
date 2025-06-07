@@ -1,12 +1,18 @@
 TEMPLATE = app
 TARGET = app.exe
 
+QMAKE_CXXFLAGS += -std=c++20
+CONFIG += c++20
 QT += gui widgets core
 OBJECTS_DIR = ./obj
 LIBS += -lsqlite3 -L/opt/homebrew/opt/libpq/lib -lpq
 QMAKE_CXXFLAGS += -Werror -Wall -Wpedantic -std=c++20 -g
 
 INCLUDEPATH += /opt/homebrew/opt/libpq/include
+INCLUDEPATH += $$system(brew --prefix postgresql@14)/include
+LIBS += -L$$system(brew --prefix postgresql@14)/lib -lpq
+INCLUDEPATH += /opt/homebrew/opt/libpq/include
+LIBS += -L/opt/homebrew/opt/libpq/lib -lpq
 
 FORMS = interface.ui
 
