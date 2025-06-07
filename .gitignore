@@ -35,3 +35,7 @@
 *.app
 
 .DS_Store
+
+*.stash
+*.user
+*.bkp
