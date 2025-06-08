@@ -9,6 +9,7 @@ void PostgresqlLoadCommandDecorator::Execute() {
     _command.Execute();
     _director_id = _command.GetDirectorId();
     auto obj = _loadManager->LoadBoneModelFile(_director_id, _reader_id, _filename);
+    
     _sceneManager->AddObject(obj);
 }
 

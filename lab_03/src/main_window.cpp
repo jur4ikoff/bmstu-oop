@@ -75,7 +75,7 @@ void MainWindow::on_loadPushButton_clicked()
         command = std::make_shared<ListLoadCommand>();
     else
         command = std::make_shared<MatrixLoadCommand>();
-    
+
     // Использование паттерна декоратор
     std::shared_ptr<BaseCommand> decorator;
     if (ui->sqliteRadioButton->isChecked())
@@ -86,6 +86,7 @@ void MainWindow::on_loadPushButton_clicked()
         decorator = std::make_shared<TxtLoadCommandDecorator>(*command, fname);
     try
     {
+        // Фасад просто вызывает метод .Execute у команды
         _facade.Execute(*decorator);
     }
     catch (BaseException &exc)
@@ -293,7 +294,9 @@ void MainWindow::on_objectCompositePushbutton_clicked()
     }
     CompositeObjectCommand command(objs);
     _facade.Execute(command);
+
     drawScene();
+    updateObjectList();
 }
 
 void MainWindow::saveStateBeforeTransform(const std::vector<size_t> &objectIds)
