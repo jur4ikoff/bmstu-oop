@@ -103,7 +103,7 @@ src/transform/TransformAction.h \
 src/transform/CameraProjectionAction.h \
 src/visitor/Visitor.h \
 src/visitor/DrawVisitor.h \
-src/mainwindow.hpp \
+src/main_window.hpp \
 src/facade/SceneFacade.h \
 src/command/draw/BaseDrawCommand.h \
 src/command/draw/DrawSceneQtCommand.h \
@@ -188,7 +188,7 @@ SOURCES += ./src/builder/BaseBoneModelBuilder.cpp \
 ./src/transform/CameraProjectionAction.cpp \
 ./src/visitor/DrawVisitor.cpp \
 ./src/main.cpp \
-./src/mainwindow.cpp \
+./src/main_window.cpp \
 ./src/facade/SceneFacade.cpp \
 ./src/command/BaseCommand.cpp \
 ./src/transform/TransformAction.cpp \

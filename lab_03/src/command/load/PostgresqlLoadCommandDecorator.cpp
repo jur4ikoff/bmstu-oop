@@ -3,7 +3,7 @@
 PostgresqlLoadCommandDecorator::PostgresqlLoadCommandDecorator(BaseLoadCommand &command, const char *filename)
 : BaseLoadCommandDecorator(command), _filename(filename) {
     _command = command;
-    _reader_id = POSTGRESQLBONEMODELREADERCREATOR_ID;
+    _reader_id = POSTGRESQL_BONE_MODEL_READER_CREATOR_ID;
 }
 void PostgresqlLoadCommandDecorator::Execute() {
     _command.Execute();

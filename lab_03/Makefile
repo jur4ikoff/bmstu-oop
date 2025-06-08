@@ -96,7 +96,7 @@ SOURCES       = src/builder/BaseBoneModelBuilder.cpp \
 		src/transform/CameraProjectionAction.cpp \
 		src/visitor/DrawVisitor.cpp \
 		src/main.cpp \
-		src/mainwindow.cpp \
+		src/main_window.cpp \
 		src/facade/SceneFacade.cpp \
 		src/command/BaseCommand.cpp \
 		src/transform/TransformAction.cpp \
@@ -133,7 +133,7 @@ SOURCES       = src/builder/BaseBoneModelBuilder.cpp \
 		src/database/PostgresqlConnection.cpp \
 		src/command/CommandManager.cpp \
 		src/history/Memento.cpp \
-		src/history/CareTaker.cpp moc_mainwindow.cpp
+		src/history/CareTaker.cpp moc_main_window.cpp
 OBJECTS       = obj/BaseBoneModelBuilder.o \
 		obj/ListBoneModelBuilder.o \
 		obj/MatrixBoneModelBuilder.o \
@@ -178,7 +178,7 @@ OBJECTS       = obj/BaseBoneModelBuilder.o \
 		obj/CameraProjectionAction.o \
 		obj/DrawVisitor.o \
 		obj/main.o \
-		obj/mainwindow.o \
+		obj/main_window.o \
 		obj/SceneFacade.o \
 		obj/BaseCommand.o \
 		obj/TransformAction.o \
@@ -216,7 +216,7 @@ OBJECTS       = obj/BaseBoneModelBuilder.o \
 		obj/CommandManager.o \
 		obj/Memento.o \
 		obj/CareTaker.o \
-		obj/moc_mainwindow.o
+		obj/moc_main_window.o
 DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		/opt/homebrew/share/qt/mkspecs/features/device_config.prf \
 		/opt/homebrew/Cellar/qt/6.9.0/share/qt/mkspecs/common/unix.conf \
@@ -646,7 +646,7 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		src/transform/CameraProjectionAction.h \
 		src/visitor/Visitor.h \
 		src/visitor/DrawVisitor.h \
-		src/mainwindow.hpp \
+		src/main_window.hpp \
 		src/facade/SceneFacade.h \
 		src/command/draw/BaseDrawCommand.h \
 		src/command/draw/DrawSceneQtCommand.h \
@@ -728,7 +728,7 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		src/transform/CameraProjectionAction.cpp \
 		src/visitor/DrawVisitor.cpp \
 		src/main.cpp \
-		src/mainwindow.cpp \
+		src/main_window.cpp \
 		src/facade/SceneFacade.cpp \
 		src/command/BaseCommand.cpp \
 		src/transform/TransformAction.cpp \
@@ -1564,8 +1564,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/builder/BaseBoneModelBuilder.h src/builder/ListBoneModelBuilder.h src/builder/MatrixBoneModelBuilder.h src/concepts/concept.h src/director/BaseDirector.h src/director/BaseDirectorCreator.h src/director/BaseBoneModelDirector.h src/director/Basedirector.h src/director/DirectorCreator.h src/director/DirectorCreator.hpp src/director/DirectorSolution.h src/director/ListBoneModelDirector.h src/director/MatrixBoneModelDirector.h src/drawer/BaseDrawer.h src/drawer/BaseDrawerCreator.h src/drawer/QtDrawer.h src/drawer/QtDrawerCreator.h src/exception/baseexception.h src/exception/databaseexception.h src/exception/matrixexception.h src/exception/sqlitereaderexception.h src/manager/Drawmanager.hpp src/manager/DrawManager.h src/manager/LoadManager.h src/manager/SceneManager.h src/manager/TransformManager.h src/objects/BaseModel.h src/objects/BoneModel.h src/objects/Camera.h src/objects/Composite.h src/objects/Edge.h src/objects/FaceBuilder.h src/objects/InvisibleObject.h src/objects/ListModelStructure.h src/objects/MatrixModelStructure.h src/objects/ModelStructure.h src/objects/Object.h src/objects/Point.h src/objects/Vector3.h src/objects/VisibleObject.h src/reader/BaseReader.h src/reader/BaseReaderCreator.h src/reader/BoneModelReader.h src/reader/ReaderSolution.h src/reader/SqliteBoneModelReader.h src/reader/PostgresqlBoneModelReader.h src/reader/TxtBoneModelReader.h src/scene/Scene.h src/square_matrix/SquareMatrix.h src/square_matrix/SquareMatrix.hpp src/square_matrix/SquareMatrixRow.hpp src/strategy/CenterStrategy.h src/transform/RotateAction.h src/transform/ScaleAction.h src/transform/ShiftAction.h src/transform/TransformAction.h src/transform/CameraProjectionAction.h src/visitor/Visitor.h src/visitor/DrawVisitor.h src/mainwindow.hpp src/facade/SceneFacade.h src/command/draw/BaseDrawCommand.h src/command/draw/DrawSceneQtCommand.h src/command/draw/ToggleFaceCullingCommand.h src/command/load/TxtLoadCommandDecorator.h src/command/load/BaseLoadCommand.h src/command/load/MatrixLoadCommand.h src/command/load/ListLoadCommand.h src/command/load/SqliteLoadCommandDecorator.h src/command/load/PostgresqlLoadCommandDecorator.h src/command/load/BaseLoadCommandDecorator.h src/command/camera/SetCameraCommand.h src/command/camera/MoveCameraCommand.h src/command/camera/BaseCameraCommand.h src/command/camera/RemoveCameraCommand.h src/command/camera/AddCameraCommand.h src/command/scene/ClearSceneCommand.h src/command/scene/BaseSceneCommand.h src/command/object/ScaleObjectCommand.h src/command/object/BaseObjectCommand.h src/command/object/ShiftObjectCommand.h src/command/object/RotateObjectCommand.h src/command/object/RemoveObjectCommand.h src/command/object/CompositeObjectCommand.h src/command/BaseCommand.h src/command/scene/GetObjectIDsSceneCommand.h src/command/scene/GetCameraIDsSceneCommand.h src/command/history/BaseHistoryCommand.h src/database/DatabaseConnection.h src/database/AbstractDatabaseFactory.h src/database/SqliteFactory.h src/database/PostgresqlFactory.h src/database/DatabaseFactoryCreator.h src/database/SqliteConnection.h src/database/PostgresqlConnection.h src/command/CommandManager.h src/history/Memento.h src/history/CareTaker.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/builder/BaseBoneModelBuilder.cpp src/builder/ListBoneModelBuilder.cpp src/builder/MatrixBoneModelBuilder.cpp src/director/BaseBoneModelDirector.cpp src/director/Basedirector.cpp src/director/DirectorSolution.cpp src/director/ListBoneModelDirector.cpp src/director/MatrixBoneModelDirector.cpp src/drawer/BaseDrawer.cpp src/drawer/QtDrawer.cpp src/drawer/BaseDrawerCreator.cpp src/drawer/QtDrawerCreator.cpp src/exception/baseexception.cpp src/manager/LoadManager.cpp src/manager/SceneManager.cpp src/manager/TransformManager.cpp src/manager/DrawManager.cpp src/objects/BaseModel.cpp src/objects/BoneModel.cpp src/objects/Camera.cpp src/objects/Composite.cpp src/objects/Edge.cpp src/objects/FaceBuilder.cpp src/objects/InvisibleObject.cpp src/objects/ListModelStructure.cpp src/objects/MatrixModelStructure.cpp src/objects/ModelStructure.cpp src/objects/Object.cpp src/objects/Point.cpp src/objects/VisibleObject.cpp src/reader/BaseReader.cpp src/reader/BoneModelReader.cpp src/reader/ReaderSolution.cpp src/reader/SqliteBoneModelReader.cpp src/reader/PostgresqlBoneModelReader.cpp src/reader/TxtBoneModelReader.cpp src/scene/Scene.cpp src/strategy/CenterStrategy.cpp src/transform/RotateAction.cpp src/transform/ScaleAction.cpp src/transform/ShiftAction.cpp src/transform/CameraProjectionAction.cpp src/visitor/DrawVisitor.cpp src/main.cpp src/mainwindow.cpp src/facade/SceneFacade.cpp src/command/BaseCommand.cpp src/transform/TransformAction.cpp src/command/camera/SetCameraCommand.cpp src/command/camera/MoveCameraCommand.cpp src/command/camera/BaseCameraCommand.cpp src/command/camera/AddCameraCommand.cpp src/command/camera/RemoveCameraCommand.cpp src/command/draw/BaseDrawCommand.cpp src/command/draw/DrawSceneQtCommand.cpp src/command/draw/ToggleFaceCullingCommand.cpp src/command/load/MatrixLoadCommand.cpp src/command/load/SqliteLoadCommandDecorator.cpp src/command/load/PostgresqlLoadCommandDecorator.cpp src/command/load/ListLoadCommand.cpp src/command/load/BaseLoadCommand.cpp src/command/load/BaseLoadCommandDecorator.cpp src/command/load/TxtLoadCommandDecorator.cpp src/command/object/BaseObjectCommand.cpp src/command/object/RotateObjectCommand.cpp src/command/object/ShiftObjectCommand.cpp src/command/object/ScaleObjectCommand.cpp src/command/object/RemoveObjectCommand.cpp src/command/object/CompositeObjectCommand.cpp src/command/scene/ClearSceneCommand.cpp src/command/scene/BaseSceneCommand.cpp src/command/scene/GetObjectIDsSceneCommand.cpp src/command/scene/GetCameraIDsSceneCommand.cpp src/command/history/BaseHistoryCommand.cpp src/database/SqliteFactory.cpp src/database/PostgresqlFactory.cpp src/database/DatabaseFactoryCreator.cpp src/database/SqliteConnection.cpp src/database/PostgresqlConnection.cpp src/command/CommandManager.cpp src/history/Memento.cpp src/history/CareTaker.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/builder/BaseBoneModelBuilder.h src/builder/ListBoneModelBuilder.h src/builder/MatrixBoneModelBuilder.h src/concepts/concept.h src/director/BaseDirector.h src/director/BaseDirectorCreator.h src/director/BaseBoneModelDirector.h src/director/Basedirector.h src/director/DirectorCreator.h src/director/DirectorCreator.hpp src/director/DirectorSolution.h src/director/ListBoneModelDirector.h src/director/MatrixBoneModelDirector.h src/drawer/BaseDrawer.h src/drawer/BaseDrawerCreator.h src/drawer/QtDrawer.h src/drawer/QtDrawerCreator.h src/exception/baseexception.h src/exception/databaseexception.h src/exception/matrixexception.h src/exception/sqlitereaderexception.h src/manager/Drawmanager.hpp src/manager/DrawManager.h src/manager/LoadManager.h src/manager/SceneManager.h src/manager/TransformManager.h src/objects/BaseModel.h src/objects/BoneModel.h src/objects/Camera.h src/objects/Composite.h src/objects/Edge.h src/objects/FaceBuilder.h src/objects/InvisibleObject.h src/objects/ListModelStructure.h src/objects/MatrixModelStructure.h src/objects/ModelStructure.h src/objects/Object.h src/objects/Point.h src/objects/Vector3.h src/objects/VisibleObject.h src/reader/BaseReader.h src/reader/BaseReaderCreator.h src/reader/BoneModelReader.h src/reader/ReaderSolution.h src/reader/SqliteBoneModelReader.h src/reader/PostgresqlBoneModelReader.h src/reader/TxtBoneModelReader.h src/scene/Scene.h src/square_matrix/SquareMatrix.h src/square_matrix/SquareMatrix.hpp src/square_matrix/SquareMatrixRow.hpp src/strategy/CenterStrategy.h src/transform/RotateAction.h src/transform/ScaleAction.h src/transform/ShiftAction.h src/transform/TransformAction.h src/transform/CameraProjectionAction.h src/visitor/Visitor.h src/visitor/DrawVisitor.h src/main_window.hpp src/facade/SceneFacade.h src/command/draw/BaseDrawCommand.h src/command/draw/DrawSceneQtCommand.h src/command/draw/ToggleFaceCullingCommand.h src/command/load/TxtLoadCommandDecorator.h src/command/load/BaseLoadCommand.h src/command/load/MatrixLoadCommand.h src/command/load/ListLoadCommand.h src/command/load/SqliteLoadCommandDecorator.h src/command/load/PostgresqlLoadCommandDecorator.h src/command/load/BaseLoadCommandDecorator.h src/command/camera/SetCameraCommand.h src/command/camera/MoveCameraCommand.h src/command/camera/BaseCameraCommand.h src/command/camera/RemoveCameraCommand.h src/command/camera/AddCameraCommand.h src/command/scene/ClearSceneCommand.h src/command/scene/BaseSceneCommand.h src/command/object/ScaleObjectCommand.h src/command/object/BaseObjectCommand.h src/command/object/ShiftObjectCommand.h src/command/object/RotateObjectCommand.h src/command/object/RemoveObjectCommand.h src/command/object/CompositeObjectCommand.h src/command/BaseCommand.h src/command/scene/GetObjectIDsSceneCommand.h src/command/scene/GetCameraIDsSceneCommand.h src/command/history/BaseHistoryCommand.h src/database/DatabaseConnection.h src/database/AbstractDatabaseFactory.h src/database/SqliteFactory.h src/database/PostgresqlFactory.h src/database/DatabaseFactoryCreator.h src/database/SqliteConnection.h src/database/PostgresqlConnection.h src/command/CommandManager.h src/history/Memento.h src/history/CareTaker.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/builder/BaseBoneModelBuilder.cpp src/builder/ListBoneModelBuilder.cpp src/builder/MatrixBoneModelBuilder.cpp src/director/BaseBoneModelDirector.cpp src/director/Basedirector.cpp src/director/DirectorSolution.cpp src/director/ListBoneModelDirector.cpp src/director/MatrixBoneModelDirector.cpp src/drawer/BaseDrawer.cpp src/drawer/QtDrawer.cpp src/drawer/BaseDrawerCreator.cpp src/drawer/QtDrawerCreator.cpp src/exception/baseexception.cpp src/manager/LoadManager.cpp src/manager/SceneManager.cpp src/manager/TransformManager.cpp src/manager/DrawManager.cpp src/objects/BaseModel.cpp src/objects/BoneModel.cpp src/objects/Camera.cpp src/objects/Composite.cpp src/objects/Edge.cpp src/objects/FaceBuilder.cpp src/objects/InvisibleObject.cpp src/objects/ListModelStructure.cpp src/objects/MatrixModelStructure.cpp src/objects/ModelStructure.cpp src/objects/Object.cpp src/objects/Point.cpp src/objects/VisibleObject.cpp src/reader/BaseReader.cpp src/reader/BoneModelReader.cpp src/reader/ReaderSolution.cpp src/reader/SqliteBoneModelReader.cpp src/reader/PostgresqlBoneModelReader.cpp src/reader/TxtBoneModelReader.cpp src/scene/Scene.cpp src/strategy/CenterStrategy.cpp src/transform/RotateAction.cpp src/transform/ScaleAction.cpp src/transform/ShiftAction.cpp src/transform/CameraProjectionAction.cpp src/visitor/DrawVisitor.cpp src/main.cpp src/main_window.cpp src/facade/SceneFacade.cpp src/command/BaseCommand.cpp src/transform/TransformAction.cpp src/command/camera/SetCameraCommand.cpp src/command/camera/MoveCameraCommand.cpp src/command/camera/BaseCameraCommand.cpp src/command/camera/AddCameraCommand.cpp src/command/camera/RemoveCameraCommand.cpp src/command/draw/BaseDrawCommand.cpp src/command/draw/DrawSceneQtCommand.cpp src/command/draw/ToggleFaceCullingCommand.cpp src/command/load/MatrixLoadCommand.cpp src/command/load/SqliteLoadCommandDecorator.cpp src/command/load/PostgresqlLoadCommandDecorator.cpp src/command/load/ListLoadCommand.cpp src/command/load/BaseLoadCommand.cpp src/command/load/BaseLoadCommandDecorator.cpp src/command/load/TxtLoadCommandDecorator.cpp src/command/object/BaseObjectCommand.cpp src/command/object/RotateObjectCommand.cpp src/command/object/ShiftObjectCommand.cpp src/command/object/ScaleObjectCommand.cpp src/command/object/RemoveObjectCommand.cpp src/command/object/CompositeObjectCommand.cpp src/command/scene/ClearSceneCommand.cpp src/command/scene/BaseSceneCommand.cpp src/command/scene/GetObjectIDsSceneCommand.cpp src/command/scene/GetCameraIDsSceneCommand.cpp src/command/history/BaseHistoryCommand.cpp src/database/SqliteFactory.cpp src/database/PostgresqlFactory.cpp src/database/DatabaseFactoryCreator.cpp src/database/SqliteConnection.cpp src/database/PostgresqlConnection.cpp src/command/CommandManager.cpp src/history/Memento.cpp src/history/CareTaker.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents interface.ui $(DISTDIR)/
 
 
@@ -1601,10 +1601,10 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 	/Library/Developer/CommandLineTools/usr/bin/clang++ -pipe -stdlib=libc++ -std=c++20 -Werror -Wall -Wpedantic -std=c++20 -g -O2 -std=gnu++2a $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk -mmacosx-version-min=14.0 -Wall -Wextra -dM -E -o moc_predefs.h /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_main_window.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
-moc_mainwindow.cpp: src/mainwindow.hpp \
+	-$(DEL_FILE) moc_main_window.cpp
+moc_main_window.cpp: src/main_window.hpp \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/QString \
@@ -1658,7 +1658,7 @@ moc_mainwindow.cpp: src/mainwindow.hpp \
 		src/command/CommandManager.h \
 		moc_predefs.h \
 		/opt/homebrew/share/qt/libexec/moc
-	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/ypopov2005/Programming/bmstu-oop/lab_03/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/ypopov2005/Programming/bmstu-oop/lab_03 -I/opt/homebrew/opt/libpq/include -I/opt/homebrew/opt/postgresql@14/include -I/opt/homebrew/opt/libpq/include -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/objects -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/transform -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/visitor -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/square_matrix -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/exception -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/builder -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/reader -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/strategy -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/director -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/concepts -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/manager -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/scene -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/drawer -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/draw -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/load -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/camera -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/scene -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/object -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/history -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/facade -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/database -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/history -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/16/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/opt/homebrew/lib src/mainwindow.hpp -o moc_mainwindow.cpp
+	/opt/homebrew/share/qt/libexec/moc $(DEFINES) --include /Users/ypopov2005/Programming/bmstu-oop/lab_03/moc_predefs.h -I/opt/homebrew/share/qt/mkspecs/macx-clang -I/Users/ypopov2005/Programming/bmstu-oop/lab_03 -I/opt/homebrew/opt/libpq/include -I/opt/homebrew/opt/postgresql@14/include -I/opt/homebrew/opt/libpq/include -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/objects -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/transform -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/visitor -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/square_matrix -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/exception -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/builder -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/reader -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/strategy -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/director -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/concepts -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/manager -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/scene -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/drawer -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/draw -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/load -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/camera -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/scene -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/object -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/command/history -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/facade -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/database -I/Users/ypopov2005/Programming/bmstu-oop/lab_03/src/history -I/opt/homebrew/lib/QtWidgets.framework/Headers -I/opt/homebrew/lib/QtGui.framework/Headers -I/opt/homebrew/lib/QtCore.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/16/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include -I/Library/Developer/CommandLineTools/usr/include -F/opt/homebrew/lib src/main_window.hpp -o moc_main_window.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -2387,7 +2387,7 @@ obj/DrawVisitor.o: src/visitor/DrawVisitor.cpp src/visitor/DrawVisitor.h \
 
 obj/main.o: src/main.cpp /opt/homebrew/lib/QtWidgets.framework/Headers/QApplication \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qapplication.h \
-		src/mainwindow.hpp \
+		src/main_window.hpp \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/QString \
@@ -2441,7 +2441,7 @@ obj/main.o: src/main.cpp /opt/homebrew/lib/QtWidgets.framework/Headers/QApplicat
 		src/command/CommandManager.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/main.o src/main.cpp
 
-obj/mainwindow.o: src/mainwindow.cpp src/mainwindow.hpp \
+obj/main_window.o: src/main_window.cpp src/main_window.hpp \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QMainWindow \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/QString \
@@ -2528,7 +2528,7 @@ obj/mainwindow.o: src/mainwindow.cpp src/mainwindow.hpp \
 		src/command/history/BaseHistoryCommand.h \
 		src/history/CareTaker.h \
 		src/command/draw/ToggleFaceCullingCommand.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/mainwindow.o src/mainwindow.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/main_window.o src/main_window.cpp
 
 obj/SceneFacade.o: src/facade/SceneFacade.cpp src/facade/SceneFacade.h \
 		src/manager/LoadManager.h \
@@ -3975,8 +3975,8 @@ obj/CareTaker.o: src/history/CareTaker.cpp src/history/CareTaker.h \
 		src/objects/Point.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/CareTaker.o src/history/CareTaker.cpp
 
-obj/moc_mainwindow.o: moc_mainwindow.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/moc_mainwindow.o moc_mainwindow.cpp
+obj/moc_main_window.o: moc_main_window.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/moc_main_window.o moc_main_window.cpp
 
 ####### Install
 

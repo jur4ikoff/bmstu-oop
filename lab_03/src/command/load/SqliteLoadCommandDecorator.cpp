@@ -3,7 +3,7 @@
 SqliteLoadCommandDecorator::SqliteLoadCommandDecorator(BaseLoadCommand &command, const char *filename)
 : BaseLoadCommandDecorator(command), _filename(filename) {
     _command = command;
-    _reader_id = SQLITEBONEMODELREADERCREATOR_ID;
+    _reader_id = SQLITE_BONE_MODEL_READER_CREATOR_ID;
 }
 void SqliteLoadCommandDecorator::Execute() {
     _command.Execute();

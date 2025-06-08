@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1527</width>
-    <height>900</height>
+    <width>1470</width>
+    <height>826</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,26 +18,23 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>0</y>
-      <width>931</width>
-      <height>821</height>
+      <y>10</y>
+      <width>910</width>
+      <height>810</height>
      </rect>
     </property>
    </widget>
    <widget class="QGroupBox" name="loadGroupBox">
     <property name="geometry">
      <rect>
-      <x>940</x>
-      <y>10</y>
-      <width>571</width>
+      <x>920</x>
+      <y>0</y>
+      <width>560</width>
       <height>201</height>
      </rect>
     </property>
     <property name="title">
      <string>Загрузка</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
     <widget class="QGroupBox" name="typeGroupBOx">
      <property name="geometry">
@@ -50,9 +47,6 @@
      </property>
      <property name="title">
       <string>Представление</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
      <widget class="QRadioButton" name="listRadioButton">
       <property name="geometry">
@@ -135,9 +129,6 @@
      <property name="title">
       <string>Вид Файла</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
      <widget class="QRadioButton" name="sqliteRadioButton">
       <property name="geometry">
        <rect>
@@ -191,7 +182,7 @@
    <widget class="QGroupBox" name="cameraGroupBox">
     <property name="geometry">
      <rect>
-      <x>940</x>
+      <x>920</x>
       <y>210</y>
       <width>571</width>
       <height>201</height>
@@ -199,9 +190,6 @@
     </property>
     <property name="title">
      <string>Камеры</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
     <widget class="QDoubleSpinBox" name="cameraXSpin">
      <property name="geometry">
@@ -300,19 +288,6 @@
       <string>Удалить</string>
      </property>
     </widget>
-    <!-- <widget class="QPushButton" name="cameraMoveButton">
-     <property name="geometry">
-      <rect>
-       <x>300</x>
-       <y>150</y>
-       <width>91</width>
-       <height>27</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Переместить</string>
-     </property>
-    </widget> -->
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
@@ -324,9 +299,6 @@
      </property>
      <property name="text">
       <string>X</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_3">
@@ -341,9 +313,6 @@
      <property name="text">
       <string>Y</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
     </widget>
     <widget class="QLabel" name="label_4">
      <property name="geometry">
@@ -357,39 +326,20 @@
      <property name="text">
       <string>Z</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="objectGroupBox">
     <property name="geometry">
      <rect>
-      <x>940</x>
+      <x>920</x>
       <y>410</y>
       <width>571</width>
-      <height>481</height>
+      <height>411</height>
      </rect>
     </property>
     <property name="title">
      <string>Объекты</string>
     </property>
-    <property name="alignment">
-     <set>Qt::AlignmentFlag::AlignCenter</set>
-    </property>
-    <widget class="QListWidget" name="objectListWidget">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>281</width>
-       <height>181</height>
-      </rect>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
-     </property>
-    </widget>
     <widget class="QDoubleSpinBox" name="obkectMoveXSpin">
      <property name="geometry">
       <rect>
@@ -546,7 +496,7 @@
     <widget class="QPushButton" name="objectDeletePushbutton">
      <property name="geometry">
       <rect>
-       <x>360</x>
+       <x>330</x>
        <y>80</y>
        <width>191</width>
        <height>27</height>
@@ -559,7 +509,7 @@
     <widget class="QPushButton" name="objectCompositePushbutton">
      <property name="geometry">
       <rect>
-       <x>360</x>
+       <x>330</x>
        <y>40</y>
        <width>191</width>
        <height>27</height>
@@ -581,9 +531,6 @@
      <property name="text">
       <string>dx</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
     </widget>
     <widget class="QLabel" name="label_6">
      <property name="geometry">
@@ -596,9 +543,6 @@
      </property>
      <property name="text">
       <string>ax</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_7">
@@ -613,9 +557,6 @@
      <property name="text">
       <string>kx</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
     </widget>
     <widget class="QLabel" name="label_8">
      <property name="geometry">
@@ -628,9 +569,6 @@
      </property>
      <property name="text">
       <string>dy</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_9">
@@ -645,9 +583,6 @@
      <property name="text">
       <string>ky</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
     </widget>
     <widget class="QLabel" name="label_10">
      <property name="geometry">
@@ -660,9 +595,6 @@
      </property>
      <property name="text">
       <string>ay</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_11">
@@ -677,9 +609,6 @@
      <property name="text">
       <string>az</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
     </widget>
     <widget class="QLabel" name="label_12">
      <property name="geometry">
@@ -693,9 +622,6 @@
      <property name="text">
       <string>dz</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
-     </property>
     </widget>
     <widget class="QLabel" name="label_13">
      <property name="geometry">
@@ -708,9 +634,6 @@
      </property>
      <property name="text">
       <string>kz</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignCenter</set>
      </property>
     </widget>
     <widget class="QPushButton" name="objectMovePushbutton">
@@ -755,7 +678,7 @@
     <widget class="QPushButton" name="undoLastTransformPushbutton">
      <property name="geometry">
       <rect>
-       <x>360</x>
+       <x>330</x>
        <y>120</y>
        <width>191</width>
        <height>27</height>
@@ -768,7 +691,7 @@
     <widget class="QPushButton" name="toggleFaceCullingPushbutton">
      <property name="geometry">
       <rect>
-       <x>360</x>
+       <x>330</x>
        <y>160</y>
        <width>191</width>
        <height>27</height>
@@ -776,6 +699,19 @@
      </property>
      <property name="text">
       <string>Переключить сокрытие граней</string>
+     </property>
+    </widget>
+    <widget class="QListWidget" name="objectListWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>281</width>
+       <height>181</height>
+      </rect>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::MultiSelection</enum>
      </property>
     </widget>
    </widget>
