@@ -30,6 +30,11 @@ void Scene::RemoveCamera(const std::list<iterator>::const_iterator &it)
     _cameras.erase(it);
 }
 
+void Scene::RemoveOnlyCamera(const std::list<iterator>::const_iterator &it)
+{
+    _cameras.erase(it);
+}
+
 std::shared_ptr<Object> Scene::GetCamera(const iteratorCamera &it)
 {
     return **it;

@@ -54,12 +54,28 @@ std::shared_ptr<Object> SceneManager::GetObject(std::size_t id)
 
 void SceneManager::RemoveObject(std::size_t id)
 {
-    for (auto it = _scene->cbegin(); it != _scene->cend(); ++it)
+    Scene::iteratorCamera camera_it;
+    bool is_camera = false;
+    for (auto it = _scene->beginCamera(); it != _scene->endCamera(); ++it)
     {
-        if ((*it)->GetId() == id)
+        if ((**it)->GetId() == id)
         {
-            _scene->RemoveObject(it);
+            is_camera = true;
+            camera_it = it;
+            _scene->RemoveCamera(it);
             return;
+        }
+    }
+
+    if (!is_camera)
+    {
+        for (auto it = _scene->cbegin(); it != _scene->cend(); ++it)
+        {
+            if ((*it)->GetId() == id)
+            {
+                _scene->RemoveObject(it);
+                return;
+            }
         }
     }
 }
