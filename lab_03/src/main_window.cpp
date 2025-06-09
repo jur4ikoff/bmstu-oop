@@ -277,6 +277,9 @@ void MainWindow::on_objectDeletePushbutton_clicked()
     {
         RemoveObjectCommand command(id);
         _facade.Execute(command);
+
+        RemoveCameraCommand command_del_camera(id);
+        _facade.Execute(command_del_camera);
     }
 
     drawScene();
