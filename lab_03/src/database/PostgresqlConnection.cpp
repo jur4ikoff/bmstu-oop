@@ -248,6 +248,7 @@ void PostgresqlConnection::Close()
 
 void PostgresqlConnection::Execute(const std::string &sql, DatabaseCallback callback, void *data)
 {
+    // Проверка подключения к БД
     if (!IsOpen())
     {
         time_t now = time(nullptr);
@@ -289,7 +290,8 @@ void PostgresqlConnection::Execute(const std::string &sql, DatabaseCallback call
                     values[col] = PQgetvalue(res, row, col);
                 }
             }
-
+            
+            // Вызов callback-функции для текущей строки
             int result = callback(data, ncols, values, nullptr);
 
             delete[] values;

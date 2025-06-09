@@ -4,7 +4,6 @@
 
 LoadManager::LoadManager()
 {
-    // Фабрика
     _dsolution.Register(LIST_BONE_MODEL_DIRECTOR_CREATOR_ID, std::make_shared<ListBoneModelDirectorCreator>());
     _dsolution.Register(MATRIX_BONE_MODEL_DIRECTOR_CREATOR_ID, std::make_shared<MatrixBoneModelDirectorCreator>());
 

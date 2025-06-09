@@ -60,6 +60,7 @@ void SqliteConnection::Execute(const std::string &sql, DatabaseCallback callback
     }
 
     char *errorMsg = nullptr;
+    // Чтение
     int rc = sqlite3_exec(_db, sql.c_str(), callback, data, &errorMsg);
 
     if (rc != SQLITE_OK)
