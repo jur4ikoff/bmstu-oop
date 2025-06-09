@@ -2,8 +2,9 @@
 #include "Point.h"
 #include "SquareMatrix.h"
 
-class TransformAction {
-    public:
+class TransformAction
+{
+public:
     TransformAction();
 
     virtual ~TransformAction() = default;
@@ -12,6 +13,6 @@ class TransformAction {
     const SquareMatrix<double> &GetMatrix() const;
     SquareMatrix<double> &GetMatrix();
 
-    protected:
-        SquareMatrix<double> _matrix;
+protected:
+    SquareMatrix<double> _matrix;
 };

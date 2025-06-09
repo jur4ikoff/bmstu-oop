@@ -5,17 +5,17 @@
 #include "BaseDrawerCreator.h"
 #include <memory>
 
+class DrawManager
+{
+public:
+    DrawManager() = default;
+    ~DrawManager() = default;
 
-class DrawManager {
-    public:
-        DrawManager() = default;
-        ~DrawManager() = default;
-        
-        template <typename DrawerCreator, typename... Args>
+    template <typename DrawerCreator, typename... Args>
         requires NotAbstract<DrawerCreator> && Derivative<DrawerCreator, BaseDrawerCreator> && Constructible<DrawerCreator, Args...>
-        void DrawScene(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera, Args... args);
-        
-        void SetFaceCullingForVisitor(DrawVisitor& visitor);
+    void DrawScene(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera, Args... args);
+
+    void SetFaceCullingForVisitor(DrawVisitor &visitor);
 };
 
 #include "Drawmanager.hpp"

@@ -1,8 +1,8 @@
 #pragma once
 #include "Object.h"
 
-
-class VisibleObject : public Object {
+class VisibleObject : public Object
+{
 public:
     VisibleObject();
     virtual ~VisibleObject() = 0;

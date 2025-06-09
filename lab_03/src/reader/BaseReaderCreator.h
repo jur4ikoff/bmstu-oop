@@ -4,18 +4,19 @@
 #include <memory>
 #include <concepts>
 
-class BaseReaderCreator {
-    public:
-        virtual ~BaseReaderCreator() = default;
+class BaseReaderCreator
+{
+public:
+    virtual ~BaseReaderCreator() = default;
 };
 
 template <typename Reader, typename... Args>
-class BaseReaderCreatorTemplate : public BaseReaderCreator {
-    public:
-        virtual ~BaseReaderCreatorTemplate() = default;
+class BaseReaderCreatorTemplate : public BaseReaderCreator
+{
+public:
+    virtual ~BaseReaderCreatorTemplate() = default;
 
-        virtual std::shared_ptr<Reader> Create(Args&&... args) = 0;
-
+    virtual std::shared_ptr<Reader> Create(Args &&...args) = 0;
 };
 
-using BoneModelReaderCreator_t = BaseReaderCreatorTemplate<BoneModelReader, const char*>;
+using BoneModelReaderCreator_t = BaseReaderCreatorTemplate<BoneModelReader, const char *>;

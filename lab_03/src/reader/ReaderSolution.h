@@ -3,18 +3,18 @@
 #include "BaseReaderCreator.h"
 #include <map>
 
-class ReaderSolution {
-    public:
-        ReaderSolution();
-        ReaderSolution(std::initializer_list<std::pair<size_t, std::shared_ptr<BaseReaderCreator>>> list);
+class ReaderSolution
+{
+public:
+    ReaderSolution();
+    ReaderSolution(std::initializer_list<std::pair<size_t, std::shared_ptr<BaseReaderCreator>>> list);
 
-        void Register(std::size_t index, std::shared_ptr<BaseReaderCreator> creator);
-        bool Check(std::size_t index);
-        std::shared_ptr<BaseReaderCreator> Create(std::size_t index);
+    void Register(std::size_t index, std::shared_ptr<BaseReaderCreator> creator);
+    bool Check(std::size_t index);
+    std::shared_ptr<BaseReaderCreator> Create(std::size_t index);
 
-        ~ReaderSolution();
+    ~ReaderSolution();
 
-    private:
-        std::map<size_t, std::shared_ptr<BaseReaderCreator>> _creators;
-
+private:
+    std::map<size_t, std::shared_ptr<BaseReaderCreator>> _creators;
 };

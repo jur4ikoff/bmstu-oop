@@ -2,19 +2,19 @@
 #include "QtDrawerCreator.h"
 #include <iostream>
 
-
-DrawSceneQtCommand::DrawSceneQtCommand(QGraphicsScene* sceneQt)
+DrawSceneQtCommand::DrawSceneQtCommand(QGraphicsScene *sceneQt)
 {
     _sceneQt = sceneQt;
 }
 
-
-void DrawSceneQtCommand::Execute() {
+void DrawSceneQtCommand::Execute()
+{
     auto camera = _sceneManager->GetMainCamera();
     auto scene = _sceneManager->GetScene();
-    _drawManager->DrawScene<QtDrawerCreator, QGraphicsScene*>(scene, camera, _sceneQt);
+    _drawManager->DrawScene<QtDrawerCreator, QGraphicsScene *>(scene, camera, _sceneQt);
 }
 
-std::string DrawSceneQtCommand::GetDescription() const {
+std::string DrawSceneQtCommand::GetDescription() const
+{
     return "Отрисовка сцены";
 }

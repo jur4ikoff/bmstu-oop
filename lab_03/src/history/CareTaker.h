@@ -4,7 +4,8 @@
 #include <map>
 #include <vector>
 
-class CareTaker {
+class CareTaker
+{
 public:
     CareTaker() = default;
     ~CareTaker() = default;
@@ -16,4 +17,4 @@ public:
 
 private:
     std::map<size_t, std::vector<std::shared_ptr<Memento>>> _mementos;
-}; 
+};

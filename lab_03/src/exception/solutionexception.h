@@ -1,33 +1,32 @@
 #pragma once
 #include "baseexception.h"
 
-class SolutionException : public BaseException 
+class SolutionException : public BaseException
 {
-    public:
+public:
     SolutionException(const char *time, const char *filename,
-                     const size_t line, const char *class_name,
-                     const char *method_name,
-                     const char *info = "Solution exception.")
-        : BaseException(time, filename, line, class_name, method_name, info){};
+                      const size_t line, const char *class_name,
+                      const char *method_name,
+                      const char *info = "Solution exception.")
+        : BaseException(time, filename, line, class_name, method_name, info) {};
 };
 
-class SolutionNotFoundException : public SolutionException 
+class SolutionNotFoundException : public SolutionException
 {
-    public:
+public:
     SolutionNotFoundException(const char *time, const char *filename,
-                     const size_t line, const char *class_name,
-                     const char *method_name,
-                     const char *info = "Solution not found exception.")
-        : SolutionException(time, filename, line, class_name, method_name, info){};
+                              const size_t line, const char *class_name,
+                              const char *method_name,
+                              const char *info = "Solution not found exception.")
+        : SolutionException(time, filename, line, class_name, method_name, info) {};
 };
 
-
-class SolutionAlreadyInException : public SolutionException 
+class SolutionAlreadyInException : public SolutionException
 {
-    public:
+public:
     SolutionAlreadyInException(const char *time, const char *filename,
-                     const size_t line, const char *class_name,
-                     const char *method_name,
-                     const char *info = "Solution already in exception.")
-        : SolutionException(time, filename, line, class_name, method_name, info){};
+                               const size_t line, const char *class_name,
+                               const char *method_name,
+                               const char *info = "Solution already in exception.")
+        : SolutionException(time, filename, line, class_name, method_name, info) {};
 };

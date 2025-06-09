@@ -1,18 +1,17 @@
-#ifndef DATABASEFACTORYCREATOR_H
-#define DATABASEFACTORYCREATOR_H
+#pragma once
 
 #include <memory>
 #include "AbstractDatabaseFactory.h"
 
-enum DatabaseType {
+enum DatabaseType
+{
     DB_SQLITE,
     DB_MYSQL,
     DB_POSTGRESQL
 };
 
-class DatabaseFactoryCreator {
+class DatabaseFactoryCreator
+{
 public:
     static std::unique_ptr<AbstractDatabaseFactory> CreateFactory(DatabaseType type);
 };
-
-#endif 

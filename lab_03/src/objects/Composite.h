@@ -2,7 +2,8 @@
 #include "Object.h"
 #include <memory>
 
-class Composite : public Object {
+class Composite : public Object
+{
 public:
     using value_type = Object;
     using iterator = std::vector<std::shared_ptr<value_type>>::iterator;
@@ -22,7 +23,7 @@ public:
     bool Add(const std::shared_ptr<Object> object) override;
     bool Remove(const iterator &it) override;
 
-    void Transform(const TransformAction& transform) override;
+    void Transform(const TransformAction &transform) override;
     void accept(const Visitor &visitor) override;
 
     bool IsVisible() const override;

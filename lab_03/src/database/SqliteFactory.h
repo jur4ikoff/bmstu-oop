@@ -1,5 +1,4 @@
-#ifndef SQLITEFACTORY_H
-#define SQLITEFACTORY_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -11,5 +10,3 @@ public:
     SqliteFactory() = default;
     std::unique_ptr<DatabaseConnection> create() override;
 };
-
-#endif 

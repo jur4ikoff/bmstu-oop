@@ -1,5 +1,4 @@
-#ifndef ABSTRACTDATABASEFACTORY_H
-#define ABSTRACTDATABASEFACTORY_H
+#pragma once
 
 #include <memory>
 #include "DatabaseConnection.h"
@@ -12,4 +11,3 @@ public:
     virtual std::unique_ptr<DatabaseConnection> create() = 0;
 };
 
-#endif 

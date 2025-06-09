@@ -4,7 +4,8 @@
 #include "BoneModelReader.h"
 #include "CenterStrategy.h"
 
-class BaseBoneModelBuilder {
+class BaseBoneModelBuilder
+{
 public:
     BaseBoneModelBuilder() = default;
 

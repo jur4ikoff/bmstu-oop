@@ -1,15 +1,16 @@
 #include "CenterStrategy.h"
 
-
 BaseCenterStrategy::~BaseCenterStrategy() {}
 
-Point ClassicCenterStrategy::CenterAlgorithm(std::vector<Point> points) const {
+Point ClassicCenterStrategy::CenterAlgorithm(std::vector<Point> points) const
+{
     if (points.empty())
         return Point();
     double minX = points[0].GetX(), minY = points[0].GetY(), minZ = points[0].GetZ();
     double maxX = points[0].GetX(), maxY = points[0].GetY(), maxZ = points[0].GetZ();
 
-    for (auto &p : points) {
+    for (auto &p : points)
+    {
         if (minX > p.GetX())
             minX = p.GetX();
         if (minY > p.GetY())

@@ -3,7 +3,8 @@
 #include "ShiftAction.h"
 
 CameraProjectionAction::CameraProjectionAction(std::shared_ptr<Camera> camera)
-    : TransformAction(), _camera(camera) {
+    : TransformAction(), _camera(camera)
+{
 
     ShiftAction toCenter(Point(-camera->_self.GetX(), -camera->_self.GetY(), -camera->_self.GetZ()));
     SquareMatrix<double> toCameraBasis(4);
@@ -31,4 +32,3 @@ CameraProjectionAction::CameraProjectionAction(std::shared_ptr<Camera> camera)
     _matrix *= toCenter.GetMatrix();
     _matrix *= toCameraBasis;
 }
-

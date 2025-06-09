@@ -1,5 +1,4 @@
-#ifndef POSTGRESQLFACTORY_H
-#define POSTGRESQLFACTORY_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -11,5 +10,3 @@ public:
     PostgresqlFactory() = default;
     std::unique_ptr<DatabaseConnection> create() override;
 };
-
-#endif 

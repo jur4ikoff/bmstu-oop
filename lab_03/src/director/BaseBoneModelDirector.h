@@ -4,7 +4,8 @@
 #include "CenterStrategy.h"
 #include "BoneModelReader.h"
 
-class BaseBoneModelDirector : public BaseDirector {
+class BaseBoneModelDirector : public BaseDirector
+{
 public:
     BaseBoneModelDirector(std::shared_ptr<BoneModelReader> reader);
 

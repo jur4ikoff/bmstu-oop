@@ -1,7 +1,8 @@
 #pragma once
 #include "Object.h"
 
-class BaseDirector {
+class BaseDirector
+{
 public:
     BaseDirector() = default;
 

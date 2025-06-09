@@ -2,33 +2,41 @@
 
 BaseBoneModelBuilder::~BaseBoneModelBuilder() {}
 
-void BaseBoneModelBuilder::BuildPoint(const Point& p) {
+void BaseBoneModelBuilder::BuildPoint(const Point &p)
+{
     _model->AddPoint(p);
 }
 
-void BaseBoneModelBuilder::BuildEdge(const Edge& edge) {
+void BaseBoneModelBuilder::BuildEdge(const Edge &edge)
+{
     _model->AddEdge(edge);
 }
 
-void BaseBoneModelBuilder::BuildCenter(const Point& center) {
+void BaseBoneModelBuilder::BuildCenter(const Point &center)
+{
     _model->SetCenter(center);
 }
 
-std::shared_ptr<BoneModel> BaseBoneModelBuilder::Get() {
+std::shared_ptr<BoneModel> BaseBoneModelBuilder::Get()
+{
     return std::make_shared<BoneModel>(_model);
 }
 
-bool BaseBoneModelBuilder::IsBuilt() {
+bool BaseBoneModelBuilder::IsBuilt()
+{
     return _model->GetPoints().size() != 0;
 }
 
 void BaseBoneModelBuilder::BuildFromReader(std::shared_ptr<BoneModelReader> reader,
-                                           std::shared_ptr<BaseCenterStrategy> strategy) {
-    if (!reader) {
+                                           std::shared_ptr<BaseCenterStrategy> strategy)
+{
+    if (!reader)
+    {
         throw std::runtime_error("Builder::BuildFromReader: reader is null");
     }
 
-    if (!strategy) {
+    if (!strategy)
+    {
         throw std::runtime_error("Builder::BuildFromReader: strategy is null");
     }
 
@@ -39,11 +47,13 @@ void BaseBoneModelBuilder::BuildFromReader(std::shared_ptr<BoneModelReader> read
     auto edges = reader->ReadEdges();
     reader->Close();
 
-    for (const auto& p : points) {
+    for (const auto &p : points)
+    {
         BuildPoint(p);
     }
 
-    for (const auto& e : edges) {
+    for (const auto &e : edges)
+    {
         BuildEdge(e);
     }
 

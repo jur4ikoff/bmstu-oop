@@ -8,20 +8,29 @@ class Visitor;
 
 std::size_t GetNextId();
 
-class Object {
+class Object
+{
 public:
     using iterator = std::vector<std::shared_ptr<Object>>::iterator;
     Object();
     virtual ~Object() = 0;
 
-    virtual bool Add(std::shared_ptr<Object> obj) { (void)obj; return false; }
-    virtual bool Remove(const iterator& it) { (void)it; return false; }
+    virtual bool Add(std::shared_ptr<Object> obj)
+    {
+        (void)obj;
+        return false;
+    }
+    virtual bool Remove(const iterator &it)
+    {
+        (void)it;
+        return false;
+    }
 
     virtual iterator begin() { return iterator(); };
     virtual iterator end() { return iterator(); };
     virtual bool IsComposite() { return false; }
 
-    virtual void Transform(const TransformAction& action) = 0;
+    virtual void Transform(const TransformAction &action) = 0;
     virtual void accept(const Visitor &visitor) = 0;
     virtual std::shared_ptr<Object> Clone() const = 0;
 

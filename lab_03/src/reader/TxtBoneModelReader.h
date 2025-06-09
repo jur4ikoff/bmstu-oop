@@ -4,24 +4,23 @@
 #include <fstream>
 #include <memory>
 
-class TxtBoneModelReader : public BoneModelReader {
-    public:
-        TxtBoneModelReader(const char* filename);
-        virtual ~TxtBoneModelReader();
+class TxtBoneModelReader : public BoneModelReader
+{
+public:
+    TxtBoneModelReader(const char *filename);
+    virtual ~TxtBoneModelReader();
 
+    virtual void Open();
+    virtual void Close();
+    virtual bool IsOpen();
 
-        virtual void Open();
-        virtual void Close();
-        virtual bool IsOpen();
+    virtual std::vector<Point> ReadPoints();
+    virtual std::vector<Edge> ReadEdges();
+    virtual std::vector<Face> ReadFaces();
+    virtual Point ReadCenter();
 
-        virtual std::vector<Point> ReadPoints();
-        virtual std::vector<Edge> ReadEdges();
-        virtual std::vector<Face> ReadFaces();
-        virtual Point ReadCenter();
-
-    protected:
-        const char* _fname;
-        std::ifstream _file;
-        std::shared_ptr<BaseCenterStrategy> _centerStrategy;
-
+protected:
+    const char *_fname;
+    std::ifstream _file;
+    std::shared_ptr<BaseCenterStrategy> _centerStrategy;
 };

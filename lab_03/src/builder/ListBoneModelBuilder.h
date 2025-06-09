@@ -3,14 +3,16 @@
 #include "BaseBoneModelBuilder.h"
 #include "ListModelStructure.h"
 
-
-class ListBoneModelBuilder : public BaseBoneModelBuilder {
+class ListBoneModelBuilder : public BaseBoneModelBuilder
+{
 public:
     ListBoneModelBuilder();
 
     virtual ~ListBoneModelBuilder() = default;
+
 protected:
-    std::shared_ptr<ModelStructure> CreateModelStructure() override {
+    std::shared_ptr<ModelStructure> CreateModelStructure() override
+    {
         return std::make_shared<ListModelStructure>();
     }
 };

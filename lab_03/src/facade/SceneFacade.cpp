@@ -1,6 +1,7 @@
 #include "SceneFacade.h"
 
-SceneFacade::SceneFacade() {
+SceneFacade::SceneFacade()
+{
     _drawManager = std::make_shared<DrawManager>();
     _loadManager = std::make_shared<LoadManager>();
     _sceneManager = std::make_shared<SceneManager>();
@@ -8,7 +9,8 @@ SceneFacade::SceneFacade() {
     _commandManager = std::make_shared<CommandManager>();
 }
 
-void SceneFacade::Execute(BaseCommand& command) {
+void SceneFacade::Execute(BaseCommand &command)
+{
     command.SetManagers(_sceneManager, _loadManager, _transformManager, _drawManager);
     command.Execute();
 }
