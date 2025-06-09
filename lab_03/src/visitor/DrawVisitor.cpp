@@ -98,6 +98,7 @@ bool DrawVisitor::isFaceVisible(const std::vector<Point> &points, const Face &fa
 
 void DrawVisitor::visit(BoneModel &model) const
 {
+    // Back-Face Culling (отсечение нелицевых граней)
     auto points = model._model->GetPoints();
     auto edges = model._model->GetEdges();
     auto faces = model._model->GetFaces();

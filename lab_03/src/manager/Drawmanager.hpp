@@ -10,7 +10,7 @@ void DrawManager::DrawScene(std::shared_ptr<Scene> scene, std::shared_ptr<Camera
     DrawerCreator drawerCreator(args...);
     std::shared_ptr<BaseDrawer> drawer = drawerCreator.Create();
     DrawVisitor vis(drawer, camera);
-    SetFaceCullingForVisitor(vis);
+    SetFaceCullingForVisitor(vis); // Устанавливаем режим видимости ребер
     for (auto it = scene->begin(); it != scene->end(); ++it)
     {
         (*it)->accept(vis);
