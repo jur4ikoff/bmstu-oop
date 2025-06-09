@@ -241,16 +241,16 @@ public:
 
     // перегрузка оператора & - Скалярное умножение
     template <ValidContainer<T> Con>
-    decltype(auto) operator&(const Con &other) const;
+    double operator&(const Con &other) const;
     template <ConvertAssignableOperationable<T> U>
-    decltype(auto) operator&(const Vector<U> &other) const;
+    double operator&(const Vector<U> &other) const;
     template <ValidContainer<T> Con>
-    decltype(auto) scal_mul(const Con &other);
+    double scal_mul(const Con &other);
     template <ConvertAssignableOperationable<T> U>
-    decltype(auto) scal_mul(const Vector<U> &other);
+    double scal_mul(const Vector<U> &other);
 #pragma endregion vector_scalar_mul
 
-#pragma region equals
+#pragma region equals 
     // перегрузка равенства и неравенства
     template <ValidContainer<T> Con>
     bool operator==(const Con &other) const;
@@ -329,6 +329,8 @@ protected:
 
 private:
     std::shared_ptr<T[]> container;
+
+    void fill_elements_va(VectorIterator<T> iter, size_t remaining, va_list &args);
 };
 
 #include "vector.hpp"

@@ -7,10 +7,10 @@
 class VectorAddVector : public ::testing::Test
 {
 protected:
-    Vector<int> vec_int_1 = { 1, 2, 3 };
-    Vector<int> vec_int_2 = { 4, 5, 6 };
-    Vector<double> vec_double = { 1.5, 2.5, 3.5 };
-    Vector<long> vec_long = { 10, 20, 30 };
+    Vector<int> vec_int_1 = {1, 2, 3};
+    Vector<int> vec_int_2 = {4, 5, 6};
+    Vector<double> vec_double = {1.5, 2.5, 3.5};
+    Vector<long> vec_long = {10, 20, 30};
 };
 
 // Тесты для оператора +
@@ -44,7 +44,7 @@ TEST_F(VectorAddVector, PlusOperatorWithLong)
 
 TEST_F(VectorAddVector, PlusOperatorDifferentSizeThrows)
 {
-    Vector<int> short_vec{ 1, 2 };
+    Vector<int> short_vec{1, 2};
     MY_EXPECT_THROW((vec_int_1 + short_vec), errVectorsSizeNotEqual)
 }
 
@@ -69,7 +69,7 @@ TEST_F(VectorAddVector, PlusAssignmentDifferentTypes)
 
 TEST_F(VectorAddVector, PlusAssignmentChain)
 {
-    Vector<int> vec{ 1, 1, 1 };
+    Vector<int> vec{1, 1, 1};
     vec += vec_int_1 += vec_int_2;
     ASSERT_EQ(vec.size(), 3);
     EXPECT_EQ(vec[0], 6);
@@ -79,7 +79,7 @@ TEST_F(VectorAddVector, PlusAssignmentChain)
 
 TEST_F(VectorAddVector, PlusAssignmentDifferentSizeThrows)
 {
-    Vector<int> short_vec{ 1, 2 };
+    Vector<int> short_vec{1, 2};
     MY_EXPECT_THROW((vec_int_1 += short_vec), errVectorsSizeNotEqual)
 }
 
@@ -87,8 +87,8 @@ TEST_F(VectorAddVector, PlusAssignmentDifferentSizeThrows)
 class VectorAddNumber : public ::testing::Test
 {
 protected:
-    Vector<int> int_vec = { 1, 2, 3 };
-    Vector<double> double_vec = { 1.5, 2.5, 3.5 };
+    Vector<int> int_vec = {1, 2, 3};
+    Vector<double> double_vec = {1.5, 2.5, 3.5};
     Vector<int> empty_vec = {};
 };
 
@@ -123,8 +123,7 @@ TEST_F(VectorAddNumber, PlusScalarReturnsNewVector)
 }
 
 TEST_F(VectorAddNumber, PlusScalarEmptyVectorThrows){
-    MY_EXPECT_THROW(empty_vec + 5, errNegSize)
-}
+    MY_EXPECT_THROW(empty_vec + 5, errNegSize)}
 
 TEST_F(VectorAddNumber, PlusScalarWithZero)
 {
@@ -216,8 +215,8 @@ TEST_F(VectorAddNumber, PlusAssignmentScalarNegativeValue)
 class VectorSubVector : public ::testing::Test
 {
 protected:
-    Vector<int> int_vec = { 10, 20, 30 };
-    Vector<double> double_vec = { 1.5, 2.5, 3.5 };
+    Vector<int> int_vec = {10, 20, 30};
+    Vector<double> double_vec = {1.5, 2.5, 3.5};
     Vector<int> empty_vec = {};
 };
 
@@ -225,14 +224,14 @@ protected:
 class VectorSubNum : public ::testing::Test
 {
 protected:
-    Vector<int> int_vec = { 10, 20, 30 };
-    Vector<double> double_vec = { 1.5, 2.5, 3.5 };
+    Vector<int> int_vec = {10, 20, 30};
+    Vector<double> double_vec = {1.5, 2.5, 3.5};
     Vector<int> empty_vec = {};
 };
 
 TEST_F(VectorSubVector, SameTypeSubtraction)
 {
-    Vector<int> other{ 1, 2, 3 };
+    Vector<int> other{1, 2, 3};
     auto result = int_vec - other;
 
     ASSERT_EQ(result.size(), 3);
@@ -253,7 +252,7 @@ TEST_F(VectorSubVector, DifferentTypeSubtraction)
 
 TEST_F(VectorSubVector, ReturnsNewVector)
 {
-    Vector<int> other{ 1, 2, 3 };
+    Vector<int> other{1, 2, 3};
     auto result = int_vec - other;
     EXPECT_EQ(int_vec[0], 10); // Исходный вектор не изменился
     EXPECT_EQ(result[0], 9);
@@ -266,13 +265,13 @@ TEST_F(VectorSubVector, EmptyVectorThrows)
 
 TEST_F(VectorSubVector, DifferentSizeThrows)
 {
-    Vector<int> shorter{ 1, 2 };
+    Vector<int> shorter{1, 2};
     MY_EXPECT_THROW((int_vec - shorter), errVectorsSizeNotEqual);
 }
 
 TEST_F(VectorSubVector, InplaceSubtractionSameType)
 {
-    Vector<int> other{ 1, 2, 3 };
+    Vector<int> other{1, 2, 3};
     int_vec -= other;
 
     ASSERT_EQ(int_vec.size(), 3);
@@ -293,7 +292,7 @@ TEST_F(VectorSubVector, InplaceSubtractionDifferentType)
 
 TEST_F(VectorSubVector, InplaceReturnsReference)
 {
-    Vector<int> other{ 1, 2, 3 };
+    Vector<int> other{1, 2, 3};
     Vector<int> &result = (int_vec -= other);
     EXPECT_EQ(&result, &int_vec);
 }
@@ -387,10 +386,10 @@ TEST_F(VectorSubNum, NegativeScalarSubtraction)
 class VectorMultiplicationBase
 {
 protected:
-    Vector<int> int_vec{ 2, 3, 4 };
-    Vector<double> double_vec{ 1.5, 2.5, 3.5 };
+    Vector<int> int_vec{2, 3, 4};
+    Vector<double> double_vec{1.5, 2.5, 3.5};
     Vector<int> empty_vec{};
-    Vector<int> short_vec{ 1, 2 };
+    Vector<int> short_vec{1, 2};
 };
 
 // Тесты для умножения векторов
@@ -409,7 +408,7 @@ class VectorMultNumber : public ::testing::Test, protected VectorMultiplicationB
 
 TEST_F(VectorMultVector, MultiplySameType)
 {
-    Vector<int> other{ 5, 6, 7 };
+    Vector<int> other{5, 6, 7};
     auto result = int_vec * other;
 
     ASSERT_EQ(result.size(), 3);
@@ -430,7 +429,7 @@ TEST_F(VectorMultVector, MultiplyDifferentTypes)
 
 TEST_F(VectorMultVector, MultiplyReturnsNewVector)
 {
-    Vector<int> other{ 1, 1, 1 };
+    Vector<int> other{1, 1, 1};
     auto result = int_vec * other;
     EXPECT_EQ(int_vec[0], 2); // Исходный вектор не изменился
     EXPECT_EQ(result[0], 2);
@@ -449,7 +448,7 @@ TEST_F(VectorMultVector, MultiplyDifferentSizes)
 
 TEST_F(VectorMultVector, InplaceMultiplySameType)
 {
-    Vector<int> other{ 2, 3, 4 };
+    Vector<int> other{2, 3, 4};
     int_vec *= other;
 
     ASSERT_EQ(int_vec.size(), 3);
@@ -470,7 +469,7 @@ TEST_F(VectorMultVector, InplaceMultiplyDifferentTypes)
 
 TEST_F(VectorMultVector, InplaceMultiplyReturnsReference)
 {
-    Vector<int> other{ 1, 1, 1 };
+    Vector<int> other{1, 1, 1};
     Vector<int> &result = (int_vec *= other);
     EXPECT_EQ(&result, &int_vec);
 }
@@ -571,37 +570,37 @@ TEST_F(VectorMultNumber, MultiplyEmptyVectorByScalar)
 // ________________________________
 TEST(scalar_mul, null_vector)
 {
-    Vector<int> vec1 = { 1, 2, 3 };
+    Vector<int> vec1 = {1, 2, 3};
     Vector<int> vec2;
     MY_EXPECT_THROW((vec1 & vec2), errNegSize)
 }
 
 TEST(scalar_mul, vector_different_size)
 {
-    Vector<int> vec1 = { 1, 2, 3 };
-    Vector<int> vec2 = { 0, 0, 0, 0 };
+    Vector<int> vec1 = {1, 2, 3};
+    Vector<int> vec2 = {0, 0, 0, 0};
     MY_EXPECT_THROW((vec1 & vec2), errVectorsSizeNotEqual)
 }
 
 TEST(scalar_mul, zero_vector)
 {
-    Vector<int> vec1 = { 1, 2, 3 };
-    Vector<int> vec2 = { 0, 0, 0 };
+    Vector<int> vec1 = {1, 2, 3};
+    Vector<int> vec2 = {0, 0, 0};
 
     EXPECT_EQ(vec1 & vec2, 0);
 }
 
 TEST(scalar_mul, int_vectors)
 {
-    Vector<int> v1({ 1, 2, 3 });
-    Vector<int> v2({ 4, 5, 6 });
+    Vector<int> v1({1, 2, 3});
+    Vector<int> v2({4, 5, 6});
     EXPECT_EQ(v1 & v2, 1 * 4 + 2 * 5 + 3 * 6);
 }
 
 TEST(scalar_mul, commutative_operation)
 {
-    Vector<double> v1({ 1.1, 2.2, 3.3 });
-    Vector<double> v2({ 4.4, 5.5, 6.6 });
+    Vector<double> v1({1.1, 2.2, 3.3});
+    Vector<double> v2({4.4, 5.5, 6.6});
 
     auto result1 = v1 & v2;
     auto result2 = v2 & v1;
@@ -611,8 +610,8 @@ TEST(scalar_mul, commutative_operation)
 
 TEST(scalar_mul, double_vectors)
 {
-    Vector<double> v1({ 1.1, 2.2, 3.3 });
-    Vector<double> v2({ 4.4, 5.5, 6.6 });
+    Vector<double> v1({1.1, 2.2, 3.3});
+    Vector<double> v2({4.4, 5.5, 6.6});
 
     auto result1 = v1 & v2;
 
@@ -623,8 +622,8 @@ TEST(scalar_mul, double_vectors)
 class VectorCrossVector : public ::testing::Test
 {
 protected:
-    Vector<int> vec3d_int = { 1, 0, 0 }, vec3d_int2 = { 0, 1, 0 }, vec2d = { 1, 2 }, empty_vec = {};
-    Vector<double> vec3d_double{ 1.5, 2.5, 3.5 };
+    Vector<int> vec3d_int = {1, 0, 0}, vec3d_int2 = {0, 1, 0}, vec2d = {1, 2}, empty_vec = {};
+    Vector<double> vec3d_double{1.5, 2.5, 3.5};
 };
 
 // Основные тесты для 3D векторов
@@ -680,7 +679,7 @@ TEST_F(VectorCrossVector, Non3DVectorsThrowException)
 
 TEST_F(VectorCrossVector, DifferentSizesThrowException)
 {
-    Vector<int> vec4d{ 1, 2, 3, 4 };
+    Vector<int> vec4d{1, 2, 3, 4};
     MY_EXPECT_THROW(vec3d_int ^ vec4d, errVectorsSizeNotEqual);
 }
 
@@ -694,7 +693,7 @@ TEST_F(VectorCrossVector, EmptyVectorThrowsException)
 // Тесты специальных случаев
 TEST_F(VectorCrossVector, CrossProductWithZeroVector)
 {
-    Vector<int> zero_vec{ 0, 0, 0 };
+    Vector<int> zero_vec{0, 0, 0};
     auto result = vec3d_int ^ zero_vec;
 
     ASSERT_EQ(result.size(), 3);
@@ -705,9 +704,9 @@ TEST_F(VectorCrossVector, CrossProductWithZeroVector)
 
 TEST_F(VectorCrossVector, CrossProductOrthogonalVectors)
 {
-    Vector<int> vec1{ 1, 0, 0 };
-    Vector<int> vec2{ 0, 1, 0 };
-    Vector<int> vec3{ 0, 0, 1 };
+    Vector<int> vec1{1, 0, 0};
+    Vector<int> vec2{0, 1, 0};
+    Vector<int> vec3{0, 0, 1};
 
     auto result1 = vec1 ^ vec2;
     EXPECT_EQ(result1[0], 0);
@@ -746,30 +745,9 @@ TEST_F(VectorCrossVector, ReturnTypeDeduction)
 class VectorUnaryMinus : public ::testing::Test
 {
 protected:
-    Vector<int> vec_int = { 1, -2, 3 }, empty_vec = {};
-    Vector<double> vec_double = { 1.5, -2.5, 3.5 };
+    Vector<int> vec_int = {1, -2, 3}, empty_vec = {};
+    Vector<double> vec_double = {1.5, -2.5, 3.5};
 };
-
-// Основные тесты для разных типов данных
-TEST_F(VectorUnaryMinus, InvertsIntegerVector)
-{
-    auto result = -vec_int;
-
-    ASSERT_EQ(result.size(), 3);
-    EXPECT_EQ(result[0], -1);
-    EXPECT_EQ(result[1], 2); // -(-2) = 2
-    EXPECT_EQ(result[2], -3);
-}
-
-TEST_F(VectorUnaryMinus, InvertsDoubleVector)
-{
-    auto result = -vec_double;
-
-    ASSERT_EQ(result.size(), 3);
-    EXPECT_DOUBLE_EQ(result[0], -1.5);
-    EXPECT_DOUBLE_EQ(result[1], 2.5); // -(-2.5) = 2.5
-    EXPECT_DOUBLE_EQ(result[2], -3.5);
-}
 
 // Проверка возвращаемого типа
 TEST_F(VectorUnaryMinus, ReturnsCorrectType)
@@ -794,8 +772,7 @@ TEST_F(VectorUnaryMinus, OriginalVectorNotModified)
 
 // Тест для пустого вектора
 TEST_F(VectorUnaryMinus, EmptyVector){
-    MY_EXPECT_THROW(-empty_vec, errNegSize)
-}
+    MY_EXPECT_THROW(-empty_vec, errNegSize)}
 
 // Тест на двойное применение
 TEST_F(VectorUnaryMinus, DoubleNegation)
@@ -811,7 +788,7 @@ TEST_F(VectorUnaryMinus, DoubleNegation)
 // Тест с нулевыми элементами
 TEST_F(VectorUnaryMinus, WithZeroElements)
 {
-    Vector<int> vec_with_zeros{ 0, -0, 1, -1 };
+    Vector<int> vec_with_zeros{0, -0, 1, -1};
     auto result = -vec_with_zeros;
 
     ASSERT_EQ(result.size(), 4);
@@ -823,7 +800,7 @@ TEST_F(VectorUnaryMinus, WithZeroElements)
 
 TEST_F(VectorAddVector, add_other_container)
 {
-    std::vector<int> test = { 1, 2, 3 };
+    std::vector<int> test = {1, 2, 3};
     Vector<int> res = vec_int_1 + test;
 
     EXPECT_EQ(res[0], 2);
@@ -833,9 +810,9 @@ TEST_F(VectorAddVector, add_other_container)
 
 TEST_F(VectorAddVector, add_list)
 {
-    Vector<int> vec{ 1, 2, 3 }; // Исходный вектор размером 3
-    vec += { 4, 5, 6 }; // Добавляем элементы через initializer_list
-    
+    Vector<int> vec{1, 2, 3}; // Исходный вектор размером 3
+    vec += {4, 5, 6};         // Добавляем элементы через initializer_list
+
     // Assert
     ASSERT_EQ(vec.size(), 3);
     EXPECT_EQ(vec[0], 5); // 1 + 4

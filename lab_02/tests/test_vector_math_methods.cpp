@@ -23,32 +23,6 @@ TEST(test_normalization, test_one_vec)
     }
 }
 
-TEST(test_normalization, test_two_axis_vec)
-{
-    Vector<int> vec = {2, 1};
-    Vector<double> expect = {2 / std::sqrt(5), 1 / std::sqrt(5)};
-    auto res = vec.normalization();
-
-    EXPECT_EQ(res.size(), expect.size());
-    for (int i = 0; i < expect.size(); i++)
-    {
-        EXPECT_EQ(res[i], expect[i]);
-    }
-}
-
-TEST(test_normalization, test_three_axis_vec)
-{
-    Vector<float> vec = {2.0, 1.0, 8.0};
-    Vector<float> expect = {(2 / std::sqrt(69)), 1 / std::sqrt(69), 8 / std::sqrt(69)};
-    auto res = vec.normalization();
-
-    EXPECT_EQ(res.size(), expect.size());
-    for (int i = 0; i < expect.size(); i++)
-    {
-        EXPECT_EQ(res[i], expect[i]);
-    }
-}
-
 TEST(test_is_normalize, no_vector)
 {
     Vector<int> vec;

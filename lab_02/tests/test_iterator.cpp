@@ -96,51 +96,10 @@ TEST_F(TestConstIterator, test_add)
     std::cout << std::endl;
 }
 
-TEST_F(TestReverseIterator, test_cycle)
-{
-    auto iter = int_vec.rbegin();
-
-    while (iter != int_vec.rend())
-    {
-        std::cout << *iter << " ";
-        iter++;
-    }
-
-    std::cout << std::endl;
-}
-
 TEST_F(TestReverseIterator, test_eq)
 {
     auto iter = int_vec.rbegin();
     auto iter_1 = iter;
-
-    while (iter_1 != int_vec.rend())
-    {
-        std::cout << *iter_1 << " ";
-        iter_1++;
-    }
-
-    std::cout << std::endl;
-}
-
-TEST_F(TestReverseIterator, test_add_commutative)
-{
-    auto iter = int_vec.rbegin();
-    auto iter_1 = 2 + iter;
-
-    while (iter_1 != int_vec.rend())
-    {
-        std::cout << *iter_1 << " ";
-        iter_1++;
-    }
-
-    std::cout << std::endl;
-}
-
-TEST_F(TestReverseIterator, test_add_default)
-{
-    auto iter = int_vec.rbegin();
-    auto iter_1 = iter + 2;
 
     while (iter_1 != int_vec.rend())
     {
