@@ -1,73 +1,76 @@
 #include "HashElem.h"
 
-#pragma region 5Rule
+#pragma region constructors
 template <Key K, Value V>
-HashElem<K, V>::HashElem(const K &key, const V &val) : key(key), val(val) {}
+HashElem<K, V>::HashElem(const K &key, const V &val) noexcept : _key(key), _val(val) {}
 
 template <Key K, Value V>
-HashElem<K, V>::HashElem(const HashElem<K, V> &og_elem) : key(og_elem.key), val(og_elem.val), next(og_elem.next), prev(og_elem.prev) {}
-
-template <Key K, Value V>
-HashElem<K, V>::HashElem(HashElem<K, V> &&og_elem)
+HashElem<K, V>::HashElem(const HashElem<K, V> &other) noexcept : _key(other._key), _val(other._val), _next(other._next), _prev(other._prev)
 {
-    val = std::move(og_elem.val);
-    key = std::move(og_elem.key);
-    set_next(og_elem.get_next());
-    set_prev(og_elem.get_prev());
 }
 
 template <Key K, Value V>
-HashElem<K, V>::HashElem(std::pair<K, V> &node)
+HashElem<K, V>::HashElem(HashElem<K, V> &&other) noexcept
 {
-    key = node.first;
-    val = node.second;
+    _val = std::move(other._val);
+    _key = std::move(other._key);
+    set_next(other.get_next());
+    set_prev(other.get_prev());
 }
 
 template <Key K, Value V>
-HashElem<K, V> &HashElem<K, V>::operator=(const HashElem<K, V> &og_elem)
+HashElem<K, V>::HashElem(std::pair<K, V> &node) noexcept
 {
-    if (this != &og_elem)
+    _key = node.first;
+    _val = node.second;
+}
+
+template <Key K, Value V>
+HashElem<K, V> &HashElem<K, V>::operator=(const HashElem<K, V> &other) noexcept
+{
+    if (this != &other)
     {
-        key = og_elem.key;
-        val = og_elem.val;
-        next = og_elem.next;
-        prev = og_elem.prev;
+        _key = other.key;
+        _val = other.val;
+        _next = other.next;
+        _prev = other.prev;
     }
     return *this;
 }
 
 template <Key K, Value V>
-HashElem<K, V> &HashElem<K, V>::operator=(HashElem<K, V> &&og_elem)
+HashElem<K, V> &HashElem<K, V>::operator=(HashElem<K, V> &&og_elem) noexcept
 {
     if (this != &og_elem)
     {
-        key = std::move(og_elem.key);
-        val = std::move(og_elem.val);
-        next = std::move(og_elem.next);
-        prev = std::move(og_elem.prev);
+        _key = std::move(og_elem.key);
+        _val = std::move(og_elem.val);
+        _next = std::move(og_elem.next);
+        _prev = std::move(og_elem.prev);
     }
     return *this;
 }
-#pragma endregion 5Rule
+#pragma endregion constructors
 
 #pragma region Operators
 template <Key K, Value V>
-bool HashElem<K, V>::operator==(const HashElem<K, V> &other_elem) const noexcept
+bool HashElem<K, V>::operator==(const HashElem<K, V> &other) const noexcept
 {
-    return key == other_elem.get_key() && val == other_elem.get_val();
+    return _key == other.get_key() && _val == other.get_val();
 }
 
 template <Key K, Value V>
-bool HashElem<K, V>::operator!=(const HashElem<K, V> &other_elem) const noexcept
+bool HashElem<K, V>::operator!=(const HashElem<K, V> &other) const noexcept
 {
-    return !((*this) == other_elem);
+    return !((*this) == other);
 }
 
 template <Key K, Value V>
 bool HashElem<K, V>::operator==(std::pair<K, V> &node) const noexcept
 {
-    return key == node.first && val == node.second;
+    return _key == node.first && _val == node.second;
 }
+
 template <Key K, Value V>
 bool HashElem<K, V>::operator!=(std::pair<K, V> &node) const noexcept
 {
@@ -75,65 +78,71 @@ bool HashElem<K, V>::operator!=(std::pair<K, V> &node) const noexcept
 }
 #pragma endregion Operators
 
-#pragma region OtherFuncs
+#pragma region getters_setters
 template <Key K, Value V>
 K HashElem<K, V>::get_key() const noexcept
 {
-    return key;
+    return _key;
 }
 
 template <Key K, Value V>
 V HashElem<K, V>::get_val() const noexcept
 {
-    return val;
+    return _val;
 }
 
 template <Key K, Value V>
-void HashElem<K, V>::set_val(const V &new_val)
+void HashElem<K, V>::set_val(const V &val) noexcept
 {
-    val = new_val;
+    _val = val;
 }
 
 template <Key K, Value V>
-void HashElem<K, V>::set_val(V &&new_val)
+void HashElem<K, V>::set_val(V &&val) noexcept
 {
-    val = std::move(new_val);
-}
-
-template <Key K, Value V>
-void HashElem<K, V>::set_next(std::shared_ptr<HashElem<K, V>> next_elem)
-{
-    next = next_elem;
-}
-
-template <Key K, Value V>
-void HashElem<K, V>::set_prev(std::weak_ptr<HashElem<K, V>> prev_elem)
-{
-    prev = prev_elem;
+    _val = std::move(val);
 }
 
 template <Key K, Value V>
 std::shared_ptr<HashElem<K, V>> HashElem<K, V>::get_next() const noexcept
 {
-    return next;
+    return _next;
 }
 
 template <Key K, Value V>
 std::weak_ptr<HashElem<K, V>> HashElem<K, V>::get_prev() const noexcept
 {
-    return prev;
+    return _prev;
 }
+
+template <Key K, Value V>
+void HashElem<K, V>::set_next(std::shared_ptr<HashElem<K, V>> next) noexcept
+{
+    _next = next;
+}
+
+template <Key K, Value V>
+void HashElem<K, V>::set_prev(std::weak_ptr<HashElem<K, V>> prev) noexcept
+{
+    _prev = prev;
+}
+#pragma endregion getters_setters
 
 template <Key K, Value V>
 bool HashElem<K, V>::has_next() const noexcept
 {
-    return next != nullptr;
+    return _next != nullptr;
 }
 
 template <Key K, Value V>
 bool HashElem<K, V>::has_prev() const noexcept
 {
-    return !prev.expired();
+    return !_prev.expired();
 }
 
-#pragma endregion OtherFuncs
+template <Key K, Value V>
+std::ostream &operator<<(std::ostream &os, HashElem<K, V> &elem)
+{
+    os << "[Value: " << elem.get_val() << " ; Key: " << elem.get_key() << "]";
+    return os;
+}
