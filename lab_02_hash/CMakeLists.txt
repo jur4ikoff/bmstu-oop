@@ -10,7 +10,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/exceptions
     ${CMAKE_CURRENT_SOURCE_DIR}/concepts
     ${CMAKE_CURRENT_SOURCE_DIR}/iterator
-    ${CMAKE_CURRENT_SOURCE_DIR}/reverse_iterator
+    ${CMAKE_CURRENT_SOURCE_DIR}/hash_map
     ${CMAKE_CURRENT_SOURCE_DIR}          # Добавляем текущую директорию (если заголовки там)
 )
 
