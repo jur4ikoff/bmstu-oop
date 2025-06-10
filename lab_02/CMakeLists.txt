@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(app.exe LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+set(CMAKE_CXX_STANDARD 20)           
+set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Обязательно использовать этот стандарт
 
 cmake_minimum_required(VERSION 3.14)
 project(MyProject)
@@ -27,6 +26,7 @@ include_directories(
 
 file(GLOB CONTAINER "container/*.cpp")
 file(GLOB TESTS "tests/*.cpp")
+
 
 # Если нужно добавить тесты
 add_executable(app.exe ${SOURCES} ${TESTS} ${CONTAINER})

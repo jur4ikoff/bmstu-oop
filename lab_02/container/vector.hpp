@@ -9,6 +9,7 @@
 #include "constants.hpp"
 
 #include <ctime>
+#include <ranges>
 #include <iostream>
 #include <math.h>
 #include <memory>
@@ -124,8 +125,7 @@ template <typename I, typename S>
     requires CompatibleIterator<I, T> && SentinelIter<S, I>
 Vector<T>::Vector(I begin, S end)
 {
-    auto size = static_cast<baseContainer::size_type>(std::ranges::distance(begin, end));
-    this->check_vector_size(size, __LINE__);
+    auto size = std::ranges::distance(begin, end);
     this->container_size = size;
     this->memory_allocation(size, __LINE__);
 
@@ -140,14 +140,10 @@ template <ContainerType T>
 decltype(auto) Vector<T>::len() const
 {
     this->check_vector_size(this->container_size, __LINE__);
-
-    const T sum = std::accumulate(
-        this->begin(),
-        this->end(),
-        T{0},
-        [](const T &acc, const T &val)
-        { return acc + val * val; });
-
+    // a | b     Применить b к a
+    auto squared_view = *this | std::views::transform([](const T &x)
+                                                      { return x * x; });
+    const T sum = std::accumulate(squared_view.begin(), squared_view.end(), T{0});
     return std::sqrt(sum);
 }
 
@@ -241,10 +237,7 @@ typename Vector<T>::reference Vector<T>::get_item(int index)
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_index(index, __LINE__);
-
-    auto iter = this->begin();
-    std::advance(iter, index);
-    return *iter;
+    return *std::ranges::next(this->begin(), index);
 }
 
 template <ContainerType T>
@@ -252,10 +245,7 @@ typename Vector<T>::const_reference Vector<T>::get_item(int index) const
 {
     this->check_vector_size(this->container_size, __LINE__);
     this->check_index(index, __LINE__);
-
-    auto iter = this->begin();
-    std::advance(iter, index);
-    return *iter;
+    return *std::ranges::next(this->cbegin(), index);
 }
 
 // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -367,9 +357,8 @@ decltype(auto) Vector<T>::operator+(const Con &other) const
 
     Vector<decltype(((*this)[0]) + other[0])> result(*this);
 
-    std::transform(
-        other.cbegin(), other.cend(),
-        result.begin(), // начало выхода
+    std::ranges::transform(
+        other, result,
         result.begin(), // куда записывать
         [](const auto &a, const auto &b)
         { return b + a; });
@@ -385,9 +374,8 @@ Vector<T> &Vector<T>::operator+=(std::initializer_list<U> arr)
     this->check_vector_size(arr.size(), __LINE__);
     this->check_size_equal(arr.size(), __LINE__);
 
-    std::transform(
-        this->begin(), this->end(),
-        arr.begin(),
+    std::ranges::transform(
+        *this, arr,
         this->begin(),
         [](const T &a, const U &b)
         { return a + b; });
@@ -416,10 +404,8 @@ decltype(auto) Vector<T>::operator+(const Vector<U> &other) const
     using ResultType = decltype((*this)[0] + other[0]);
     Vector<ResultType> result(*this);
 
-    std::transform(
-        other.cbegin(),
-        other.cend(),
-        result.begin(),
+    std::ranges::transform(
+        other, result,
         result.begin(),
         [](const ResultType &a, const U &b)
         { return a + b; });
@@ -448,8 +434,8 @@ decltype(auto) Vector<T>::operator+(const U &num) const
     using ResultType = decltype((*this)[0] + num);
     Vector<ResultType> result(*this);
 
-    std::transform(
-        this->cbegin(), this->cend(),
+    std::ranges::transform(
+        *this,
         result.begin(),
         [&num](const U &value)
         { return value + num; });
@@ -484,9 +470,8 @@ decltype(auto) Vector<T>::operator-(const Con &other) const
     using ResultType = decltype((*this)[0] - other[0]);
     Vector<ResultType> result(*this);
 
-    std::transform(
-        other.cbegin(), other.cend(),
-        result.begin(), // начало выхода
+    std::ranges::transform(
+        other, result,
         result.begin(), // куда записывать
         [](const ResultType &a, const ResultType &b)
         { return b - a; });
@@ -513,11 +498,11 @@ decltype(auto) Vector<T>::operator-(const Vector<U> &other) const
     using ResultType = decltype((*this)[0] - other[0]);
     Vector<ResultType> result(*this);
 
-    std::transform(
-        other.cbegin(), other.cend(),
-        result.begin(), // начало выхода
+    std::ranges::transform(
+        other,
+        result,
         result.begin(), // куда записывать
-        [](const ResultType &a, const ResultType &b)
+        [](const auto &a, const auto &b)
         { return b - a; });
 
     return result;
@@ -539,9 +524,8 @@ Vector<T> &Vector<T>::operator-=(std::initializer_list<U> arr)
     this->check_vector_size(arr.size(), __LINE__);
     this->check_size_equal(arr.size(), __LINE__);
 
-    std::transform(
-        this->begin(), this->end(),
-        arr.begin(),
+    std::ranges::transform(
+        *this, arr,
         this->begin(),
         [](const T &a, const U &b)
         { return a - b; });
@@ -558,9 +542,10 @@ decltype(auto) Vector<T>::operator-(const U &num) const
     using ResultType = decltype((*this)[0] - num);
     Vector<ResultType> result(*this);
 
-    std::transform(this->cbegin(), this->cend(), result.begin(),
-                   [&num](const U &value)
-                   { return value - num; });
+    std::ranges::transform(*this,
+                           result.begin(),
+                           [&num](const U &value)
+                           { return value - num; });
 
     return result;
 }
@@ -586,9 +571,8 @@ decltype(auto) Vector<T>::operator*(const Con &other) const
     using ResultType = decltype((*this)[0] * other[0]);
     Vector<ResultType> result(*this);
 
-    std::transform(
-        other.cbegin(), other.cend(),
-        result.begin(), // начало выхода
+    std::ranges::transform(
+        other, result,
         result.begin(), // куда записывать
         [](const ResultType &a, const ResultType &b)
         { return b * a; });
@@ -615,9 +599,8 @@ decltype(auto) Vector<T>::operator*(const Vector<U> &other) const
     using ResultType = decltype((*this)[0] * other[0]);
     Vector<ResultType> result(*this);
 
-    std::transform(
-        other.cbegin(), other.cend(),
-        result.begin(), // начало выхода
+    std::ranges::transform(
+        other, result,
         result.begin(), // куда записывать
         [](const ResultType &a, const ResultType &b)
         { return b * a; });
@@ -641,9 +624,10 @@ Vector<T> &Vector<T>::operator*=(std::initializer_list<U> arr)
     this->check_vector_size(arr.size(), __LINE__);
     this->check_size_equal(arr.size(), __LINE__);
 
-    std::transform(this->begin(), this->end(), arr.begin(), this->begin,
-                   [](const T &a, const U &b)
-                   { return a - b; });
+    std::ranges::transform(*this, arr,
+                           this->begin,
+                           [](const T &a, const U &b)
+                           { return a - b; });
     return *this;
 }
 
@@ -657,9 +641,10 @@ decltype(auto) Vector<T>::operator*(const U &num) const
     using ResultType = decltype((*this)[0] * num);
     Vector<ResultType> result(*this);
 
-    std::transform(this->cbegin(), this->cend(), result.begin(),
-                   [&num](const U &value)
-                   { return value * num; });
+    std::ranges::transform(*this,
+                           result.begin(),
+                           [&num](const U &value)
+                           { return value * num; });
 
     return result;
 }
@@ -684,9 +669,8 @@ decltype(auto) Vector<T>::operator/(const Con &other) const
     using ResultType = decltype((*this)[0] / other[0]);
     Vector<ResultType> result(*this);
 
-    std::transform(
-        other.cbegin(), other.cend(),
-        result.begin(), // начало выхода
+    std::ranges::transform(
+        other, result,
         result.begin(), // куда записывать
         [](const ResultType &a, const ResultType &b)
         { return b / a; });
@@ -713,9 +697,8 @@ decltype(auto) Vector<T>::operator/(const Vector<U> &other) const
     using ResultType = decltype((*this)[0] / other[0]);
     Vector<ResultType> result(*this);
 
-    std::transform(
-        other.cbegin(), other.cend(),
-        result.begin(), // начало выхода
+    std::ranges::transform(
+        other, result,
         result.begin(), // куда записывать
         [](const ResultType &a, const ResultType &b)
         { return b / a; });
@@ -731,9 +714,9 @@ Vector<T> &Vector<T>::operator/=(std::initializer_list<U> arr)
     this->check_vector_size(arr.size(), __LINE__);
     this->check_size_equal(arr.size(), __LINE__);
 
-    std::transform(this->begin(), this->end(), arr.begin(), this->begin(),
-                   [](const T &a, const U &b)
-                   { return a / b; });
+    std::ranges::transform(*this, arr, this->begin(),
+                           [](const T &a, const U &b)
+                           { return a / b; });
     return *this;
 }
 
@@ -754,9 +737,9 @@ decltype(auto) Vector<T>::operator/(const U &num) const
     using ResultType = decltype((*this)[0] / num);
     Vector<ResultType> result(*this);
 
-    std::transform(this->cbegin(), this->cend(), result.begin(),
-                   [&num](const U &value)
-                   { return value - num; });
+    std::ranges::transform(*this, result.begin(),
+                           [&num](const U &value)
+                           { return value - num; });
 
     return result;
 }
