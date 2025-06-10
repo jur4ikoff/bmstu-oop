@@ -15,7 +15,7 @@ struct HashInt
 
 int main()
 {
-    HashTable<int, int, HashInt> hash_table_int(10);
+    HashMap<int, int, HashInt> hash_table_int(10);
     cout << "Created empty hash table" << endl;
     cout << hash_table_int << endl;
 

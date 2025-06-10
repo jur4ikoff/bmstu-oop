@@ -7,7 +7,7 @@
 #pragma region 5Rule
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc>::HashTable()
+HashMap<K, V, HashFunc>::HashMap()
 {
   _capacity = 1;
   this->memory_allocation(_capacity);
@@ -15,7 +15,7 @@ HashTable<K, V, HashFunc>::HashTable()
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc>::HashTable(int new_capacity)
+HashMap<K, V, HashFunc>::HashMap(int new_capacity)
 {
   this->check_capacity(new_capacity);
 
@@ -26,7 +26,7 @@ HashTable<K, V, HashFunc>::HashTable(int new_capacity)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc>::HashTable(std::initializer_list<std::pair<K, V>> list_elems, int new_capacity)
+HashMap<K, V, HashFunc>::HashMap(std::initializer_list<std::pair<K, V>> list_elems, int new_capacity)
 {
   this->check_capacity(new_capacity);
 
@@ -41,7 +41,7 @@ HashTable<K, V, HashFunc>::HashTable(std::initializer_list<std::pair<K, V>> list
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc>::HashTable(const HashTable &og_hash)
+HashMap<K, V, HashFunc>::HashMap(const HashMap &og_hash)
 {
   _capacity = og_hash._capacity;
   alloc_mem(_capacity);
@@ -54,7 +54,7 @@ HashTable<K, V, HashFunc>::HashTable(const HashTable &og_hash)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc>::HashTable(HashTable &&og_hash)
+HashMap<K, V, HashFunc>::HashMap(HashMap &&og_hash)
 {
   _capacity = og_hash._capacity;
   mod_count = std::move(og_hash.mod_count);
@@ -63,7 +63,7 @@ HashTable<K, V, HashFunc>::HashTable(HashTable &&og_hash)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> HashTable<K, V, HashFunc>::operator=(const HashTable<K, V, HashFunc> &other_table)
+HashMap<K, V, HashFunc> HashMap<K, V, HashFunc>::operator=(const HashMap<K, V, HashFunc> &other_table)
 {
   if (this == &other_table)
     return *this;
@@ -82,7 +82,7 @@ template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 template <std::ranges::input_range R>
   requires std::convertible_to<std::ranges::range_value_t<R>, std::pair<K, V>>
-HashTable<K, V, HashFunc>::HashTable(R &&range)
+HashMap<K, V, HashFunc>::HashMap(R &&range)
 {
   for (const auto &elem : range)
   {
@@ -95,35 +95,35 @@ HashTable<K, V, HashFunc>::HashTable(R &&range)
 #pragma region Operators
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-V &HashTable<K, V, HashFunc>::operator[](const K &key)
+V &HashMap<K, V, HashFunc>::operator[](const K &key)
 {
   return get_val(key);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-const V &HashTable<K, V, HashFunc>::operator[](const K &key) const
+const V &HashMap<K, V, HashFunc>::operator[](const K &key) const
 {
   return get_val(key);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-V &HashTable<K, V, HashFunc>::operator[](K &&key)
+V &HashMap<K, V, HashFunc>::operator[](K &&key)
 {
   return get_val(key);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-const V &HashTable<K, V, HashFunc>::operator[](K &&key) const
+const V &HashMap<K, V, HashFunc>::operator[](K &&key) const
 {
   return get_val(key);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-bool HashTable<K, V, HashFunc>::operator==(const HashTable<K, V, HashFunc> &other) const noexcept
+bool HashMap<K, V, HashFunc>::operator==(const HashMap<K, V, HashFunc> &other) const noexcept
 {
   if (_capacity != other._capacity || get_count() != other.get_count())
   {
@@ -139,7 +139,7 @@ bool HashTable<K, V, HashFunc>::operator==(const HashTable<K, V, HashFunc> &othe
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-bool HashTable<K, V, HashFunc>::operator!=(const HashTable<K, V, HashFunc> &other) const noexcept
+bool HashMap<K, V, HashFunc>::operator!=(const HashMap<K, V, HashFunc> &other) const noexcept
 {
   return !((*this) == other);
 }
@@ -147,7 +147,7 @@ bool HashTable<K, V, HashFunc>::operator!=(const HashTable<K, V, HashFunc> &othe
 // Операторы добавления
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(const std::pair<K, V> &pair)
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+(const std::pair<K, V> &pair)
 {
   insert_node(pair.first, pair.second);
   return *this;
@@ -155,7 +155,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(const std::pair<
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(std::pair<K, V> &&pair)
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+(std::pair<K, V> &&pair)
 {
   insert_node(std::move(pair.first), std::move(pair.second));
   return *this;
@@ -163,7 +163,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(std::pair<K, V> 
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(const HashNode<K, V> &elem)
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+(const HashNode<K, V> &elem)
 {
   insert_node(elem);
   return *this;
@@ -171,7 +171,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(const HashNode<K
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+(
     std::initializer_list<std::pair<K, V>> list)
 {
   insert_nodes(list);
@@ -181,7 +181,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(
 // Операторы удаления
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(const K &key)
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator-(const K &key)
 {
   delete_node(key);
   return *this;
@@ -189,7 +189,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(const K &key)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(K &&key)
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator-(K &&key)
 {
   delete_node(std::move(key));
   return *this;
@@ -197,7 +197,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(K &&key)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(const HashNode<K, V> &elem)
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator-(const HashNode<K, V> &elem)
 {
   delete_node(elem);
   return *this;
@@ -205,7 +205,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(const HashNode<K
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator-(
     std::initializer_list<K> keys)
 {
   for (const auto &key : keys)
@@ -219,35 +219,35 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(
 #pragma region OtherFuncs
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-double HashTable<K, V, HashFunc>::calc_load_factor() const noexcept
+double HashMap<K, V, HashFunc>::calc_load_factor() const noexcept
 {
   return (double)get_count() / (double)_capacity;
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-bool HashTable<K, V, HashFunc>::empty() const noexcept
+bool HashMap<K, V, HashFunc>::empty() const noexcept
 {
   return get_count() == 0;
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-size_t HashTable<K, V, HashFunc>::get_mod_count() const noexcept
+size_t HashMap<K, V, HashFunc>::get_mod_count() const noexcept
 {
   return *mod_count;
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-size_t HashTable<K, V, HashFunc>::get_capacity() const noexcept
+size_t HashMap<K, V, HashFunc>::get_capacity() const noexcept
 {
   return _capacity;
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-size_t HashTable<K, V, HashFunc>::get_count() const noexcept
+size_t HashMap<K, V, HashFunc>::get_count() const noexcept
 {
   int total_count = 0;
   for (int i = 0; i < _capacity; i++)
@@ -260,7 +260,7 @@ size_t HashTable<K, V, HashFunc>::get_count() const noexcept
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-size_t HashTable<K, V, HashFunc>::size() const noexcept
+size_t HashMap<K, V, HashFunc>::size() const noexcept
 {
   return get_count();
 }
@@ -270,7 +270,7 @@ size_t HashTable<K, V, HashFunc>::size() const noexcept
 #pragma region ControlFuncs
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::insert_node(const K &key, const V &val)
+void HashMap<K, V, HashFunc>::insert_node(const K &key, const V &val)
 {
   size_t arr_index = HashFunc{}(key, _capacity);
   array.get()[arr_index].insert_node(key, val);
@@ -286,28 +286,28 @@ void HashTable<K, V, HashFunc>::insert_node(const K &key, const V &val)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::insert_node(K &&key, V &&val)
+void HashMap<K, V, HashFunc>::insert_node(K &&key, V &&val)
 {
   insert_node(key, val);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::insert_node(const HashNode<K, V> &elem)
+void HashMap<K, V, HashFunc>::insert_node(const HashNode<K, V> &elem)
 {
   insert_node(elem.get_key(), elem.get_val());
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::insert_node(std::pair<K, V> &node)
+void HashMap<K, V, HashFunc>::insert_node(std::pair<K, V> &node)
 {
   insert_node(node.first, node.second);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<std::pair<K, V>> list_elems)
+void HashMap<K, V, HashFunc>::insert_nodes(std::initializer_list<std::pair<K, V>> list_elems)
 {
   for (auto elem : list_elems)
   {
@@ -317,7 +317,7 @@ void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<std::pair<K, 
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<HashNode<K, V>> list_elems)
+void HashMap<K, V, HashFunc>::insert_nodes(std::initializer_list<HashNode<K, V>> list_elems)
 {
   for (auto elem : list_elems)
   {
@@ -327,7 +327,7 @@ void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<HashNode<K, V
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::delete_node(const K &key)
+void HashMap<K, V, HashFunc>::delete_node(const K &key)
 {
   size_t arr_index = HashFunc{}(key, _capacity);
   (*mod_count)++;
@@ -336,21 +336,21 @@ void HashTable<K, V, HashFunc>::delete_node(const K &key)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::delete_node(K &&key)
+void HashMap<K, V, HashFunc>::delete_node(K &&key)
 {
   delete_node(key);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::delete_node(const HashNode<K, V> &elem)
+void HashMap<K, V, HashFunc>::delete_node(const HashNode<K, V> &elem)
 {
   delete_node(elem.get_key());
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::delete_nodes(std::initializer_list<K> keys)
+void HashMap<K, V, HashFunc>::delete_nodes(std::initializer_list<K> keys)
 {
   for (auto key : keys)
   {
@@ -360,7 +360,7 @@ void HashTable<K, V, HashFunc>::delete_nodes(std::initializer_list<K> keys)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-bool HashTable<K, V, HashFunc>::contains(const K &key) const noexcept
+bool HashMap<K, V, HashFunc>::contains(const K &key) const noexcept
 {
   size_t arr_index = HashFunc(key, _capacity);
   return array.get()[arr_index].contains(key);
@@ -368,28 +368,28 @@ bool HashTable<K, V, HashFunc>::contains(const K &key) const noexcept
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-bool HashTable<K, V, HashFunc>::contains(const K &&key) const noexcept
+bool HashMap<K, V, HashFunc>::contains(const K &&key) const noexcept
 {
   return contains(key);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-bool HashTable<K, V, HashFunc>::contains(const HashNode<K, V> &elem) const noexcept
+bool HashMap<K, V, HashFunc>::contains(const HashNode<K, V> &elem) const noexcept
 {
   return contains(elem.get_key());
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-bool HashTable<K, V, HashFunc>::contains(std::pair<K, V> &node) const noexcept
+bool HashMap<K, V, HashFunc>::contains(std::pair<K, V> &node) const noexcept
 {
   return contains(node.first);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashNode<K, V> &HashTable<K, V, HashFunc>::get_pair(const K &key) const
+HashNode<K, V> &HashMap<K, V, HashFunc>::get_pair(const K &key) const
 {
   for (int i = 0; i < _capacity; i++)
   {
@@ -403,14 +403,14 @@ HashNode<K, V> &HashTable<K, V, HashFunc>::get_pair(const K &key) const
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashNode<K, V> &HashTable<K, V, HashFunc>::get_pair(K &&key) const
+HashNode<K, V> &HashMap<K, V, HashFunc>::get_pair(K &&key) const
 {
   return get_pair(key);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-V &HashTable<K, V, HashFunc>::get_val(const K &key) const noexcept
+V &HashMap<K, V, HashFunc>::get_val(const K &key) const noexcept
 {
   size_t arr_index = HashFunc(key, _capacity);
   return array.get()[arr_index].get_val(key);
@@ -418,14 +418,14 @@ V &HashTable<K, V, HashFunc>::get_val(const K &key) const noexcept
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-V &HashTable<K, V, HashFunc>::get_val(K &&key) const noexcept
+V &HashMap<K, V, HashFunc>::get_val(K &&key) const noexcept
 {
   return get_val(key);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashChain<K, V> &HashTable<K, V, HashFunc>::get_list(const int index) const
+HashChain<K, V> &HashMap<K, V, HashFunc>::get_list(const int index) const
 {
   this->check_index(index);
   return array.get()[index];
@@ -433,7 +433,7 @@ HashChain<K, V> &HashTable<K, V, HashFunc>::get_list(const int index) const
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::clear() noexcept
+void HashMap<K, V, HashFunc>::clear() noexcept
 {
   (*mod_count)++;
   for (int i = 0; i < _capacity; i++)
@@ -444,7 +444,7 @@ void HashTable<K, V, HashFunc>::clear() noexcept
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::begin() noexcept
+HashIterator<K, V, HashFunc> HashMap<K, V, HashFunc>::begin() noexcept
 {
   size_t idx = 0;
   while (idx < _capacity)
@@ -463,7 +463,7 @@ HashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::begin() noexcept
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::end() noexcept
+HashIterator<K, V, HashFunc> HashMap<K, V, HashFunc>::end() noexcept
 {
   return HashIterator<K, V, HashFunc>(
       array, _capacity, std::shared_ptr<HashNode<K, V>>{}, mod_count, _capacity);
@@ -471,7 +471,7 @@ HashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::end() noexcept
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::begin() const noexcept
+ConstHashIterator<K, V, HashFunc> HashMap<K, V, HashFunc>::begin() const noexcept
 {
   size_t idx = 0;
   while (idx < _capacity)
@@ -490,7 +490,7 @@ ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::begin() const noexc
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::end() const noexcept
+ConstHashIterator<K, V, HashFunc> HashMap<K, V, HashFunc>::end() const noexcept
 {
   return ConstHashIterator<K, V, HashFunc>(
       array, _capacity, std::shared_ptr<HashNode<K, V>>{}, mod_count, _capacity);
@@ -498,7 +498,7 @@ ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::end() const noexcep
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::cbegin() const noexcept
+ConstHashIterator<K, V, HashFunc> HashMap<K, V, HashFunc>::cbegin() const noexcept
 {
   size_t idx = 0;
   while (idx < _capacity)
@@ -517,7 +517,7 @@ ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::cbegin() const noex
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::cend() const noexcept
+ConstHashIterator<K, V, HashFunc> HashMap<K, V, HashFunc>::cend() const noexcept
 {
   return ConstHashIterator<K, V, HashFunc>(
       array, _capacity, std::shared_ptr<HashNode<K, V>>{}, mod_count, _capacity);
@@ -528,7 +528,7 @@ ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::cend() const noexce
 #pragma region inner_functions
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::memory_allocation(int count)
+void HashMap<K, V, HashFunc>::memory_allocation(int count)
 {
   this->check_capacity(count);
   try
@@ -547,9 +547,9 @@ void HashTable<K, V, HashFunc>::memory_allocation(int count)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::rehash()
+void HashMap<K, V, HashFunc>::rehash()
 {
-  HashTable<K, V, HashFunc> hash_new(_capacity * 2);
+  HashMap<K, V, HashFunc> hash_new(_capacity * 2);
   for (int i = 0; i < _capacity; i++)
   {
     auto &current_chain = array.get()[i];
@@ -569,7 +569,7 @@ void HashTable<K, V, HashFunc>::rehash()
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::check_capacity(const HashTable::size_type capacity) const
+void HashMap<K, V, HashFunc>::check_capacity(const HashMap::size_type capacity) const
 {
   if (capacity <= 0)
   {
@@ -580,7 +580,7 @@ void HashTable<K, V, HashFunc>::check_capacity(const HashTable::size_type capaci
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::check_index(const int index) const
+void HashMap<K, V, HashFunc>::check_index(const int index) const
 {
   if (index >= _capacity || index < 0)
   {

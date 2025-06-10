@@ -10,7 +10,7 @@
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
-class HashTable : public BaseHashMap
+class HashMap : public BaseHashMap
 {
 public:
 #pragma region STLAliases
@@ -21,16 +21,16 @@ public:
 #pragma endregion STLAliases
 
 #pragma region 5Rule
-    HashTable();
-    HashTable(int new_capacity);
-    HashTable(std::initializer_list<std::pair<K, V>> list_elems, int new_capacity);
-    HashTable(const HashTable &og_hash);
-    HashTable(HashTable &&og_hash);
+    HashMap();
+    HashMap(int new_capacity);
+    HashMap(std::initializer_list<std::pair<K, V>> list_elems, int new_capacity);
+    HashMap(const HashMap &og_hash);
+    HashMap(HashMap &&og_hash);
     template <std::ranges::input_range R>
         requires std::convertible_to<std::ranges::range_value_t<R>, std::pair<K, V>>
-    HashTable(R &&range);
-    HashTable<K, V, HashFunc> operator=(const HashTable<K, V, HashFunc> &other_table);
-    ~HashTable() = default;
+    HashMap(R &&range);
+    HashMap<K, V, HashFunc> operator=(const HashMap<K, V, HashFunc> &other_table);
+    ~HashMap() = default;
 #pragma endregion 5Rule
 
 #pragma region ControlFuncs
@@ -61,16 +61,16 @@ public:
     const V &operator[](const K &key) const;
     V &operator[](K &&key);
     const V &operator[](K &&key) const;
-    HashTable<K, V, HashFunc> &operator+(const std::pair<K, V> &pair);
-    HashTable<K, V, HashFunc> &operator+(std::pair<K, V> &&pair);
-    HashTable<K, V, HashFunc> &operator+(const HashNode<K, V> &elem);
-    HashTable<K, V, HashFunc> &operator+(std::initializer_list<std::pair<K, V>> list);
-    HashTable<K, V, HashFunc> &operator-(const K &key);
-    HashTable<K, V, HashFunc> &operator-(K &&key);
-    HashTable<K, V, HashFunc> &operator-(const HashNode<K, V> &elem);
-    HashTable<K, V, HashFunc> &operator-(std::initializer_list<K> keys);
-    bool operator==(const HashTable<K, V, HashFunc> &other) const noexcept;
-    bool operator!=(const HashTable<K, V, HashFunc> &other) const noexcept;
+    HashMap<K, V, HashFunc> &operator+(const std::pair<K, V> &pair);
+    HashMap<K, V, HashFunc> &operator+(std::pair<K, V> &&pair);
+    HashMap<K, V, HashFunc> &operator+(const HashNode<K, V> &elem);
+    HashMap<K, V, HashFunc> &operator+(std::initializer_list<std::pair<K, V>> list);
+    HashMap<K, V, HashFunc> &operator-(const K &key);
+    HashMap<K, V, HashFunc> &operator-(K &&key);
+    HashMap<K, V, HashFunc> &operator-(const HashNode<K, V> &elem);
+    HashMap<K, V, HashFunc> &operator-(std::initializer_list<K> keys);
+    bool operator==(const HashMap<K, V, HashFunc> &other) const noexcept;
+    bool operator!=(const HashMap<K, V, HashFunc> &other) const noexcept;
 #pragma endregion Operators
 
 #pragma region OtherFuncs
@@ -103,7 +103,7 @@ private:
 
 // вывод через std::cout;
 template <Key K, Value V, typename HashFunc>
-std::ostream &operator<<(std::ostream &os, HashTable<K, V, HashFunc> &table)
+std::ostream &operator<<(std::ostream &os, HashMap<K, V, HashFunc> &table)
 {
     for (int i = 0; i < table.get_capacity(); i++)
     {
