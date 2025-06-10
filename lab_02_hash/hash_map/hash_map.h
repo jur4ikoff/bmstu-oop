@@ -4,7 +4,7 @@
 #include <memory>
 #include "concepts.h"
 #include "base_hash_table.h"
-#include "HashChain.h"
+#include "hash_chain.h"
 #include "HashIterator.hpp"
 #include "ConstHashIterator.hpp"
 
@@ -112,4 +112,4 @@ std::ostream &operator<<(std::ostream &os, HashTable<K, V, HashFunc> &table)
     return os;
 }
 
-#include "HashTable.hpp"
+#include "hash_map.hpp"

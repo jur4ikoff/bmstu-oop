@@ -76,4 +76,4 @@ std::ostream &operator<<(std::ostream &os, HashChain<K, V> &chain)
     return os;
 }
 
-#include "HashChain.hpp"
+#include "hash_chain.hpp"

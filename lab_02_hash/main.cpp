@@ -1,6 +1,6 @@
 #include <iostream>
-#include "HashChain.h"
-#include "HashTable.h"
+#include "hash_chain.h"
+#include "hash_map.h"
 #include <iterator>
 
 using namespace std;

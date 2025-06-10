@@ -1,4 +1,4 @@
-#include "HashChain.h"
+#include "hash_chain.h"
 #include "hash_node.h"
 #include "hash_table_exceptions.h"
 

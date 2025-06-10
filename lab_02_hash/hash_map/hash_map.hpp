@@ -1,4 +1,4 @@
-#include "HashTable.h"
+#include "hash_map.h"
 #include "hash_table_exceptions.h"
 
 #include <iostream>
