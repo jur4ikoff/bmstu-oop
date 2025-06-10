@@ -2,7 +2,7 @@
 #include "hash_node.h"
 #include "hash_table_exceptions.h"
 
-#pragma region 5Rule
+#pragma region five_rule
 
 template <Key K, Value V>
 HashChain<K, V>::HashChain()
@@ -95,7 +95,7 @@ HashChain<K, V> &HashChain<K, V>::operator=(std::initializer_list<std::pair<K, V
   }
   return *this;
 }
-#pragma endregion 5Rule
+#pragma endregion five_rule
 
 #pragma region Operators
 template <Key K, Value V>

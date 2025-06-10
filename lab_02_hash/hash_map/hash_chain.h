@@ -13,18 +13,16 @@ template <Key K, Value V>
 class HashChain
 {
 public:
-#pragma region Constructors
+#pragma region five_rule
     HashChain();
     HashChain(const HashChain<K, V> &og_chain);
     HashChain(HashChain<K, V> &&og_chain);
     HashChain(std::initializer_list<std::pair<K, V>> list_elems);
     ~HashChain() = default;
-#pragma endregion Constructors
 
-#pragma region 5Rule
     HashChain<K, V> &operator=(const HashChain<K, V> &og_chain);
     HashChain<K, V> &operator=(std::initializer_list<std::pair<K, V>> list_elems);
-#pragma endregion 5Rule
+#pragma endregion five_rule
 
 #pragma region Operators
     bool operator==(const HashChain<K, V> &other_chain) const;
