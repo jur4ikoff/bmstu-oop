@@ -54,3 +54,5 @@ private:
 
 template <Key K, Value V>
 std::ostream &operator<<(std::ostream &os, HashElem<K, V> &elem);
+
+#include "hash_node.hpp"
