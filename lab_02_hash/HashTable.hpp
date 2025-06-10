@@ -1,10 +1,9 @@
 #include "HashTable.h"
-#include "errors.h"
 #include "hash_table_exceptions.h"
 #include <iostream>
 
 #pragma region 5Rule
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc>::HashTable()
 {
@@ -12,7 +11,7 @@ HashTable<K, V, HashFunc>::HashTable()
   alloc_mem(_capacity);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc>::HashTable(int new_capacity)
 {
@@ -25,7 +24,7 @@ HashTable<K, V, HashFunc>::HashTable(int new_capacity)
   alloc_mem(_capacity);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc>::HashTable(std::initializer_list<std::pair<K, V>> list_elems, int new_capacity)
 {
@@ -42,7 +41,7 @@ HashTable<K, V, HashFunc>::HashTable(std::initializer_list<std::pair<K, V>> list
   }
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc>::HashTable(const HashTable &og_hash)
 {
@@ -55,7 +54,7 @@ HashTable<K, V, HashFunc>::HashTable(const HashTable &og_hash)
   }
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc>::HashTable(HashTable &&og_hash)
 {
@@ -64,7 +63,7 @@ HashTable<K, V, HashFunc>::HashTable(HashTable &&og_hash)
   array = std::move(og_hash.array);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc> HashTable<K, V, HashFunc>::operator=(const HashTable<K, V, HashFunc> &other_table)
 {
@@ -81,7 +80,7 @@ HashTable<K, V, HashFunc> HashTable<K, V, HashFunc>::operator=(const HashTable<K
   return (*this);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 template <std::ranges::input_range R>
   requires std::convertible_to<std::ranges::range_value_t<R>, std::pair<K, V>>
@@ -96,35 +95,35 @@ HashTable<K, V, HashFunc>::HashTable(R &&range)
 #pragma endregion 5Rule
 
 #pragma region Operators
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 V &HashTable<K, V, HashFunc>::operator[](const K &key)
 {
   return get_val(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 const V &HashTable<K, V, HashFunc>::operator[](const K &key) const
 {
   return get_val(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 V &HashTable<K, V, HashFunc>::operator[](K &&key)
 {
   return get_val(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 const V &HashTable<K, V, HashFunc>::operator[](K &&key) const
 {
   return get_val(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 bool HashTable<K, V, HashFunc>::operator==(const HashTable<K, V, HashFunc> &other) const noexcept
 {
@@ -140,7 +139,7 @@ bool HashTable<K, V, HashFunc>::operator==(const HashTable<K, V, HashFunc> &othe
   return true;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 bool HashTable<K, V, HashFunc>::operator!=(const HashTable<K, V, HashFunc> &other) const noexcept
 {
@@ -148,7 +147,7 @@ bool HashTable<K, V, HashFunc>::operator!=(const HashTable<K, V, HashFunc> &othe
 }
 
 // Операторы добавления
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(const std::pair<K, V> &pair)
 {
@@ -156,7 +155,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(const std::pair<
   return *this;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(std::pair<K, V> &&pair)
 {
@@ -164,7 +163,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(std::pair<K, V> 
   return *this;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(const HashElem<K, V> &elem)
 {
@@ -172,7 +171,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(const HashElem<K
   return *this;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(
     std::initializer_list<std::pair<K, V>> list)
@@ -182,7 +181,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(
 }
 
 // Операторы удаления
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(const K &key)
 {
@@ -190,7 +189,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(const K &key)
   return *this;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(K &&key)
 {
@@ -198,7 +197,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(K &&key)
   return *this;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(const HashElem<K, V> &elem)
 {
@@ -206,7 +205,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(const HashElem<K
   return *this;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(
     std::initializer_list<K> keys)
@@ -220,35 +219,35 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(
 #pragma endregion Operators
 
 #pragma region OtherFuncs
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 double HashTable<K, V, HashFunc>::calc_load_factor() const noexcept
 {
   return (double)get_count() / (double)_capacity;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 bool HashTable<K, V, HashFunc>::empty() const noexcept
 {
   return get_count() == 0;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 size_t HashTable<K, V, HashFunc>::get_mod_count() const noexcept
 {
   return *mod_count;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 size_t HashTable<K, V, HashFunc>::get_capacity() const noexcept
 {
   return _capacity;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 size_t HashTable<K, V, HashFunc>::get_count() const noexcept
 {
@@ -261,7 +260,7 @@ size_t HashTable<K, V, HashFunc>::get_count() const noexcept
   return total_count;
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 size_t HashTable<K, V, HashFunc>::size() const noexcept
 {
@@ -271,7 +270,7 @@ size_t HashTable<K, V, HashFunc>::size() const noexcept
 #pragma endregion OtherFuncs
 
 #pragma region ControlFuncs
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::insert_node(const K &key, const V &val)
 {
@@ -287,28 +286,28 @@ void HashTable<K, V, HashFunc>::insert_node(const K &key, const V &val)
   }
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::insert_node(K &&key, V &&val)
 {
   insert_node(key, val);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::insert_node(const HashElem<K, V> &elem)
 {
   insert_node(elem.get_key(), elem.get_val());
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::insert_node(std::pair<K, V> &node)
 {
   insert_node(node.first, node.second);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<std::pair<K, V>> list_elems)
 {
@@ -318,7 +317,7 @@ void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<std::pair<K, 
   }
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<HashElem<K, V>> list_elems)
 {
@@ -328,7 +327,7 @@ void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<HashElem<K, V
   }
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::delete_node(const K &key)
 {
@@ -337,21 +336,21 @@ void HashTable<K, V, HashFunc>::delete_node(const K &key)
   array.get()[arr_index].delete_node(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::delete_node(K &&key)
 {
   delete_node(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::delete_node(const HashElem<K, V> &elem)
 {
   delete_node(elem.get_key());
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::delete_nodes(std::initializer_list<K> keys)
 {
@@ -361,7 +360,7 @@ void HashTable<K, V, HashFunc>::delete_nodes(std::initializer_list<K> keys)
   }
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 bool HashTable<K, V, HashFunc>::contains(const K &key) const noexcept
 {
@@ -369,28 +368,28 @@ bool HashTable<K, V, HashFunc>::contains(const K &key) const noexcept
   return array.get()[arr_index].contains(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 bool HashTable<K, V, HashFunc>::contains(const K &&key) const noexcept
 {
   return contains(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 bool HashTable<K, V, HashFunc>::contains(const HashElem<K, V> &elem) const noexcept
 {
   return contains(elem.get_key());
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 bool HashTable<K, V, HashFunc>::contains(std::pair<K, V> &node) const noexcept
 {
   return contains(node.first);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashElem<K, V> &HashTable<K, V, HashFunc>::get_pair(const K &key) const
 {
@@ -404,14 +403,14 @@ HashElem<K, V> &HashTable<K, V, HashFunc>::get_pair(const K &key) const
   throw KeyNotFoundError(__FILE__, typeid(*this).name(), __LINE__);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashElem<K, V> &HashTable<K, V, HashFunc>::get_pair(K &&key) const
 {
   return get_pair(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 V &HashTable<K, V, HashFunc>::get_val(const K &key) const noexcept
 {
@@ -419,14 +418,14 @@ V &HashTable<K, V, HashFunc>::get_val(const K &key) const noexcept
   return array.get()[arr_index].get_val(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 V &HashTable<K, V, HashFunc>::get_val(K &&key) const noexcept
 {
   return get_val(key);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashChain<K, V> &HashTable<K, V, HashFunc>::get_list(const int index) const
 {
@@ -437,7 +436,7 @@ HashChain<K, V> &HashTable<K, V, HashFunc>::get_list(const int index) const
   return array.get()[index];
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::clear() noexcept
 {
@@ -448,7 +447,7 @@ void HashTable<K, V, HashFunc>::clear() noexcept
   }
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::begin() noexcept
 {
@@ -467,7 +466,7 @@ HashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::begin() noexcept
   return end();
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::end() noexcept
 {
@@ -475,7 +474,7 @@ HashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::end() noexcept
       array, _capacity, std::shared_ptr<HashElem<K, V>>{}, mod_count, _capacity);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::begin() const noexcept
 {
@@ -494,7 +493,7 @@ ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::begin() const noexc
   return end();
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::end() const noexcept
 {
@@ -502,7 +501,7 @@ ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::end() const noexcep
       array, _capacity, std::shared_ptr<HashElem<K, V>>{}, mod_count, _capacity);
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::cbegin() const noexcept
 {
@@ -521,7 +520,7 @@ ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::cbegin() const noex
   return end();
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::cend() const noexcept
 {
@@ -532,7 +531,7 @@ ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::cend() const noexce
 #pragma endregion ControlFuncs
 
 #pragma region InnerFuncs
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::alloc_mem(int count)
 {
@@ -553,7 +552,7 @@ void HashTable<K, V, HashFunc>::alloc_mem(int count)
   }
 }
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 void HashTable<K, V, HashFunc>::rehash()
 {

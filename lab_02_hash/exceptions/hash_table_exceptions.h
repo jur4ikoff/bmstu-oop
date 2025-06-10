@@ -1,20 +1,6 @@
-// #pragma once
+#pragma once
 
-// #include "base_exceptions.h"
-
-// class errMemory : public BaseContainerError
-// {
-// public:
-//     errMemory(const char *filename,
-//               int line,
-//               const char *class_name,
-//               const char *time,
-//               const char *err_msg = "Ошибка выделения памяти")
-//         : BaseContainerError(filename, line, class_name, time, err_msg) {};
-// };
-
-
-
+#include "base_exception.h"
 
 // class errNegSize : public BaseContainerError
 // {
@@ -38,17 +24,6 @@
 //         : BaseContainerError(filename, line, class_name, time, err_msg) {};
 // };
 
-// class errDivisionZero : public BaseContainerError
-// {
-// public:
-//     errDivisionZero(const char *filename,
-//                     int line,
-//                     const char *class_name,
-//                     const char *time,
-//                     const char *err_msg = "Ошибка, деление на ноль")
-//         : BaseContainerError(filename, line, class_name, time, err_msg) {};
-// };
-
 // class errVectorsSizeNotEqual : public BaseContainerError
 // {
 // public:
@@ -66,19 +41,31 @@
 //     errSizeNotCompatible(const char *filename,
 //                          int line,
 //                          const char *class_name,
-//                          const char *time, 
+//                          const char *time,
 //                          const char *err_msg = "Ошибка, размер векторов не подходит для выполнения данной операции")
 //         : BaseContainerError(filename, line, class_name, time, err_msg) {};
 // };
 
+class MemoryError : public BaseError
+{
+public:
+    MemoryError(const char *filename, const char *classname, int line_num, const char *message = "Memory allocation error!") : BaseError(filename, classname, line_num, message) {};
+};
 
-// class errDifferentContainers : public BaseContainerError
-// {
-// public:
-//     errDifferentContainers(const char *filename,
-//                          int line,
-//                          const char *class_name,
-//                          const char *time, 
-//                          const char *err_msg = "Ошибка, разные контейнеры")
-//         : BaseContainerError(filename, line, class_name, time, err_msg) {};
-// };
+class BadCapacityError : public BaseError
+{
+public:
+    BadCapacityError(const char *filename, const char *classname, int line_num, const char *message = "Capacity passed is less than one!") : BaseError(filename, classname, line_num, message) {};
+};
+
+class KeyNotFoundError : public BaseError
+{
+public:
+    KeyNotFoundError(const char *filename, const char *classname, int line_num, const char *message = "Requested key was not found!") : BaseError(filename, classname, line_num, message) {};
+};
+
+class TableIndexOutOfRange : public BaseError
+{
+public:
+    TableIndexOutOfRange(const char *filename, const char *classname, int line_num, const char *message = "Requested index is out of hash table range!") : BaseError(filename, classname, line_num, message) {};
+};

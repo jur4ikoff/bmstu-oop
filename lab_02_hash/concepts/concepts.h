@@ -1,5 +1,4 @@
-#ifndef CONCEPTS_H
-#define CONCEPTS_H
+#pragma once
 
 #include <concepts>
 
@@ -20,17 +19,15 @@ concept HashFunctionWithCapacity = requires(HashFunc func, const K& key, size_t 
 };
 
 template <typename V>
-concept ValidValue = std::is_constructible_v<V> &&
+concept Value = std::is_constructible_v<V> &&
                      std::is_copy_constructible_v<V> &&
                      std::is_move_constructible_v<V> &&
                      std::is_destructible_v<V> &&
                      Assignable<V>;
 
 template <typename K>
-concept ValidKey = std::is_constructible_v<K> &&
+concept Key = std::is_constructible_v<K> &&
                      std::is_copy_constructible_v<K> &&
                      std::is_move_constructible_v<K> &&
                      std::is_destructible_v<K> &&
                      Assignable<K> && Comparable<K>;
-
-#endif // CONCEPTS_H

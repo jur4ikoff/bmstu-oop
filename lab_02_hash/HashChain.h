@@ -7,10 +7,10 @@
 #include "concepts.h"
 #include "HashElem.h"
 
-template <ValidKey K, ValidValue V>
+template <Key K, Value V>
 class HashElem;
 
-template <ValidKey K, ValidValue V>
+template <Key K, Value V>
 class HashChain
 {
 public:

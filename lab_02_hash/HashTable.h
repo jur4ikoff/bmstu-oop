@@ -1,5 +1,4 @@
-#ifndef HASHTABLE_H
-#define HASHTABLE_H
+#pragma once
 
 #include <initializer_list>
 #include <memory>
@@ -9,7 +8,7 @@
 #include "HashIterator.hpp"
 #include "ConstHashIterator.hpp"
 
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
 class HashTable : public BaseHashTable
 {
@@ -89,6 +88,7 @@ public:
     ConstHashIterator<K, V, HashFunc> cbegin() const noexcept;
     ConstHashIterator<K, V, HashFunc> cend() const noexcept;
 #pragma endregion OtherFuncs
+
 protected:
 #pragma region InnerFuncs
     void alloc_mem(int count);
@@ -100,7 +100,7 @@ private:
 };
 
 // вывод через std::cout;
-template <ValidKey K, ValidValue V, typename HashFunc>
+template <Key K, Value V, typename HashFunc>
 std::ostream &operator<<(std::ostream &os, HashTable<K, V, HashFunc> &table)
 {
     for (int i = 0; i < table.get_capacity(); i++)
@@ -109,5 +109,3 @@ std::ostream &operator<<(std::ostream &os, HashTable<K, V, HashFunc> &table)
     }
     return os;
 }
-
-#endif // HASHTABLE_H

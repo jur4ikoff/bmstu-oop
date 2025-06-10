@@ -6,13 +6,13 @@
 #include "BaseIterator.h"
 #include "concepts.h"
 
-template <ValidKey K, ValidValue V>
+template <Key K, Value V>
 class HashElem;
 
-template <ValidKey K, ValidValue V>
+template <Key K, Value V>
 class HashChain;
 
-template <ValidKey K, ValidValue V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
 class HashIterator: public BaseIterator
 {
 public:
