@@ -1,5 +1,4 @@
-#ifndef HASHCHAIN_H
-#define HASHCHAIN_H
+#pragma once
 
 #include <initializer_list>
 #include <memory>
@@ -77,4 +76,4 @@ std::ostream &operator<<(std::ostream &os, HashChain<K, V> &chain)
     return os;
 }
 
-#endif // HASHCHAIN_H
+#include "HashChain.hpp"

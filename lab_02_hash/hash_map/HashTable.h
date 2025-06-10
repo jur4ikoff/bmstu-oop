@@ -10,7 +10,7 @@
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
-class HashTable : public BaseHashTable
+class HashTable : public BaseHashMap
 {
 public:
 #pragma region STLAliases
@@ -111,3 +111,5 @@ std::ostream &operator<<(std::ostream &os, HashTable<K, V, HashFunc> &table)
     }
     return os;
 }
+
+#include "HashTable.hpp"

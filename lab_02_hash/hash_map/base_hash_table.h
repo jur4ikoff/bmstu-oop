@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-class BaseHashTable
+class BaseHashMap
 {
 public:
-    virtual ~BaseHashTable() = default;
+    virtual ~BaseHashMap() = default;
     virtual size_t size() const = 0;
     virtual bool empty() const = 0;
     virtual size_t get_capacity() const = 0;
