@@ -1,5 +1,6 @@
 #include "HashIterator.h"
-#include "Errors.h"
+#include "errors.h"
+#include "iterator_exceptions.h"
 
 #pragma region 5Rule
 

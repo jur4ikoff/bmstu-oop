@@ -1,5 +1,6 @@
 #include "ConstHashIterator.h"
-#include "Errors.h"
+#include "errors.h"
+#include "iterator_exceptions.h"
 
 #pragma region 5Rule
 
@@ -11,8 +12,8 @@ ConstHashIterator<K, V, HashFunc>::ConstHashIterator(
     std::shared_ptr<size_t> mod_count_og,
     size_t capacity)
     : table(table), index(index), current(current),
-    mod_count_ptr(mod_count_og), mod_count(*mod_count_og),
-    capacity(capacity)
+      mod_count_ptr(mod_count_og), mod_count(*mod_count_og),
+      capacity(capacity)
 {
     if (!current)
         advance_to_valid();
@@ -21,16 +22,16 @@ ConstHashIterator<K, V, HashFunc>::ConstHashIterator(
 template <ValidKey K, ValidValue V, typename HashFunc>
 ConstHashIterator<K, V, HashFunc>::ConstHashIterator(const ConstHashIterator &og_iter)
     : table(og_iter.table), index(og_iter.index),
-    current(og_iter.current), mod_count_ptr(og_iter.mod_count_ptr),
-    mod_count(og_iter.mod_count), capacity(og_iter.capacity)
+      current(og_iter.current), mod_count_ptr(og_iter.mod_count_ptr),
+      mod_count(og_iter.mod_count), capacity(og_iter.capacity)
 {
 }
 
 template <ValidKey K, ValidValue V, typename HashFunc>
 ConstHashIterator<K, V, HashFunc>::ConstHashIterator(ConstHashIterator &&og_iter)
     : table(std::move(og_iter.table)), index(og_iter.index),
-    current(std::move(og_iter.current)), mod_count_ptr(std::move(og_iter.mod_count_ptr)),
-    mod_count(og_iter.mod_count), capacity(og_iter.capacity)
+      current(std::move(og_iter.current)), mod_count_ptr(std::move(og_iter.mod_count_ptr)),
+      mod_count(og_iter.mod_count), capacity(og_iter.capacity)
 {
 }
 
@@ -59,17 +60,20 @@ void ConstHashIterator<K, V, HashFunc>::check_if_valid() const
 }
 
 template <ValidKey K, ValidValue V, typename HashFunc>
-size_t ConstHashIterator<K, V, HashFunc>::get_index() const {
+size_t ConstHashIterator<K, V, HashFunc>::get_index() const
+{
     return index;
 }
 
 template <ValidKey K, ValidValue V, typename HashFunc>
-size_t ConstHashIterator<K, V, HashFunc>::get_capacity() const {
+size_t ConstHashIterator<K, V, HashFunc>::get_capacity() const
+{
     return capacity;
 }
 
 template <ValidKey K, ValidValue V, typename HashFunc>
-size_t ConstHashIterator<K, V, HashFunc>::get_needed_mod_count() const {
+size_t ConstHashIterator<K, V, HashFunc>::get_needed_mod_count() const
+{
     return mod_count;
 }
 

@@ -1,5 +1,5 @@
-#ifndef HASHERROR_H
-#define HASHERROR_H
+#pragma once
+
 #include <exception>
 #include <cstdio>
 
@@ -67,5 +67,3 @@ public:
     IteratorDoesntExistError(const char *filename, const char *classname, int line_num, const char *message = "Iterator is linked to a hash table that doesn't exist!"):
         BaseError(filename, classname, line_num, message) {};
 };
-
-#endif // HASHERROR_H

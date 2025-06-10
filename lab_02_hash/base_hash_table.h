@@ -1,5 +1,6 @@
-#ifndef BASEHASHTABLE_H
-#define BASEHASHTABLE_H
+#pragma once
+
+#include <iostream>
 
 class BaseHashTable
 {
@@ -9,8 +10,7 @@ public:
     virtual bool empty() const = 0;
     virtual size_t get_capacity() const = 0;
     virtual size_t get_count() const = 0;
-protected:
-    size_t capacity;
-};
 
-#endif // BASEHASHTABLE_H
+protected:
+    size_t _capacity;
+};

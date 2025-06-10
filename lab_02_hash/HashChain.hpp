@@ -1,6 +1,7 @@
 #include "HashChain.h"
 #include "HashElem.hpp"
-#include "Errors.h"
+#include "errors.h"
+#include "hash_table_exceptions.h"
 
 #pragma region 5Rule
 
