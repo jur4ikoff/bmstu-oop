@@ -2,15 +2,15 @@
 
 #pragma region constructors
 template <Key K, Value V>
-HashElem<K, V>::HashElem(const K &key, const V &val) noexcept : _key(key), _val(val) {}
+HashNode<K, V>::HashNode(const K &key, const V &val) noexcept : _key(key), _val(val) {}
 
 template <Key K, Value V>
-HashElem<K, V>::HashElem(const HashElem<K, V> &other) noexcept : _key(other._key), _val(other._val), _next(other._next), _prev(other._prev)
+HashNode<K, V>::HashNode(const HashNode<K, V> &other) noexcept : _key(other._key), _val(other._val), _next(other._next), _prev(other._prev)
 {
 }
 
 template <Key K, Value V>
-HashElem<K, V>::HashElem(HashElem<K, V> &&other) noexcept
+HashNode<K, V>::HashNode(HashNode<K, V> &&other) noexcept
 {
     _val = std::move(other._val);
     _key = std::move(other._key);
@@ -19,14 +19,14 @@ HashElem<K, V>::HashElem(HashElem<K, V> &&other) noexcept
 }
 
 template <Key K, Value V>
-HashElem<K, V>::HashElem(std::pair<K, V> &node) noexcept
+HashNode<K, V>::HashNode(std::pair<K, V> &node) noexcept
 {
     _key = node.first;
     _val = node.second;
 }
 
 template <Key K, Value V>
-HashElem<K, V> &HashElem<K, V>::operator=(const HashElem<K, V> &other) noexcept
+HashNode<K, V> &HashNode<K, V>::operator=(const HashNode<K, V> &other) noexcept
 {
     if (this != &other)
     {
@@ -39,7 +39,7 @@ HashElem<K, V> &HashElem<K, V>::operator=(const HashElem<K, V> &other) noexcept
 }
 
 template <Key K, Value V>
-HashElem<K, V> &HashElem<K, V>::operator=(HashElem<K, V> &&og_elem) noexcept
+HashNode<K, V> &HashNode<K, V>::operator=(HashNode<K, V> &&og_elem) noexcept
 {
     if (this != &og_elem)
     {
@@ -54,25 +54,25 @@ HashElem<K, V> &HashElem<K, V>::operator=(HashElem<K, V> &&og_elem) noexcept
 
 #pragma region Operators
 template <Key K, Value V>
-bool HashElem<K, V>::operator==(const HashElem<K, V> &other) const noexcept
+bool HashNode<K, V>::operator==(const HashNode<K, V> &other) const noexcept
 {
     return _key == other.get_key() && _val == other.get_val();
 }
 
 template <Key K, Value V>
-bool HashElem<K, V>::operator!=(const HashElem<K, V> &other) const noexcept
+bool HashNode<K, V>::operator!=(const HashNode<K, V> &other) const noexcept
 {
     return !((*this) == other);
 }
 
 template <Key K, Value V>
-bool HashElem<K, V>::operator==(std::pair<K, V> &node) const noexcept
+bool HashNode<K, V>::operator==(std::pair<K, V> &node) const noexcept
 {
     return _key == node.first && _val == node.second;
 }
 
 template <Key K, Value V>
-bool HashElem<K, V>::operator!=(std::pair<K, V> &node) const noexcept
+bool HashNode<K, V>::operator!=(std::pair<K, V> &node) const noexcept
 {
     return !((*this) == node);
 }
@@ -80,68 +80,68 @@ bool HashElem<K, V>::operator!=(std::pair<K, V> &node) const noexcept
 
 #pragma region getters_setters
 template <Key K, Value V>
-K HashElem<K, V>::get_key() const noexcept
+K HashNode<K, V>::get_key() const noexcept
 {
     return _key;
 }
 
 template <Key K, Value V>
-V HashElem<K, V>::get_val() const noexcept
+V HashNode<K, V>::get_val() const noexcept
 {
     return _val;
 }
 
 template <Key K, Value V>
-void HashElem<K, V>::set_val(const V &val) noexcept
+void HashNode<K, V>::set_val(const V &val) noexcept
 {
     _val = val;
 }
 
 template <Key K, Value V>
-void HashElem<K, V>::set_val(V &&val) noexcept
+void HashNode<K, V>::set_val(V &&val) noexcept
 {
     _val = std::move(val);
 }
 
 template <Key K, Value V>
-std::shared_ptr<HashElem<K, V>> HashElem<K, V>::get_next() const noexcept
+std::shared_ptr<HashNode<K, V>> HashNode<K, V>::get_next() const noexcept
 {
     return _next;
 }
 
 template <Key K, Value V>
-std::weak_ptr<HashElem<K, V>> HashElem<K, V>::get_prev() const noexcept
+std::weak_ptr<HashNode<K, V>> HashNode<K, V>::get_prev() const noexcept
 {
     return _prev;
 }
 
 template <Key K, Value V>
-void HashElem<K, V>::set_next(std::shared_ptr<HashElem<K, V>> next) noexcept
+void HashNode<K, V>::set_next(std::shared_ptr<HashNode<K, V>> next) noexcept
 {
     _next = next;
 }
 
 template <Key K, Value V>
-void HashElem<K, V>::set_prev(std::weak_ptr<HashElem<K, V>> prev) noexcept
+void HashNode<K, V>::set_prev(std::weak_ptr<HashNode<K, V>> prev) noexcept
 {
     _prev = prev;
 }
 #pragma endregion getters_setters
 
 template <Key K, Value V>
-bool HashElem<K, V>::has_next() const noexcept
+bool HashNode<K, V>::has_next() const noexcept
 {
     return _next != nullptr;
 }
 
 template <Key K, Value V>
-bool HashElem<K, V>::has_prev() const noexcept
+bool HashNode<K, V>::has_prev() const noexcept
 {
     return !_prev.expired();
 }
 
 template <Key K, Value V>
-std::ostream &operator<<(std::ostream &os, HashElem<K, V> &elem)
+std::ostream &operator<<(std::ostream &os, HashNode<K, V> &elem)
 {
     os << "[Value: " << elem.get_val() << " ; Key: " << elem.get_key() << "]";
     return os;

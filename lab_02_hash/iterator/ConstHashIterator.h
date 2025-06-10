@@ -7,7 +7,7 @@
 #include "BaseIterator.h"
 
 template <Key K, Value V>
-class HashElem;
+class HashNode;
 
 template <Key K, Value V>
 class HashChain;
@@ -17,15 +17,15 @@ class ConstHashIterator : public BaseIterator
 {
 public:
     using iterator_category = std::bidirectional_iterator_tag;
-    using value_type = const HashElem<K, V>;
+    using value_type = const HashNode<K, V>;
     using difference_type = std::ptrdiff_t;
-    using pointer = const HashElem<K, V> *;
-    using reference = const HashElem<K, V> &;
+    using pointer = const HashNode<K, V> *;
+    using reference = const HashNode<K, V> &;
 
 #pragma region 5Rule
     ConstHashIterator() = default;
     ConstHashIterator(std::shared_ptr<HashChain<K, V>> table, size_t index,
-                      std::shared_ptr<HashElem<K, V>> current, std::shared_ptr<size_t> mod_count_og, size_t capacity);
+                      std::shared_ptr<HashNode<K, V>> current, std::shared_ptr<size_t> mod_count_og, size_t capacity);
     ConstHashIterator(const ConstHashIterator<K, V, HashFunc> &og_iter);
     ConstHashIterator(ConstHashIterator<K, V, HashFunc> &&og_iter);
     ~ConstHashIterator() = default;
@@ -52,7 +52,7 @@ public:
 
 private:
     std::weak_ptr<HashChain<K, V>> table;
-    std::shared_ptr<HashElem<K, V>> current;
+    std::shared_ptr<HashNode<K, V>> current;
     std::shared_ptr<size_t> mod_count_ptr;
     size_t mod_count;
     size_t index;

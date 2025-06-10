@@ -18,13 +18,13 @@ HashChain<K, V>::HashChain(const HashChain<K, V> &og_chain)
   if (og_chain.count != 0)
   {
     auto src_current = og_chain.list;
-    list = std::make_shared<HashElem<K, V>>(src_current->get_key(), src_current->get_val());
+    list = std::make_shared<HashNode<K, V>>(src_current->get_key(), src_current->get_val());
     auto dst_current = list;
     count = 1;
     src_current = src_current->get_next();
     while (src_current)
     {
-      auto new_elem = std::make_shared<HashElem<K, V>>(src_current->get_key(), src_current->get_val());
+      auto new_elem = std::make_shared<HashNode<K, V>>(src_current->get_key(), src_current->get_val());
       new_elem->set_prev(dst_current);
       dst_current->set_next(new_elem);
       dst_current = new_elem;
@@ -66,13 +66,13 @@ HashChain<K, V> &HashChain<K, V>::operator=(const HashChain<K, V> &og_chain)
     return *this;
   }
   auto src_current = og_chain.list;
-  list = std::make_shared<HashElem<K, V>>(src_current->get_key(), src_current->get_val());
+  list = std::make_shared<HashNode<K, V>>(src_current->get_key(), src_current->get_val());
   auto dst_current = list;
   count = 1;
   src_current = src_current->get_next();
   while (src_current)
   {
-    auto new_elem = std::make_shared<HashElem<K, V>>(src_current->get_key(), src_current->get_val());
+    auto new_elem = std::make_shared<HashNode<K, V>>(src_current->get_key(), src_current->get_val());
     new_elem->set_prev(dst_current);
     dst_current->set_next(new_elem);
     dst_current = new_elem;
@@ -103,8 +103,8 @@ bool HashChain<K, V>::operator==(const HashChain<K, V> &other_chain) const
 {
   if (count != other_chain.count)
     return false;
-  std::shared_ptr<HashElem<K, V>> current = list;
-  std::shared_ptr<HashElem<K, V>> current_other = other_chain.list;
+  std::shared_ptr<HashNode<K, V>> current = list;
+  std::shared_ptr<HashNode<K, V>> current_other = other_chain.list;
   while (current)
   {
     if (current->get_key() != current_other->get_key() || current->get_val() != current_other->get_val())
@@ -168,7 +168,7 @@ void HashChain<K, V>::insert_node(const K &key, const V &val)
 {
   if (!list)
   {
-    auto new_elem = std::make_shared<HashElem<K, V>>(key, val);
+    auto new_elem = std::make_shared<HashNode<K, V>>(key, val);
     list = new_elem;
     count++;
     return;
@@ -185,7 +185,7 @@ void HashChain<K, V>::insert_node(const K &key, const V &val)
       break;
     current = current->get_next();
   }
-  auto new_elem = std::make_shared<HashElem<K, V>>(key, val);
+  auto new_elem = std::make_shared<HashNode<K, V>>(key, val);
   new_elem->set_prev(current);
   current->set_next(new_elem);
   count++;
@@ -242,7 +242,7 @@ void HashChain<K, V>::delete_node(K &&key)
 }
 
 template <Key K, Value V>
-HashElem<K, V> &HashChain<K, V>::get_pair(const K &key) const
+HashNode<K, V> &HashChain<K, V>::get_pair(const K &key) const
 {
   auto current = list;
   while (current)
@@ -257,7 +257,7 @@ HashElem<K, V> &HashChain<K, V>::get_pair(const K &key) const
 }
 
 template <Key K, Value V>
-HashElem<K, V> &HashChain<K, V>::get_pair(K &&key) const
+HashNode<K, V> &HashChain<K, V>::get_pair(K &&key) const
 {
   return get_pair(key);
 }
@@ -288,7 +288,7 @@ int HashChain<K, V>::get_count()
 }
 
 template <Key K, Value V>
-std::shared_ptr<HashElem<K, V>> HashChain<K, V>::get_list()
+std::shared_ptr<HashNode<K, V>> HashChain<K, V>::get_list()
 {
   return list;
 }

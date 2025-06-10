@@ -163,7 +163,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(std::pair<K, V> 
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(const HashElem<K, V> &elem)
+HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator+(const HashNode<K, V> &elem)
 {
   insert_node(elem);
   return *this;
@@ -197,7 +197,7 @@ HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(K &&key)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(const HashElem<K, V> &elem)
+HashTable<K, V, HashFunc> &HashTable<K, V, HashFunc>::operator-(const HashNode<K, V> &elem)
 {
   delete_node(elem);
   return *this;
@@ -293,7 +293,7 @@ void HashTable<K, V, HashFunc>::insert_node(K &&key, V &&val)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::insert_node(const HashElem<K, V> &elem)
+void HashTable<K, V, HashFunc>::insert_node(const HashNode<K, V> &elem)
 {
   insert_node(elem.get_key(), elem.get_val());
 }
@@ -317,7 +317,7 @@ void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<std::pair<K, 
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<HashElem<K, V>> list_elems)
+void HashTable<K, V, HashFunc>::insert_nodes(std::initializer_list<HashNode<K, V>> list_elems)
 {
   for (auto elem : list_elems)
   {
@@ -343,7 +343,7 @@ void HashTable<K, V, HashFunc>::delete_node(K &&key)
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::delete_node(const HashElem<K, V> &elem)
+void HashTable<K, V, HashFunc>::delete_node(const HashNode<K, V> &elem)
 {
   delete_node(elem.get_key());
 }
@@ -375,7 +375,7 @@ bool HashTable<K, V, HashFunc>::contains(const K &&key) const noexcept
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-bool HashTable<K, V, HashFunc>::contains(const HashElem<K, V> &elem) const noexcept
+bool HashTable<K, V, HashFunc>::contains(const HashNode<K, V> &elem) const noexcept
 {
   return contains(elem.get_key());
 }
@@ -389,7 +389,7 @@ bool HashTable<K, V, HashFunc>::contains(std::pair<K, V> &node) const noexcept
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashElem<K, V> &HashTable<K, V, HashFunc>::get_pair(const K &key) const
+HashNode<K, V> &HashTable<K, V, HashFunc>::get_pair(const K &key) const
 {
   for (int i = 0; i < _capacity; i++)
   {
@@ -403,7 +403,7 @@ HashElem<K, V> &HashTable<K, V, HashFunc>::get_pair(const K &key) const
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-HashElem<K, V> &HashTable<K, V, HashFunc>::get_pair(K &&key) const
+HashNode<K, V> &HashTable<K, V, HashFunc>::get_pair(K &&key) const
 {
   return get_pair(key);
 }
@@ -466,7 +466,7 @@ template <Key K, Value V, typename HashFunc>
 HashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::end() noexcept
 {
   return HashIterator<K, V, HashFunc>(
-      array, _capacity, std::shared_ptr<HashElem<K, V>>{}, mod_count, _capacity);
+      array, _capacity, std::shared_ptr<HashNode<K, V>>{}, mod_count, _capacity);
 }
 
 template <Key K, Value V, typename HashFunc>
@@ -493,7 +493,7 @@ template <Key K, Value V, typename HashFunc>
 ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::end() const noexcept
 {
   return ConstHashIterator<K, V, HashFunc>(
-      array, _capacity, std::shared_ptr<HashElem<K, V>>{}, mod_count, _capacity);
+      array, _capacity, std::shared_ptr<HashNode<K, V>>{}, mod_count, _capacity);
 }
 
 template <Key K, Value V, typename HashFunc>
@@ -520,7 +520,7 @@ template <Key K, Value V, typename HashFunc>
 ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::cend() const noexcept
 {
   return ConstHashIterator<K, V, HashFunc>(
-      array, _capacity, std::shared_ptr<HashElem<K, V>>{}, mod_count, _capacity);
+      array, _capacity, std::shared_ptr<HashNode<K, V>>{}, mod_count, _capacity);
 }
 
 #pragma endregion ControlFuncs

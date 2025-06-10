@@ -14,7 +14,7 @@ class HashTable : public BaseHashTable
 {
 public:
 #pragma region STLAliases
-    using value_type = HashElem<K, V>;
+    using value_type = HashNode<K, V>;
     using size_type = size_t;
     using iterator = HashIterator<K, V, HashFunc>;
     using const_iterator = ConstHashIterator<K, V, HashFunc>;
@@ -36,20 +36,20 @@ public:
 #pragma region ControlFuncs
     void insert_node(const K &key, const V &val);
     void insert_node(K &&key, V &&val);
-    void insert_node(const HashElem<K, V> &elem);
+    void insert_node(const HashNode<K, V> &elem);
     void insert_node(std::pair<K, V> &node);
     void insert_nodes(std::initializer_list<std::pair<K, V>> list_elems);
-    void insert_nodes(std::initializer_list<HashElem<K, V>> list_elems);
+    void insert_nodes(std::initializer_list<HashNode<K, V>> list_elems);
     void delete_node(const K &key);
     void delete_node(K &&key);
-    void delete_node(const HashElem<K, V> &elem);
+    void delete_node(const HashNode<K, V> &elem);
     void delete_nodes(std::initializer_list<K> keys);
     bool contains(const K &key) const noexcept;
     bool contains(const K &&key) const noexcept;
-    bool contains(const HashElem<K, V> &elem) const noexcept;
+    bool contains(const HashNode<K, V> &elem) const noexcept;
     bool contains(std::pair<K, V> &node) const noexcept;
-    HashElem<K, V> &get_pair(const K &key) const;
-    HashElem<K, V> &get_pair(K &&key) const;
+    HashNode<K, V> &get_pair(const K &key) const;
+    HashNode<K, V> &get_pair(K &&key) const;
     V &get_val(const K &key) const noexcept;
     V &get_val(K &&key) const noexcept;
     HashChain<K, V> &get_list(const int index) const;
@@ -63,11 +63,11 @@ public:
     const V &operator[](K &&key) const;
     HashTable<K, V, HashFunc> &operator+(const std::pair<K, V> &pair);
     HashTable<K, V, HashFunc> &operator+(std::pair<K, V> &&pair);
-    HashTable<K, V, HashFunc> &operator+(const HashElem<K, V> &elem);
+    HashTable<K, V, HashFunc> &operator+(const HashNode<K, V> &elem);
     HashTable<K, V, HashFunc> &operator+(std::initializer_list<std::pair<K, V>> list);
     HashTable<K, V, HashFunc> &operator-(const K &key);
     HashTable<K, V, HashFunc> &operator-(K &&key);
-    HashTable<K, V, HashFunc> &operator-(const HashElem<K, V> &elem);
+    HashTable<K, V, HashFunc> &operator-(const HashNode<K, V> &elem);
     HashTable<K, V, HashFunc> &operator-(std::initializer_list<K> keys);
     bool operator==(const HashTable<K, V, HashFunc> &other) const noexcept;
     bool operator!=(const HashTable<K, V, HashFunc> &other) const noexcept;

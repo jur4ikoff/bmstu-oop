@@ -7,7 +7,7 @@ template <Key K, Value V, typename HashFunc>
 ConstHashIterator<K, V, HashFunc>::ConstHashIterator(
     std::shared_ptr<HashChain<K, V>> table,
     size_t index,
-    std::shared_ptr<HashElem<K, V>> current,
+    std::shared_ptr<HashNode<K, V>> current,
     std::shared_ptr<size_t> mod_count_og,
     size_t capacity)
     : table(table), index(index), current(current),

@@ -8,7 +8,7 @@
 #include "hash_node.h"
 
 template <Key K, Value V>
-class HashElem;
+class HashNode;
 
 template <Key K, Value V>
 class HashChain
@@ -42,16 +42,16 @@ public:
     void delete_node(K &&key);
     bool contains(const K &key);
     bool contains(K &&key);
-    HashElem<K, V> &get_pair(const K &key) const;
-    HashElem<K, V> &get_pair(K &&key) const;
+    HashNode<K, V> &get_pair(const K &key) const;
+    HashNode<K, V> &get_pair(K &&key) const;
     V &get_val(const K &key);
     V &get_val(K &&key);
     int get_count();
-    std::shared_ptr<HashElem<K, V>> get_list();
+    std::shared_ptr<HashNode<K, V>> get_list();
     void clear() noexcept;
 #pragma endregion OtherFuncs
 private:
-    std::shared_ptr<HashElem<K, V>> list;
+    std::shared_ptr<HashNode<K, V>> list;
     size_t count;
 };
 
@@ -64,7 +64,7 @@ std::ostream &operator<<(std::ostream &os, HashChain<K, V> &chain)
         os << "[NONE]";
         return os;
     }
-    std::shared_ptr<HashElem<K, V>> current = chain.get_list();
+    std::shared_ptr<HashNode<K, V>> current = chain.get_list();
     while (current)
     {
         os << *(current.get()) << " -> ";
