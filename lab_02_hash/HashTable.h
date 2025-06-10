@@ -90,11 +90,13 @@ public:
 #pragma endregion OtherFuncs
 
 protected:
-#pragma region InnerFuncs
-    void alloc_mem(int count);
+    void memory_allocation(int count);
     void rehash();
-#pragma endregion InnerFuncs
+
 private:
+    void check_capacity(const size_type capacity) const;
+    void check_index(const int index) const;
+
     std::shared_ptr<HashChain<K, V>> array;
     std::shared_ptr<size_t> mod_count;
 };

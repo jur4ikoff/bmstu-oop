@@ -1,6 +1,8 @@
 #include "HashTable.h"
 #include "hash_table_exceptions.h"
+
 #include <iostream>
+#include <ctime>
 
 #pragma region 5Rule
 template <Key K, Value V, typename HashFunc>
@@ -8,30 +10,26 @@ template <Key K, Value V, typename HashFunc>
 HashTable<K, V, HashFunc>::HashTable()
 {
   _capacity = 1;
-  alloc_mem(_capacity);
+  this->memory_allocation(_capacity);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc>::HashTable(int new_capacity)
 {
-  if (new_capacity <= 0)
-  {
-    throw BadCapacityError(__FILE__, typeid(*this).name(), __LINE__);
-  }
+  this->check_capacity(new_capacity);
+
   _capacity = new_capacity;
   mod_count = 0;
-  alloc_mem(_capacity);
+  this->memory_allocation(_capacity);
 }
 
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashTable<K, V, HashFunc>::HashTable(std::initializer_list<std::pair<K, V>> list_elems, int new_capacity)
 {
-  if (new_capacity <= 0)
-  {
-    throw BadCapacityError(__FILE__, typeid(*this).name(), __LINE__);
-  }
+  this->check_capacity(new_capacity);
+
   _capacity = new_capacity;
   mod_count = 0;
   alloc_mem(_capacity);
@@ -429,10 +427,7 @@ template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
 HashChain<K, V> &HashTable<K, V, HashFunc>::get_list(const int index) const
 {
-  if (index >= _capacity || index < 0)
-  {
-    throw TableIndexOutOfRange(__FILE__, typeid(*this).name(), __LINE__);
-  }
+  this->check_index(index);
   return array.get()[index];
 }
 
@@ -530,15 +525,12 @@ ConstHashIterator<K, V, HashFunc> HashTable<K, V, HashFunc>::cend() const noexce
 
 #pragma endregion ControlFuncs
 
-#pragma region InnerFuncs
+#pragma region inner_functions
 template <Key K, Value V, typename HashFunc>
   requires HashFunctionWithCapacity<HashFunc, K>
-void HashTable<K, V, HashFunc>::alloc_mem(int count)
+void HashTable<K, V, HashFunc>::memory_allocation(int count)
 {
-  if (count <= 0)
-  {
-    throw BadCapacityError(__FILE__, typeid(*this).name(), __LINE__);
-  }
+  this->check_capacity(count);
   try
   {
     array.reset(new HashChain<K, V>[count], std::default_delete<HashChain<K, V>[]>());
@@ -548,7 +540,8 @@ void HashTable<K, V, HashFunc>::alloc_mem(int count)
   }
   catch (...)
   {
-    throw MemoryError(__FILE__, typeid(*this).name(), __LINE__);
+    time_t now = time(NULL);
+    throw MemoryError(__FILE__, typeid(*this).name(), __LINE__, ctime(&now));
   }
 }
 
@@ -570,4 +563,28 @@ void HashTable<K, V, HashFunc>::rehash()
   this->_capacity = hash_new._capacity;
   this->array = std::move(hash_new.array);
 }
-#pragma endregion InnerFuncs
+#pragma endregion inner_functions
+
+#pragma region private_functions
+
+template <Key K, Value V, typename HashFunc>
+  requires HashFunctionWithCapacity<HashFunc, K>
+void HashTable<K, V, HashFunc>::check_capacity(const HashTable::size_type capacity) const
+{
+  if (capacity <= 0)
+  {
+    time_t now = time(NULL);
+    throw BadCapacityError(__FILE__, typeid(*this).name(), __LINE__, ctime(&now));
+  }
+}
+
+template <Key K, Value V, typename HashFunc>
+  requires HashFunctionWithCapacity<HashFunc, K>
+void HashTable<K, V, HashFunc>::check_index(const int index) const
+{
+  if (index >= _capacity || index < 0)
+  {
+    throw TableIndexOutOfRange(__FILE__, typeid(*this).name(), __LINE__);
+  }
+}
+#pragma endregion private_functions

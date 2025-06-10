@@ -46,16 +46,24 @@
 //         : BaseContainerError(filename, line, class_name, time, err_msg) {};
 // };
 
-class MemoryError : public BaseError
+class MemoryError : public BaseContainerError
 {
 public:
-    MemoryError(const char *filename, const char *classname, int line_num, const char *message = "Memory allocation error!") : BaseError(filename, classname, line_num, message) {};
+    MemoryError(const char *filename,
+                const char *classname,
+                int line,
+                const char *time,
+                const char *message = "Memory allocation error!") : BaseContainerError(filename, classname, line, time, message) {};
 };
 
-class BadCapacityError : public BaseError
+class BadCapacityError : public BaseContainerError
 {
 public:
-    BadCapacityError(const char *filename, const char *classname, int line_num, const char *message = "Capacity passed is less than one!") : BaseError(filename, classname, line_num, message) {};
+    BadCapacityError(const char *filename,
+                     const char *classname,
+                     int line,
+                     const char *time,
+                     const char *message = "Capacity passed is less than one!") : BaseContainerError(filename, classname, line, time, message) {};
 };
 
 class KeyNotFoundError : public BaseError
