@@ -7,26 +7,23 @@
 #include "hash_node.h"
 
 template <Key K, Value V>
-class HashNode;
-
-template <Key K, Value V>
 class HashChain
 {
 public:
 #pragma region five_rule
     HashChain();
-    HashChain(const HashChain<K, V> &og_chain);
-    HashChain(HashChain<K, V> &&og_chain);
+    HashChain(const HashChain<K, V> &other);
+    HashChain(HashChain<K, V> &&other);
     HashChain(std::initializer_list<std::pair<K, V>> list_elems);
     ~HashChain() = default;
 
-    HashChain<K, V> &operator=(const HashChain<K, V> &og_chain);
+    HashChain<K, V> &operator=(const HashChain<K, V> &other);
     HashChain<K, V> &operator=(std::initializer_list<std::pair<K, V>> list_elems);
 #pragma endregion five_rule
 
 #pragma region Operators
-    bool operator==(const HashChain<K, V> &other_chain) const;
-    bool operator!=(const HashChain<K, V> &other_chain) const;
+    bool operator==(const HashChain<K, V> &other) const;
+    bool operator!=(const HashChain<K, V> &other) const;
     bool operator==(std::initializer_list<std::pair<K, V>> list_elems) const;
     bool operator!=(std::initializer_list<std::pair<K, V>> list_elems) const;
 #pragma endregion Operators
@@ -47,9 +44,12 @@ public:
     std::shared_ptr<HashNode<K, V>> get_list();
     void clear() noexcept;
 #pragma endregion OtherFuncs
+
 private:
-    std::shared_ptr<HashNode<K, V>> list;
-    size_t count;
+    void ckeck_size();
+
+    std::shared_ptr<HashNode<K, V>> _list;
+    size_t _count;
 };
 
 // вывод через std::cout;

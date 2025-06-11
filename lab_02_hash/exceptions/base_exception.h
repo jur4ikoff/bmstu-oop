@@ -35,6 +35,19 @@ public:
     }
 };
 
+class BaseHashChainError : public BaseError
+{
+public:
+    BaseHashChainError(const char *filename,
+                       const char *class_name,
+                       int line,
+                       const char *time,
+                       const char *err_name = "Hash Chain error!")
+        : BaseError(filename, class_name, line, time, err_name)
+    {
+    }
+};
+
 class BaseIteratorError : public BaseError
 {
     BaseIteratorError(const char *file_name,

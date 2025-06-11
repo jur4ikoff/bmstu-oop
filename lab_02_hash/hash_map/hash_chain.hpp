@@ -1,83 +1,86 @@
 #include "hash_chain.h"
 #include "hash_node.h"
-#include "hash_table_exceptions.h"
+#include "hash_map_exceptions.h"
+#include "hash_chain_exceptions.h"
 
 #pragma region five_rule
 
 template <Key K, Value V>
 HashChain<K, V>::HashChain()
 {
-  count = 0;
-  list = nullptr;
+  _count = 0;
+  this->_list = nullptr;
 }
 
 template <Key K, Value V>
-HashChain<K, V>::HashChain(const HashChain<K, V> &og_chain)
+HashChain<K, V>::HashChain(const HashChain<K, V> &other)
 {
-  count = 0;
-  if (og_chain.count != 0)
+  other.check_size();
+
+  _count = 0;
+  if (other._count != 0)
   {
-    auto src_current = og_chain.list;
-    list = std::make_shared<HashNode<K, V>>(src_current->get_key(), src_current->get_val());
-    auto dst_current = list;
-    count = 1;
-    src_current = src_current->get_next();
-    while (src_current)
+    auto src = other._list;
+    this->_list = std::make_shared<HashNode<K, V>>(src->get_key(), src->get_val());
+    auto dst = this->_list;
+    this->_count = 1;
+    src = src->get_next();
+    while (src)
     {
-      auto new_elem = std::make_shared<HashNode<K, V>>(src_current->get_key(), src_current->get_val());
-      new_elem->set_prev(dst_current);
-      dst_current->set_next(new_elem);
-      dst_current = new_elem;
-      src_current = src_current->get_next();
-      count++;
+      auto new_elem = std::make_shared<HashNode<K, V>>(src->get_key(), src->get_val());
+      new_elem->set_prev(dst);
+      dst->set_next(new_elem);
+      dst = new_elem;
+      src = src->get_next();
+      _count++;
     }
   }
 }
 
 template <Key K, Value V>
-HashChain<K, V>::HashChain(HashChain<K, V> &&og_chain) : count(og_chain.count)
+HashChain<K, V>::HashChain(HashChain<K, V> &&other) : _count(other._count)
 {
-  list = std::move(og_chain.list);
+  _list = std::move(other._list);
 }
 
 template <Key K, Value V>
 HashChain<K, V>::HashChain(std::initializer_list<std::pair<K, V>> list_elems)
 {
-  count = 0;
+  _count = 0;
   for (auto one_pair : list_elems)
   {
     if (!contains(one_pair.first))
-      count++;
+      _count++;
     insert_node(one_pair);
   }
 }
 
 template <Key K, Value V>
-HashChain<K, V> &HashChain<K, V>::operator=(const HashChain<K, V> &og_chain)
+HashChain<K, V> &HashChain<K, V>::operator=(const HashChain<K, V> &other)
 {
-  if (this == &og_chain)
+  if (this == &other)
   {
     return *this;
   }
-  list.reset();
-  count = 0;
-  if (og_chain.count == 0)
+  _list.reset();
+  _count = 0;
+  if (other._count == 0)
   {
     return *this;
   }
-  auto src_current = og_chain.list;
-  list = std::make_shared<HashNode<K, V>>(src_current->get_key(), src_current->get_val());
-  auto dst_current = list;
-  count = 1;
-  src_current = src_current->get_next();
-  while (src_current)
+  auto src = other._list;
+  _list = std::make_shared<HashNode<K, V>>(src->get_key(), src->get_val());
+  auto dst = _list;
+  _count = 1;
+  src = src->get_next();
+  while (src)
   {
-    auto new_elem = std::make_shared<HashNode<K, V>>(src_current->get_key(), src_current->get_val());
-    new_elem->set_prev(dst_current);
-    dst_current->set_next(new_elem);
-    dst_current = new_elem;
-    src_current = src_current->get_next();
-    count++;
+    auto new_elem = std::make_shared<HashNode<K, V>>(src->get_key(), src->get_val());
+    new_elem->set_prev(dst);
+    dst->set_next(new_elem);
+    dst = new_elem;
+    src = src->get_next();
+    _count++;
   }
   return *this;
 }
@@ -85,12 +88,12 @@ HashChain<K, V> &HashChain<K, V>::operator=(const HashChain<K, V> &og_chain)
 template <Key K, Value V>
 HashChain<K, V> &HashChain<K, V>::operator=(std::initializer_list<std::pair<K, V>> list_elems)
 {
-  list.reset();
-  count = 0;
+  _list.reset();
+  _count = 0;
   for (auto one_pair : list_elems)
   {
     if (!contains(one_pair.first))
-      count++;
+      _count++;
     insert_node(one_pair);
   }
   return *this;
@@ -101,10 +104,10 @@ HashChain<K, V> &HashChain<K, V>::operator=(std::initializer_list<std::pair<K, V
 template <Key K, Value V>
 bool HashChain<K, V>::operator==(const HashChain<K, V> &other_chain) const
 {
-  if (count != other_chain.count)
+  if (_count != other_chain._count)
     return false;
-  std::shared_ptr<HashNode<K, V>> current = list;
-  std::shared_ptr<HashNode<K, V>> current_other = other_chain.list;
+  std::shared_ptr<HashNode<K, V>> current = _list;
+  std::shared_ptr<HashNode<K, V>> current_other = other_chain._list;
   while (current)
   {
     if (current->get_key() != current_other->get_key() || current->get_val() != current_other->get_val())
@@ -143,7 +146,7 @@ bool HashChain<K, V>::operator!=(std::initializer_list<std::pair<K, V>> list_ele
 template <Key K, Value V>
 bool HashChain<K, V>::contains(const K &key)
 {
-  auto current = list;
+  auto current = _list;
   while (current)
   {
     if (current->get_key() == key)
@@ -166,14 +169,14 @@ bool HashChain<K, V>::contains(K &&key)
 template <Key K, Value V>
 void HashChain<K, V>::insert_node(const K &key, const V &val)
 {
-  if (!list)
+  if (!_list)
   {
     auto new_elem = std::make_shared<HashNode<K, V>>(key, val);
-    list = new_elem;
-    count++;
+    _list = new_elem;
+    _count++;
     return;
   }
-  auto current = list;
+  auto current = _list;
   while (current)
   {
     if (current->get_key() == key)
@@ -188,7 +191,7 @@ void HashChain<K, V>::insert_node(const K &key, const V &val)
   auto new_elem = std::make_shared<HashNode<K, V>>(key, val);
   new_elem->set_prev(current);
   current->set_next(new_elem);
-  count++;
+  _count++;
 }
 
 template <Key K, Value V>
@@ -206,9 +209,9 @@ void HashChain<K, V>::insert_node(std::pair<K, V> &node)
 template <Key K, Value V>
 void HashChain<K, V>::delete_node(const K &key)
 {
-  if (count == 0)
+  if (_count == 0)
     return;
-  auto current = list;
+  auto current = _list;
   while (current)
   {
     if (current->get_key() == key)
@@ -223,11 +226,11 @@ void HashChain<K, V>::delete_node(const K &key)
       {
         prev->set_next(current->get_next());
       }
-      if (current == list)
+      if (current == _list)
       {
-        list = next;
+        _list = next;
       }
-      count--;
+      _count--;
       return;
     }
     current = current->get_next();
@@ -244,7 +247,7 @@ void HashChain<K, V>::delete_node(K &&key)
 template <Key K, Value V>
 HashNode<K, V> &HashChain<K, V>::get_pair(const K &key) const
 {
-  auto current = list;
+  auto current = _list;
   while (current)
   {
     if (current->get_key() == key)
@@ -265,7 +268,7 @@ HashNode<K, V> &HashChain<K, V>::get_pair(K &&key) const
 template <Key K, Value V>
 V &HashChain<K, V>::get_val(const K &key)
 {
-  auto current = list;
+  auto current = _list;
   while (current)
   {
     if (current->get_key() == key)
@@ -284,20 +287,29 @@ V &HashChain<K, V>::get_val(K &&key)
 template <Key K, Value V>
 int HashChain<K, V>::get_count()
 {
-  return count;
+  return _count;
 }
 
 template <Key K, Value V>
 std::shared_ptr<HashNode<K, V>> HashChain<K, V>::get_list()
 {
-  return list;
+  return _list;
 }
 
 template <Key K, Value V>
 void HashChain<K, V>::clear() noexcept
 {
-  list.reset();
-  count = 0;
+  _list.reset();
+  _count = 0;
 }
 
+template <Key K, Value V>
+void HashChain<K, V>::ckeck_size()
+{
+  if (_count < 0)
+  {
+    time_t now = time(NULL);
+    throw BadCountError(__FILE__, typeid(*this).name(), __LINE__, ctime(&now));
+  }
+}
 #pragma endregion OtherFuncs

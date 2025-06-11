@@ -51,7 +51,6 @@ private:
     std::weak_ptr<HashNode<K, V>> _prev;
 };
 
-
 template <Key K, Value V>
 std::ostream &operator<<(std::ostream &os, HashNode<K, V> &elem);
 

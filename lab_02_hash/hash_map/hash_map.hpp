@@ -1,5 +1,5 @@
 #include "hash_map.h"
-#include "hash_table_exceptions.h"
+#include "hash_map_exceptions.h"
 
 #include <iostream>
 #include <ctime>
