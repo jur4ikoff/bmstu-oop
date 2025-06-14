@@ -8,10 +8,8 @@ ConstHashIterator<K, V, HashFunc>::ConstHashIterator(
     std::shared_ptr<HashChain<K, V>> table,
     size_t index,
     std::shared_ptr<HashNode<K, V>> current,
-    std::shared_ptr<size_t> mod_count_og,
     size_t capacity)
     : table(table), index(index), current(current),
-      mod_count_ptr(mod_count_og), mod_count(*mod_count_og),
       capacity(capacity)
 {
     if (!current)
@@ -21,16 +19,14 @@ ConstHashIterator<K, V, HashFunc>::ConstHashIterator(
 template <Key K, Value V, typename HashFunc>
 ConstHashIterator<K, V, HashFunc>::ConstHashIterator(const ConstHashIterator &og_iter)
     : table(og_iter.table), index(og_iter.index),
-      current(og_iter.current), mod_count_ptr(og_iter.mod_count_ptr),
-      mod_count(og_iter.mod_count), capacity(og_iter.capacity)
+      current(og_iter.current), capacity(og_iter.capacity)
 {
 }
 
 template <Key K, Value V, typename HashFunc>
 ConstHashIterator<K, V, HashFunc>::ConstHashIterator(ConstHashIterator &&og_iter)
     : table(std::move(og_iter.table)), index(og_iter.index),
-      current(std::move(og_iter.current)), mod_count_ptr(std::move(og_iter.mod_count_ptr)),
-      mod_count(og_iter.mod_count), capacity(og_iter.capacity)
+      current(std::move(og_iter.current)), capacity(og_iter.capacity)
 {
 }
 
@@ -42,20 +38,25 @@ ConstHashIterator<K, V, HashFunc> &ConstHashIterator<K, V, HashFunc>::operator=(
         table = other_iter.table;
         index = other_iter.index;
         current = other_iter.current;
-        mod_count_ptr = other_iter.mod_count_ptr;
-        mod_count = other_iter.mod_count;
         capacity = other_iter.capacity;
     }
     return *this;
 }
+
 #pragma endregion
 
 #pragma region Funcs
+
 template <Key K, Value V, typename HashFunc>
 void ConstHashIterator<K, V, HashFunc>::check_if_valid() const
 {
-    if (mod_count_ptr && mod_count != *mod_count_ptr)
-        throw IteratorTableWasChanged(__FILE__, typeid(*this).name(), __LINE__);
+    if (index >= capacity)
+    {
+        time_t now = time(NULL);
+        throw IteratorIndexOutOfRange(__FILE__, typeid(*this).name(), __LINE__, ctime(&now));
+    }
+    // if (mod_count_ptr && mod_count != *mod_count_ptr)
+    //     throw IteratorTableWasChanged(__FILE__, typeid(*this).name(), __LINE__);
 }
 
 template <Key K, Value V, typename HashFunc>
@@ -70,15 +71,16 @@ size_t ConstHashIterator<K, V, HashFunc>::get_capacity() const
     return capacity;
 }
 
-template <Key K, Value V, typename HashFunc>
-size_t ConstHashIterator<K, V, HashFunc>::get_needed_mod_count() const
-{
-    return mod_count;
-}
+// template <Key K, Value V, typename HashFunc>
+// size_t ConstHashIterator<K, V, HashFunc>::get_needed_mod_count() const
+// {
+//     return mod_count;
+// }
 
 #pragma endregion
 
 #pragma region Operators
+
 template <Key K, Value V, typename HashFunc>
 typename ConstHashIterator<K, V, HashFunc>::reference
 ConstHashIterator<K, V, HashFunc>::operator*() const
@@ -188,9 +190,11 @@ bool ConstHashIterator<K, V, HashFunc>::operator!=(const ConstHashIterator &othe
 {
     return !(*this == other);
 }
+
 #pragma endregion
 
 #pragma region advance_to_valid
+
 template <Key K, Value V, typename HashFunc>
 void ConstHashIterator<K, V, HashFunc>::advance_to_valid()
 {
@@ -205,4 +209,5 @@ void ConstHashIterator<K, V, HashFunc>::advance_to_valid()
             ++index;
     }
 }
+
 #pragma endregion

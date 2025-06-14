@@ -80,7 +80,6 @@ public:
 #pragma region OtherFuncs
     double calc_load_factor() const noexcept;
     bool is_empty() const noexcept override;
-    size_t get_mod_count() const noexcept;
     size_t get_capacity() const noexcept override;
     size_t get_count() const noexcept override;
     size_t size() const noexcept override;
@@ -102,7 +101,7 @@ private:
     void check_index(const int index) const;
 
     std::shared_ptr<HashChain<K, V>> _array;
-    std::shared_ptr<size_t> _mod_count;
+    // std::shared_ptr<size_t> _mod_count;
 };
 
 // вывод через std::cout;

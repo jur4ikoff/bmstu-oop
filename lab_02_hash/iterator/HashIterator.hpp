@@ -9,10 +9,8 @@ HashIterator<K, V, HashFunc>::HashIterator(
     std::shared_ptr<HashChain<K, V>> table,
     size_t index,
     std::shared_ptr<HashNode<K, V>> current,
-    std::shared_ptr<size_t> mod_count_og,
     size_t capacity)
     : table(table), index(index), current(current),
-      mod_count_ptr(mod_count_og), mod_count(*mod_count_og),
       capacity(capacity)
 {
     if (!current)
@@ -23,8 +21,7 @@ template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc>::HashIterator(const HashIterator &og_iter)
     : table(og_iter.table), index(og_iter.index),
-      current(og_iter.current), mod_count_ptr(og_iter.mod_count_ptr),
-      mod_count(og_iter.mod_count), capacity(og_iter.capacity)
+      current(og_iter.current), capacity(og_iter.capacity)
 {
 }
 
@@ -32,8 +29,7 @@ template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc>::HashIterator(HashIterator &&og_iter)
     : table(std::move(og_iter.table)), index(og_iter.index),
-      current(std::move(og_iter.current)), mod_count_ptr(std::move(og_iter.mod_count_ptr)),
-      mod_count(og_iter.mod_count), capacity(og_iter.capacity)
+      current(std::move(og_iter.current)), capacity(og_iter.capacity)
 {
 }
 
@@ -46,8 +42,6 @@ HashIterator<K, V, HashFunc> &HashIterator<K, V, HashFunc>::operator=(const Hash
         table = other_iter.table;
         index = other_iter.index;
         current = other_iter.current;
-        mod_count_ptr = other_iter.mod_count_ptr;
-        mod_count = other_iter.mod_count;
         capacity = other_iter.capacity;
     }
     return *this;
@@ -98,12 +92,12 @@ size_t HashIterator<K, V, HashFunc>::get_capacity() const
     return capacity;
 }
 
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-size_t HashIterator<K, V, HashFunc>::get_needed_mod_count() const
-{
-    return mod_count;
-}
+// template <Key K, Value V, typename HashFunc>
+//     requires HashFunctionWithCapacity<HashFunc, K>
+// size_t HashIterator<K, V, HashFunc>::get_needed_mod_count() const
+// {
+//     return mod_count;
+// }
 
 #pragma endregion
 

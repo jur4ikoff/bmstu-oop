@@ -1,10 +1,10 @@
 #ifndef CONSTHASHITERATOR_H
 #define CONSTHASHITERATOR_H
 
+#include "BaseIterator.h"
+#include "concepts.h"
 #include <iterator>
 #include <memory>
-#include "concepts.h"
-#include "BaseIterator.h"
 
 template <Key K, Value V>
 class HashNode;
@@ -25,7 +25,7 @@ public:
 #pragma region 5Rule
     ConstHashIterator() = default;
     ConstHashIterator(std::shared_ptr<HashChain<K, V>> table, size_t index,
-                      std::shared_ptr<HashNode<K, V>> current, std::shared_ptr<size_t> mod_count_og, size_t capacity);
+                      std::shared_ptr<HashNode<K, V>> current, size_t capacity);
     ConstHashIterator(const ConstHashIterator<K, V, HashFunc> &og_iter);
     ConstHashIterator(ConstHashIterator<K, V, HashFunc> &&og_iter);
     ~ConstHashIterator() = default;
@@ -36,7 +36,6 @@ public:
     void check_if_valid() const;
     size_t get_index() const override;
     size_t get_capacity() const override;
-    size_t get_needed_mod_count() const;
 #pragma endregion Funcs
 
 #pragma region Operators
@@ -53,8 +52,6 @@ public:
 private:
     std::weak_ptr<HashChain<K, V>> table;
     std::shared_ptr<HashNode<K, V>> current;
-    std::shared_ptr<size_t> mod_count_ptr;
-    size_t mod_count;
     size_t index;
     size_t capacity;
     void advance_to_valid();
