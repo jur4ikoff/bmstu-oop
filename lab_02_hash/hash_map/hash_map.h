@@ -1,28 +1,32 @@
 #pragma once
 
+#include "ConstHashIterator.hpp"
+#include "HashIterator.hpp"
+#include "base_hash_table.h"
+#include "concepts.h"
+#include "hash_chain.h"
 #include <initializer_list>
 #include <memory>
-#include "concepts.h"
-#include "base_hash_table.h"
-#include "hash_chain.h"
-#include "HashIterator.hpp"
-#include "ConstHashIterator.hpp"
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
 class HashMap : public BaseHashMap
 {
 public:
-#pragma region STLAliases
+#pragma region aliases
     using value_type = HashNode<K, V>;
     using size_type = size_t;
+
+    using reference = value_type &;
+    using const_reference = const value_type &;
+
     using iterator = HashIterator<K, V, HashFunc>;
     using const_iterator = ConstHashIterator<K, V, HashFunc>;
-#pragma endregion STLAliases
+#pragma endregion aliases
 
-#pragma region 5Rule
+#pragma region five_rule
     HashMap();
-    HashMap(int new_capacity);
+    HashMap(int capacity);
     HashMap(std::initializer_list<std::pair<K, V>> list_elems, int new_capacity);
     HashMap(const HashMap &og_hash);
     HashMap(HashMap &&og_hash);
@@ -31,7 +35,7 @@ public:
     HashMap(R &&range);
     HashMap<K, V, HashFunc> operator=(const HashMap<K, V, HashFunc> &other_table);
     ~HashMap() = default;
-#pragma endregion 5Rule
+#pragma endregion five_rule
 
 #pragma region ControlFuncs
     void insert_node(const K &key, const V &val);
@@ -103,13 +107,6 @@ private:
 
 // вывод через std::cout;
 template <Key K, Value V, typename HashFunc>
-std::ostream &operator<<(std::ostream &os, HashMap<K, V, HashFunc> &table)
-{
-    for (int i = 0; i < table.get_capacity(); i++)
-    {
-        os << "[" << i << "] -> " << table.get_list(i) << "\n";
-    }
-    return os;
-}
+std::ostream &operator<<(std::ostream &os, HashMap<K, V, HashFunc> &table);
 
 #include "hash_map.hpp"

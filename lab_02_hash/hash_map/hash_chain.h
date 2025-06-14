@@ -22,19 +22,19 @@ public:
 #pragma endregion five_rule
 
 #pragma region operators
-    bool operator==(const HashChain<K, V> &other) const;
-    bool operator==(std::initializer_list<std::pair<K, V>> list_elems) const;
-    bool operator!=(const HashChain<K, V> &other) const;
-    bool operator!=(std::initializer_list<std::pair<K, V>> list_elems) const;
+    bool operator==(const HashChain<K, V> &other) const noexcept;
+    bool operator==(std::initializer_list<std::pair<K, V>> list_elems) const noexcept;
+    bool operator!=(const HashChain<K, V> &other) const noexcept;
+    bool operator!=(std::initializer_list<std::pair<K, V>> list_elems) const noexcept;
 #pragma endregion operators
 
 #pragma region other
-    bool is_contain(const K &key);
-    bool is_contain(K &&key);
+    bool is_contain(const K &key) noexcept;
+    bool is_contain(K &&key) noexcept;
 
-    void insert_node(const K &key, const V &val);
-    void insert_node(K &&key, V &&val);
-    void insert_node(std::pair<K, V> &node);
+    void insert_node(const K &key, const V &val) noexcept;
+    void insert_node(K &&key, V &&val) noexcept;
+    void insert_node(std::pair<K, V> &node) noexcept;
     void delete_node(const K &key);
     void delete_node(K &&key);
 
@@ -42,10 +42,10 @@ public:
     HashNode<K, V> &get_pair(K &&key) const;
     V &get_val(const K &key);
     V &get_val(K &&key);
-    int get_count();
-
-    std::shared_ptr<HashNode<K, V>> get_list();
+    int get_count() noexcept;
+    std::shared_ptr<HashNode<K, V>> get_list() noexcept;
     void clear() noexcept;
+
 #pragma endregion other
 
 private:

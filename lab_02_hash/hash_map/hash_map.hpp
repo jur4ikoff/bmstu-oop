@@ -4,23 +4,24 @@
 #include <ctime>
 #include <iostream>
 
-#pragma region 5Rule
+#pragma region five_rule
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
 HashMap<K, V, HashFunc>::HashMap()
 {
     _capacity = 1;
+    mod_count = 0;
     this->memory_allocation(_capacity);
 }
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
-HashMap<K, V, HashFunc>::HashMap(int new_capacity)
+HashMap<K, V, HashFunc>::HashMap(int capacity)
 {
-    this->check_capacity(new_capacity);
+    this->check_capacity(capacity);
 
-    _capacity = new_capacity;
+    _capacity = capacity;
     mod_count = 0;
     this->memory_allocation(_capacity);
 }
@@ -91,7 +92,7 @@ HashMap<K, V, HashFunc>::HashMap(R &&range)
     }
 }
 
-#pragma endregion 5Rule
+#pragma endregion five_rule
 
 #pragma region Operators
 
@@ -598,3 +599,14 @@ void HashMap<K, V, HashFunc>::check_index(const int index) const
 }
 
 #pragma endregion private_functions
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+std::ostream &operator<<(std::ostream &os, HashMap<K, V, HashFunc> &table)
+{
+    for (int i = 0; i < table.get_capacity(); i++)
+    {
+        os << "[" << i << "] -> " << table.get_list(i) << "\n";
+    }
+    return os;
+}

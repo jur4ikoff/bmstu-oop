@@ -105,7 +105,7 @@ HashChain<K, V> &HashChain<K, V>::operator=(std::initializer_list<std::pair<K, V
 #pragma region operators
 
 template <Key K, Value V>
-bool HashChain<K, V>::operator==(const HashChain<K, V> &other) const
+bool HashChain<K, V>::operator==(const HashChain<K, V> &other) const noexcept
 {
     if (_count != other._count)
         return false;
@@ -127,20 +127,20 @@ bool HashChain<K, V>::operator==(const HashChain<K, V> &other) const
 }
 
 template <Key K, Value V>
-bool HashChain<K, V>::operator==(std::initializer_list<std::pair<K, V>> list_elems) const
+bool HashChain<K, V>::operator==(std::initializer_list<std::pair<K, V>> list_elems) const noexcept
 {
     HashChain<K, V> other_chain(list_elems);
     return (*this) == other_chain;
 }
 
 template <Key K, Value V>
-bool HashChain<K, V>::operator!=(const HashChain<K, V> &other) const
+bool HashChain<K, V>::operator!=(const HashChain<K, V> &other) const noexcept
 {
     return !((*this) == other);
 }
 
 template <Key K, Value V>
-bool HashChain<K, V>::operator!=(std::initializer_list<std::pair<K, V>> list_elems) const
+bool HashChain<K, V>::operator!=(std::initializer_list<std::pair<K, V>> list_elems) const noexcept
 {
     return !((*this) == list_elems);
 }
@@ -150,7 +150,7 @@ bool HashChain<K, V>::operator!=(std::initializer_list<std::pair<K, V>> list_ele
 #pragma region other
 
 template <Key K, Value V>
-bool HashChain<K, V>::is_contain(const K &key)
+bool HashChain<K, V>::is_contain(const K &key) noexcept
 {
     auto current = _list;
     while (current)
@@ -167,13 +167,13 @@ bool HashChain<K, V>::is_contain(const K &key)
 }
 
 template <Key K, Value V>
-bool HashChain<K, V>::is_contain(K &&key)
+bool HashChain<K, V>::is_contain(K &&key) noexcept
 {
     return is_contain(key);
 }
 
 template <Key K, Value V>
-void HashChain<K, V>::insert_node(const K &key, const V &val)
+void HashChain<K, V>::insert_node(const K &key, const V &val) noexcept
 {
     if (!_list)
     {
@@ -203,13 +203,13 @@ void HashChain<K, V>::insert_node(const K &key, const V &val)
 }
 
 template <Key K, Value V>
-void HashChain<K, V>::insert_node(K &&key, V &&val)
+void HashChain<K, V>::insert_node(K &&key, V &&val) noexcept
 {
     insert_node(key, val);
 }
 
 template <Key K, Value V>
-void HashChain<K, V>::insert_node(std::pair<K, V> &node)
+void HashChain<K, V>::insert_node(std::pair<K, V> &node) noexcept
 {
     insert_node(node.first, node.second);
 }
@@ -297,13 +297,13 @@ V &HashChain<K, V>::get_val(K &&key)
 }
 
 template <Key K, Value V>
-int HashChain<K, V>::get_count()
+int HashChain<K, V>::get_count() noexcept
 {
     return _count;
 }
 
 template <Key K, Value V>
-std::shared_ptr<HashNode<K, V>> HashChain<K, V>::get_list()
+std::shared_ptr<HashNode<K, V>> HashChain<K, V>::get_list() noexcept
 {
     return _list;
 }
