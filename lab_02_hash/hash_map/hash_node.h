@@ -15,11 +15,11 @@ public:
 #pragma region constructors
     HashNode(const K &key, const V &val) noexcept;
     explicit HashNode(const HashNode<K, V> &other) noexcept;
-    HashNode(HashNode<K, V> &&other) noexcept;
-    HashNode(std::pair<K, V> &node) noexcept;
+    explicit HashNode(HashNode<K, V> &&other) noexcept;
+    explicit HashNode(std::pair<K, V> &node) noexcept;
     ~HashNode() = default;
-    HashNode<K, V> &operator=(const HashNode<K, V> &og_elem) noexcept;
-    HashNode<K, V> &operator=(HashNode<K, V> &&og_elem) noexcept;
+    HashNode<K, V> &operator=(const HashNode<K, V> &other) noexcept;
+    HashNode<K, V> &operator=(HashNode<K, V> &&other) noexcept;
 #pragma endregion constructors
 
 #pragma region Operators
