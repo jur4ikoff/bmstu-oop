@@ -3,7 +3,8 @@
 
 #pragma region 5Rule
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc>::HashIterator(
     std::shared_ptr<HashChain<K, V>> table,
     size_t index,
@@ -11,30 +12,33 @@ HashIterator<K, V, HashFunc>::HashIterator(
     std::shared_ptr<size_t> mod_count_og,
     size_t capacity)
     : table(table), index(index), current(current),
-    mod_count_ptr(mod_count_og), mod_count(*mod_count_og),
-    capacity(capacity)
+      mod_count_ptr(mod_count_og), mod_count(*mod_count_og),
+      capacity(capacity)
 {
     if (!current)
         advance_to_valid();
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc>::HashIterator(const HashIterator &og_iter)
     : table(og_iter.table), index(og_iter.index),
-    current(og_iter.current), mod_count_ptr(og_iter.mod_count_ptr),
-    mod_count(og_iter.mod_count), capacity(og_iter.capacity)
+      current(og_iter.current), mod_count_ptr(og_iter.mod_count_ptr),
+      mod_count(og_iter.mod_count), capacity(og_iter.capacity)
 {
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc>::HashIterator(HashIterator &&og_iter)
     : table(std::move(og_iter.table)), index(og_iter.index),
-    current(std::move(og_iter.current)), mod_count_ptr(std::move(og_iter.mod_count_ptr)),
-    mod_count(og_iter.mod_count), capacity(og_iter.capacity)
+      current(std::move(og_iter.current)), mod_count_ptr(std::move(og_iter.mod_count_ptr)),
+      mod_count(og_iter.mod_count), capacity(og_iter.capacity)
 {
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc> &HashIterator<K, V, HashFunc>::operator=(const HashIterator &other_iter)
 {
     if (this != &other_iter)
@@ -48,35 +52,65 @@ HashIterator<K, V, HashFunc> &HashIterator<K, V, HashFunc>::operator=(const Hash
     }
     return *this;
 }
+
 #pragma endregion
 
 #pragma region Funcs
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+
+// template <Key K, Value V, typename HashFunc>
+//     requires HashFunctionWithCapacity<HashFunc, K>
+// void HashIterator<K, V, HashFunc>::check_iter() const
+// {
+//     // Проверка, что он существует вообще
+//     if (index >= capacity)
+//     {
+//         time_t now = time(NULL);
+//         throw IteratorTableWasChanged(__FILE__, typeid(*this).name(), __LINE__);
+//     }
+//     // if (mod_count_ptr && mod_count != *mod_count_ptr)
+//     //     throw IteratorTableWasChanged(__FILE__, typeid(*this).name(), __LINE__);
+// }
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 void HashIterator<K, V, HashFunc>::check_if_valid() const
 {
-    if (mod_count_ptr && mod_count != *mod_count_ptr)
-        throw IteratorTableWasChanged(__FILE__, typeid(*this).name(), __LINE__);
+    if (index >= capacity)
+    {
+        time_t now = time(NULL);
+        throw IteratorIndexOutOfRange(__FILE__, typeid(*this).name(), __LINE__, ctime(&now));
+    }
+    // if (mod_count_ptr && mod_count != *mod_count_ptr)
+    //     throw IteratorTableWasChanged(__FILE__, typeid(*this).name(), __LINE__);
 }
 
-
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
-size_t HashIterator<K, V, HashFunc>::get_index() const {
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+size_t HashIterator<K, V, HashFunc>::get_index() const
+{
     return index;
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
-size_t HashIterator<K, V, HashFunc>::get_capacity() const {
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+size_t HashIterator<K, V, HashFunc>::get_capacity() const
+{
     return capacity;
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
-size_t HashIterator<K, V, HashFunc>::get_needed_mod_count() const {
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+size_t HashIterator<K, V, HashFunc>::get_needed_mod_count() const
+{
     return mod_count;
 }
+
 #pragma endregion
 
 #pragma region Operators
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 typename HashIterator<K, V, HashFunc>::reference
 HashIterator<K, V, HashFunc>::operator*() const
 {
@@ -84,7 +118,8 @@ HashIterator<K, V, HashFunc>::operator*() const
     return *current;
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 typename HashIterator<K, V, HashFunc>::pointer
 HashIterator<K, V, HashFunc>::operator->() const
 {
@@ -92,10 +127,10 @@ HashIterator<K, V, HashFunc>::operator->() const
     return current.get();
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc> &HashIterator<K, V, HashFunc>::operator++()
 {
-    check_if_valid();
     if (current && current->has_next())
     {
         current = current->get_next();
@@ -109,7 +144,8 @@ HashIterator<K, V, HashFunc> &HashIterator<K, V, HashFunc>::operator++()
     return *this;
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc> &HashIterator<K, V, HashFunc>::operator--()
 {
     check_if_valid();
@@ -158,7 +194,8 @@ HashIterator<K, V, HashFunc> &HashIterator<K, V, HashFunc>::operator--()
     return *this;
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc> HashIterator<K, V, HashFunc>::operator++(int)
 {
     HashIterator tmp = *this;
@@ -166,7 +203,8 @@ HashIterator<K, V, HashFunc> HashIterator<K, V, HashFunc>::operator++(int)
     return tmp;
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 HashIterator<K, V, HashFunc> HashIterator<K, V, HashFunc>::operator--(int)
 {
     HashIterator tmp = *this;
@@ -174,21 +212,26 @@ HashIterator<K, V, HashFunc> HashIterator<K, V, HashFunc>::operator--(int)
     return tmp;
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 bool HashIterator<K, V, HashFunc>::operator==(const HashIterator &other) const noexcept
 {
     return current == other.current && index == other.index;
 }
 
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 bool HashIterator<K, V, HashFunc>::operator!=(const HashIterator &other) const noexcept
 {
     return !(*this == other);
 }
+
 #pragma endregion
 
 #pragma region advance_to_valid
-template <Key K, Value V, typename HashFunc> requires HashFunctionWithCapacity<HashFunc, K>
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 void HashIterator<K, V, HashFunc>::advance_to_valid()
 {
     auto chains = table.lock();
@@ -202,4 +245,5 @@ void HashIterator<K, V, HashFunc>::advance_to_valid()
             ++index;
     }
 }
+
 #pragma endregion

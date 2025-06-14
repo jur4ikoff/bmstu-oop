@@ -13,6 +13,7 @@ public:
         snprintf(_err_message, sizeof(_err_message), "%s\nFilename: %s\nClass: %s\nLine: %d Time: %s\n",
                  err_name, filename, class_name, line, time);
     }
+
     virtual const char *what() const noexcept override
     {
         return _err_message;
@@ -50,9 +51,10 @@ public:
 
 class BaseIteratorError : public BaseError
 {
+public:
     BaseIteratorError(const char *file_name,
-                      int line,
                       const char *class_name,
+                      int line,
                       const char *time,
                       const char *err_name = "Iterator error!")
         : BaseError(file_name, class_name, line, time, err_name)

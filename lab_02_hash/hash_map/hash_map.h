@@ -2,7 +2,7 @@
 
 #include "ConstHashIterator.hpp"
 #include "HashIterator.hpp"
-#include "base_hash_table.h"
+#include "base_hash_map.h"
 #include "concepts.h"
 #include "hash_chain.h"
 #include <initializer_list>
@@ -79,7 +79,7 @@ public:
 
 #pragma region OtherFuncs
     double calc_load_factor() const noexcept;
-    bool empty() const noexcept override;
+    bool is_empty() const noexcept override;
     size_t get_mod_count() const noexcept;
     size_t get_capacity() const noexcept override;
     size_t get_count() const noexcept override;
@@ -101,8 +101,8 @@ private:
     void check_capacity(const size_type capacity) const;
     void check_index(const int index) const;
 
-    std::shared_ptr<HashChain<K, V>> array;
-    std::shared_ptr<size_t> mod_count;
+    std::shared_ptr<HashChain<K, V>> _array;
+    std::shared_ptr<size_t> _mod_count;
 };
 
 // вывод через std::cout;

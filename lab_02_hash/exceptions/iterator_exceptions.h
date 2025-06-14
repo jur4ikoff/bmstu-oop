@@ -15,7 +15,52 @@
 //         : BaseContainerError(filename, line, class_name, time, err_msg) {};
 // };
 
-// class errIndexOutOfRange : public BaseContainerError
+// Итераторы
+
+class IteratorIndexOutOfRange : public BaseIteratorError
+{
+public:
+    IteratorIndexOutOfRange(const char *filename,
+                            const char *class_name,
+                            int line,
+                            const char *time,
+                            const char *message = "Ошибка, индекс итератора вышел за пределы контейнера")
+        : BaseIteratorError(filename, class_name, line, time, message) {};
+};
+
+class IteratorTableWasChanged : public BaseIteratorError
+{
+public:
+    IteratorTableWasChanged(const char *filename,
+                            const char *class_name,
+                            int line,
+                            const char *time,
+                            const char *message = "Iterator is not valid (hash table was changed)!")
+        : BaseIteratorError(filename, class_name, line, time, message) {};
+};
+
+class IteratorNoDataFound : public BaseIteratorError
+{
+public:
+    IteratorNoDataFound(const char *filename,
+                        const char *class_name,
+                        int line,
+                        const char *message = "Iterator is not valid (hash table was changed)!")
+        : BaseIteratorError(filename, class_name, line, message) {};
+};
+
+class IteratorDoesntExistError : public BaseIteratorError
+{
+public:
+    IteratorDoesntExistError(const char *filename,
+                             const char *class_name,
+                             int line,
+                             const char *time,
+                             const char *message = "Iterator is linked to a hash table that doesn't exist!")
+        : BaseIteratorError(filename, class_name, line, time, message) {};
+};
+
+// class errIndexOutOfRange : public BaseIteratorError
 // {
 // public:
 //     errIndexOutOfRange(const char *filename,
@@ -23,25 +68,5 @@
 //                        const char *class_name,
 //                        const char *time,
 //                        const char *err_msg = "Ошибка, индекс итератора вышел за пределы контейнера")
-//         : BaseContainerError(filename, line, class_name, time, err_msg) {};
+//         : BaseIteratorError(filename, line, class_name, time, err_msg) {};
 // };
-
-// Итераторы
-
-class IteratorTableWasChanged : public BaseError
-{
-public:
-    IteratorTableWasChanged(const char *filename, const char *classname, int line_num, const char *message = "Iterator is not valid (hash table was changed)!") : BaseError(filename, classname, line_num, message) {};
-};
-
-class IteratorNoDataFound : public BaseError
-{
-public:
-    IteratorNoDataFound(const char *filename, const char *classname, int line_num, const char *message = "Iterator is not valid (hash table was changed)!") : BaseError(filename, classname, line_num, message) {};
-};
-
-class IteratorDoesntExistError : public BaseError
-{
-public:
-    IteratorDoesntExistError(const char *filename, const char *classname, int line_num, const char *message = "Iterator is linked to a hash table that doesn't exist!") : BaseError(filename, classname, line_num, message) {};
-};
