@@ -24,18 +24,22 @@ public:
     using const_iterator = ConstHashIterator<K, V, HashFunc>;
 #pragma endregion aliases
 
-#pragma region five_rule
+#pragma region constructors
     HashMap();
-    HashMap(int capacity);
+    explicit HashMap(int capacity);
     HashMap(std::initializer_list<std::pair<K, V>> list_elems, int new_capacity);
-    HashMap(const HashMap &og_hash);
-    HashMap(HashMap &&og_hash);
+    explicit HashMap(const HashMap &other);
+    explicit HashMap(HashMap &&other);
     template <std::ranges::input_range R>
         requires std::convertible_to<std::ranges::range_value_t<R>, std::pair<K, V>>
-    HashMap(R &&range);
-    HashMap<K, V, HashFunc> operator=(const HashMap<K, V, HashFunc> &other_table);
+    explicit HashMap(R &&range);
+    // TODO Конструктор по иттераторам
+    // TODO Конструктор по сентинелу
+
+    HashMap<K, V, HashFunc> operator=(const HashMap<K, V, HashFunc> &other);
+
     ~HashMap() = default;
-#pragma endregion five_rule
+#pragma endregion constructors
 
 #pragma region ControlFuncs
     void insert_node(const K &key, const V &val);
@@ -101,7 +105,6 @@ private:
     void check_index(const int index) const;
 
     std::shared_ptr<HashChain<K, V>> _array;
-    // std::shared_ptr<size_t> _mod_count;
 };
 
 // вывод через std::cout;

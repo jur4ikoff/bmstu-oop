@@ -4,7 +4,7 @@
 #include <ctime>
 #include <iostream>
 
-#pragma region five_rule
+#pragma region constructors
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
@@ -26,51 +26,38 @@ HashMap<K, V, HashFunc>::HashMap(int capacity)
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
-HashMap<K, V, HashFunc>::HashMap(std::initializer_list<std::pair<K, V>> list_elems, int new_capacity)
+HashMap<K, V, HashFunc>::HashMap(std::initializer_list<std::pair<K, V>> list_elems, int capacity)
 {
-    this->check_capacity(new_capacity);
+    this->check_capacity(capacity);
 
-    _capacity = new_capacity;
+    _capacity = capacity;
     this->memory_allocation(_capacity);
+
     for (auto one_pair : list_elems)
     {
-        insert_node(one_pair);
+        this->insert_node(one_pair);
     }
 }
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
-HashMap<K, V, HashFunc>::HashMap(const HashMap &og_hash)
+HashMap<K, V, HashFunc>::HashMap(const HashMap &other)
 {
-    _capacity = og_hash._capacity;
-    this->memory_allocation(_capacity);
-    for (int i = 0; i < _capacity; i++)
+    this->memory_allocation(other._capacity);
+    this->_capacity = other._capacity;
+
+    for (int i = 0; i < this->_capacity; i++)
     {
-        _array.get()[i] = og_hash._array.get()[i];
+        _array.get()[i] = other._array.get()[i];
     }
 }
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
-HashMap<K, V, HashFunc>::HashMap(HashMap &&og_hash)
+HashMap<K, V, HashFunc>::HashMap(HashMap &&other)
 {
-    _capacity = og_hash._capacity;
-    _array = std::move(og_hash._array);
-}
-
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-HashMap<K, V, HashFunc> HashMap<K, V, HashFunc>::operator=(const HashMap<K, V, HashFunc> &other_table)
-{
-    if (this == &other_table)
-        return *this;
-    _capacity = other_table._capacity;
-    this->memory_allocation(_capacity);
-    for (int i = 0; i < _capacity; i++)
-    {
-        _array.get()[i] = other_table._array.get()[i];
-    }
-    return (*this);
+    _capacity = other._capacity;
+    _array = std::move(other._array);
 }
 
 template <Key K, Value V, typename HashFunc>
@@ -85,7 +72,22 @@ HashMap<K, V, HashFunc>::HashMap(R &&range)
     }
 }
 
-#pragma endregion five_rule
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+HashMap<K, V, HashFunc> HashMap<K, V, HashFunc>::operator=(const HashMap<K, V, HashFunc> &other)
+{
+    if (this == &other)
+        return *this;
+    _capacity = other._capacity;
+    this->memory_allocation(_capacity);
+    for (int i = 0; i < _capacity; i++)
+    {
+        _array.get()[i] = other._array.get()[i];
+    }
+    return (*this);
+}
+
+#pragma endregion constructors
 
 #pragma region Operators
 
@@ -229,7 +231,6 @@ bool HashMap<K, V, HashFunc>::is_empty() const noexcept
     return get_count() == 0;
 }
 
-
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
 size_t HashMap<K, V, HashFunc>::get_capacity() const noexcept
@@ -273,7 +274,6 @@ void HashMap<K, V, HashFunc>::insert_node(const K &key, const V &val)
     }
     else
     {
-     
     }
 }
 
@@ -528,7 +528,6 @@ void HashMap<K, V, HashFunc>::memory_allocation(int count)
     try
     {
         _array.reset(new HashChain<K, V>[count], std::default_delete<HashChain<K, V>[]>());
-        std::cout << "Memory allocated" << std::endl;
     }
     catch (...)
     {
