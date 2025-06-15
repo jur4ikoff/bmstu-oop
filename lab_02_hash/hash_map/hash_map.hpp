@@ -74,7 +74,7 @@ HashMap<K, V, HashFunc>::HashMap(R &&range)
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
-HashMap<K, V, HashFunc> HashMap<K, V, HashFunc>::operator=(const HashMap<K, V, HashFunc> &other)
+HashMap<K, V, HashFunc> HashMap<K, V, HashFunc>::operator=(const HashMap &other)
 {
     if (this == &other)
         return *this;
@@ -121,6 +121,96 @@ const V &HashMap<K, V, HashFunc>::operator[](K &&key) const
 
 template <Key K, Value V, typename HashFunc>
     requires HashFunctionWithCapacity<HashFunc, K>
+V &HashMap<K, V, HashFunc>::get_val(const K &key) const noexcept
+{
+    size_t arr_index = HashFunc(key, _capacity);
+    return _array.get()[arr_index].get_val(key);
+}
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+V &HashMap<K, V, HashFunc>::get_val(K &&key) const noexcept
+{
+    return get_val(key);
+}
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+HashNode<K, V> &HashMap<K, V, HashFunc>::get_pair(const K &key) const
+{
+    for (int i = 0; i < _capacity; i++)
+    {
+        if (_array.get()[i].is_contain(key))
+        {
+            return _array.get()[i].get_pair(key);
+        }
+    }
+
+    time_t now = time(NULL);
+    throw KeyNotFoundError(__FILE__, typeid(*this).name(), __LINE__, ctime(&now));
+}
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+HashNode<K, V> &HashMap<K, V, HashFunc>::get_pair(K &&key) const
+{
+    return get_pair(key);
+}
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+HashChain<K, V> &HashMap<K, V, HashFunc>::get_list(const int index) const
+{
+    this->check_index(index);
+    return _array.get()[index];
+}
+
+// Операторы добавления
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+(const std::pair<K, V> &pair)
+{
+    HashMap<K, V, HashFunc> result(*this);
+    result.insert_node(pair.first, pair.second);
+    return result;
+}
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+=(const std::pair<K, V> &pair)
+{
+    insert_node(pair.first, pair.second);
+    return *this;
+}
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+=(std::pair<K, V> &&pair)
+{
+    insert_node(std::move(pair.first), std::move(pair.second));
+    return *this;
+}
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+=(const HashNode<K, V> &elem)
+{
+    insert_node(elem);
+    return *this;
+}
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
+HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+=(
+    std::initializer_list<std::pair<K, V>> list)
+{
+    insert_nodes(list);
+    return *this;
+}
+
+template <Key K, Value V, typename HashFunc>
+    requires HashFunctionWithCapacity<HashFunc, K>
 bool HashMap<K, V, HashFunc>::operator==(const HashMap<K, V, HashFunc> &other) const noexcept
 {
     if (_capacity != other._capacity || get_count() != other.get_count())
@@ -140,40 +230,6 @@ template <Key K, Value V, typename HashFunc>
 bool HashMap<K, V, HashFunc>::operator!=(const HashMap<K, V, HashFunc> &other) const noexcept
 {
     return !((*this) == other);
-}
-
-// Операторы добавления
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+(const std::pair<K, V> &pair)
-{
-    insert_node(pair.first, pair.second);
-    return *this;
-}
-
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+(std::pair<K, V> &&pair)
-{
-    insert_node(std::move(pair.first), std::move(pair.second));
-    return *this;
-}
-
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+(const HashNode<K, V> &elem)
-{
-    insert_node(elem);
-    return *this;
-}
-
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-HashMap<K, V, HashFunc> &HashMap<K, V, HashFunc>::operator+(
-    std::initializer_list<std::pair<K, V>> list)
-{
-    insert_nodes(list);
-    return *this;
 }
 
 // Операторы удаления
@@ -377,52 +433,6 @@ template <Key K, Value V, typename HashFunc>
 bool HashMap<K, V, HashFunc>::contains(std::pair<K, V> &node) const noexcept
 {
     return contains(node.first);
-}
-
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-HashNode<K, V> &HashMap<K, V, HashFunc>::get_pair(const K &key) const
-{
-    for (int i = 0; i < _capacity; i++)
-    {
-        if (_array.get()[i].is_contain(key))
-        {
-            return _array.get()[i].get_pair(key);
-        }
-    }
-
-    time_t now = time(NULL);
-    throw KeyNotFoundError(__FILE__, typeid(*this).name(), __LINE__, ctime(&now));
-}
-
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-HashNode<K, V> &HashMap<K, V, HashFunc>::get_pair(K &&key) const
-{
-    return get_pair(key);
-}
-
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-V &HashMap<K, V, HashFunc>::get_val(const K &key) const noexcept
-{
-    size_t arr_index = HashFunc(key, _capacity);
-    return _array.get()[arr_index].get_val(key);
-}
-
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-V &HashMap<K, V, HashFunc>::get_val(K &&key) const noexcept
-{
-    return get_val(key);
-}
-
-template <Key K, Value V, typename HashFunc>
-    requires HashFunctionWithCapacity<HashFunc, K>
-HashChain<K, V> &HashMap<K, V, HashFunc>::get_list(const int index) const
-{
-    this->check_index(index);
-    return _array.get()[index];
 }
 
 template <Key K, Value V, typename HashFunc>

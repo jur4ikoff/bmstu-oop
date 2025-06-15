@@ -36,10 +36,39 @@ public:
     // TODO Конструктор по иттераторам
     // TODO Конструктор по сентинелу
 
-    HashMap<K, V, HashFunc> operator=(const HashMap<K, V, HashFunc> &other);
+    HashMap<K, V, HashFunc> operator=(const HashMap &other);
+    // TODO = по другим
 
     ~HashMap() = default;
 #pragma endregion constructors
+
+#pragma region Operators
+    // getters
+    V &operator[](const K &key);
+    const V &operator[](const K &key) const;
+    V &operator[](K &&key);
+    const V &operator[](K &&key) const;
+    V &get_val(const K &key) const noexcept;
+    V &get_val(K &&key) const noexcept;
+    HashNode<K, V> &get_pair(const K &key) const;
+    HashNode<K, V> &get_pair(K &&key) const;
+    HashChain<K, V> &get_list(const int index) const;
+
+    // operator +
+    HashMap<K, V, HashFunc> &operator+(const std::pair<K, V> &pair);
+
+    HashMap<K, V, HashFunc> &operator+=(const std::pair<K, V> &pair);
+    HashMap<K, V, HashFunc> &operator+=(std::pair<K, V> &&pair);
+    HashMap<K, V, HashFunc> &operator+=(const HashNode<K, V> &elem);
+    HashMap<K, V, HashFunc> &operator+=(std::initializer_list<std::pair<K, V>> list);
+
+    HashMap<K, V, HashFunc> &operator-(const K &key);
+    HashMap<K, V, HashFunc> &operator-(K &&key);
+    HashMap<K, V, HashFunc> &operator-(const HashNode<K, V> &elem);
+    HashMap<K, V, HashFunc> &operator-(std::initializer_list<K> keys);
+    bool operator==(const HashMap<K, V, HashFunc> &other) const noexcept;
+    bool operator!=(const HashMap<K, V, HashFunc> &other) const noexcept;
+#pragma endregion Operators
 
 #pragma region ControlFuncs
     void insert_node(const K &key, const V &val);
@@ -56,30 +85,9 @@ public:
     bool contains(const K &&key) const noexcept;
     bool contains(const HashNode<K, V> &elem) const noexcept;
     bool contains(std::pair<K, V> &node) const noexcept;
-    HashNode<K, V> &get_pair(const K &key) const;
-    HashNode<K, V> &get_pair(K &&key) const;
-    V &get_val(const K &key) const noexcept;
-    V &get_val(K &&key) const noexcept;
-    HashChain<K, V> &get_list(const int index) const;
+
     void clear() noexcept;
 #pragma endregion ControlFuncs
-
-#pragma region Operators
-    V &operator[](const K &key);
-    const V &operator[](const K &key) const;
-    V &operator[](K &&key);
-    const V &operator[](K &&key) const;
-    HashMap<K, V, HashFunc> &operator+(const std::pair<K, V> &pair);
-    HashMap<K, V, HashFunc> &operator+(std::pair<K, V> &&pair);
-    HashMap<K, V, HashFunc> &operator+(const HashNode<K, V> &elem);
-    HashMap<K, V, HashFunc> &operator+(std::initializer_list<std::pair<K, V>> list);
-    HashMap<K, V, HashFunc> &operator-(const K &key);
-    HashMap<K, V, HashFunc> &operator-(K &&key);
-    HashMap<K, V, HashFunc> &operator-(const HashNode<K, V> &elem);
-    HashMap<K, V, HashFunc> &operator-(std::initializer_list<K> keys);
-    bool operator==(const HashMap<K, V, HashFunc> &other) const noexcept;
-    bool operator!=(const HashMap<K, V, HashFunc> &other) const noexcept;
-#pragma endregion Operators
 
 #pragma region OtherFuncs
     double calc_load_factor() const noexcept;
